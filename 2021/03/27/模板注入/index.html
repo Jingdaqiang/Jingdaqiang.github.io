@@ -20,20 +20,19 @@
     var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="second">
+  <meta name="description" content="模板注入判断： 49 回显7777777 &#x3D;&#x3D;&gt; Jinja2  49 回显49 &#x3D;&#x3D;&gt; Twig  [BJDCTF2020]Cookie is so stableTwig模板注入，题目提示cookie，flag界面抓包49">
 <meta property="og:type" content="article">
-<meta property="og:title" content="second">
-<meta property="og:url" content="https://jingdaqiang.github.io/2020/12/24/second/index.html">
+<meta property="og:title" content="模板注入">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/03/27/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="Daq1ang">
-<meta property="og:description" content="second">
+<meta property="og:description" content="模板注入判断： 49 回显7777777 &#x3D;&#x3D;&gt; Jinja2  49 回显49 &#x3D;&#x3D;&gt; Twig  [BJDCTF2020]Cookie is so stableTwig模板注入，题目提示cookie，flag界面抓包49">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-12-24T04:12:58.000Z">
-<meta property="article:modified_time" content="2020-12-30T14:18:02.000Z">
+<meta property="article:published_time" content="2021-03-27T01:40:04.000Z">
+<meta property="article:modified_time" content="2021-03-27T03:16:01.382Z">
 <meta property="article:author" content="六公子买单">
-<meta property="article:tag" content="first">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jingdaqiang.github.io/2020/12/24/second/">
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/03/27/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
 
 
 <script id="page-configurations">
@@ -46,7 +45,7 @@
   };
 </script>
 
-  <title>second | Daq1ang</title>
+  <title>模板注入 | Daq1ang</title>
   
 
 
@@ -151,7 +150,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2020/12/24/second/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/27/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -164,7 +163,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          second
+          模板注入
         </h1>
 
         <div class="post-meta">
@@ -173,28 +172,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-12-24 12:12:58" itemprop="dateCreated datePublished" datetime="2020-12-24T12:12:58+08:00">2020-12-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-30 22:18:02" itemprop="dateModified" datetime="2020-12-30T22:18:02+08:00">2020-12-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hello/" itemprop="url" rel="index"><span itemprop="name">hello</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hello/world/" itemprop="url" rel="index"><span itemprop="name">world</span></a>
-                </span>
+              <time title="Created: 2021-03-27 09:40:04 / Modified: 11:16:01" itemprop="dateCreated datePublished" datetime="2021-03-27T09:40:04+08:00">2021-03-27</time>
             </span>
 
           
@@ -208,7 +188,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="second"><a href="#second" class="headerlink" title="second"></a>second</h3>
+        <p>模板注入判断：</p>
+49 回显7777777 ==> Jinja2
+
+49 回显49 ==> Twig 
+<h2 id="BJDCTF2020-Cookie-is-so-stable"><a href="#BJDCTF2020-Cookie-is-so-stable" class="headerlink" title="[BJDCTF2020]Cookie is so stable"></a>[BJDCTF2020]Cookie is so stable</h2><p>Twig模板注入，题目提示cookie，flag界面抓包49</p>
+
     </div>
 
     
@@ -216,19 +201,19 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/first/" rel="tag"># first</a>
-          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2021/01/11/first/" rel="next" title="菜鸟">
-      菜鸟 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/03/26/XXE/" rel="prev" title="XXE漏洞">
+      <i class="fa fa-chevron-left"></i> XXE漏洞
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/27/SSI%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="next" title="SSI远程命令执行">
+      SSI远程命令执行 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -288,7 +273,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#second"><span class="nav-number">1.</span> <span class="nav-text">second</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BJDCTF2020-Cookie-is-so-stable"><span class="nav-number">1.</span> <span class="nav-text">[BJDCTF2020]Cookie is so stable</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
