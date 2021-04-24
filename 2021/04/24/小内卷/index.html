@@ -20,24 +20,23 @@
     var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="下午搞一搞PHP php var_dump() 会返回变量的数据类型和值：  在 PHP 中，所有用户定义的函数、类和关键词（例如 if、else、echo 等等）都对大小写不敏感。所有变量都对大小写敏感    var_dump() 会返回变量的数据类型和值     字符串函数 str_word_count() 函数对字符串中的单词进行计数    strrev() 函数反转字符串  strpos(">
+  <meta name="description" content="二队实力有限，所以康师傅出题还算友好。 命令执行题目链接：106.54.90.137:2333题目给了一个输入框，源码查看到有hint.txt提示，发现给了路径 give you hint : &#x2F;usr&#x2F;local&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;bin:&#x2F;sbin:&#x2F;bin:&#x2F;usr&#x2F;games:&#x2F;usr&#x2F;local&#x2F;games:  在CTFshow做了二十">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP学习笔记">
-<meta property="og:url" content="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="小内卷">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/index.html">
 <meta property="og:site_name" content="Daq1ang">
-<meta property="og:description" content="下午搞一搞PHP php var_dump() 会返回变量的数据类型和值：  在 PHP 中，所有用户定义的函数、类和关键词（例如 if、else、echo 等等）都对大小写不敏感。所有变量都对大小写敏感    var_dump() 会返回变量的数据类型和值     字符串函数 str_word_count() 函数对字符串中的单词进行计数    strrev() 函数反转字符串  strpos(">
+<meta property="og:description" content="二队实力有限，所以康师傅出题还算友好。 命令执行题目链接：106.54.90.137:2333题目给了一个输入框，源码查看到有hint.txt提示，发现给了路径 give you hint : &#x2F;usr&#x2F;local&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;bin:&#x2F;sbin:&#x2F;bin:&#x2F;usr&#x2F;games:&#x2F;usr&#x2F;local&#x2F;games:  在CTFshow做了二十">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/images/php1.0.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/images/php1.2.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/images/php1.3.png">
-<meta property="article:published_time" content="2021-01-12T06:48:37.000Z">
-<meta property="article:modified_time" content="2021-01-31T10:16:40.377Z">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/1.0.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/1.1.png">
+<meta property="article:published_time" content="2021-04-24T13:42:32.000Z">
+<meta property="article:modified_time" content="2021-04-24T15:41:22.340Z">
 <meta property="article:author" content="六公子买单">
-<meta property="article:tag" content="w3school">
+<meta property="article:tag" content="命令执行&amp;布尔盲注">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/images/php1.0.png">
+<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/1.0.png">
 
-<link rel="canonical" href="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/">
 
 
 <script id="page-configurations">
@@ -50,7 +49,7 @@
   };
 </script>
 
-  <title>PHP学习笔记 | Daq1ang</title>
+  <title>小内卷 | Daq1ang</title>
   
 
 
@@ -155,7 +154,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -168,7 +167,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          PHP学习笔记
+          小内卷
         </h1>
 
         <div class="post-meta">
@@ -177,28 +176,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-01-12 14:48:37" itemprop="dateCreated datePublished" datetime="2021-01-12T14:48:37+08:00">2021-01-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-31 18:16:40" itemprop="dateModified" datetime="2021-01-31T18:16:40+08:00">2021-01-31</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web-security/" itemprop="url" rel="index"><span itemprop="name">web security</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web-security/%E5%81%9A%E4%B8%80%E9%A1%B6%E7%99%BD%E5%B8%BD%E5%AD%90/" itemprop="url" rel="index"><span itemprop="name">做一顶白帽子</span></a>
-                </span>
+              <time title="Created: 2021-04-24 21:42:32 / Modified: 23:41:22" itemprop="dateCreated datePublished" datetime="2021-04-24T21:42:32+08:00">2021-04-24</time>
             </span>
 
           
@@ -212,50 +192,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="下午搞一搞PHP"><a href="#下午搞一搞PHP" class="headerlink" title="下午搞一搞PHP"></a>下午搞一搞PHP</h2><hr>
-<h1 id="php"><a href="#php" class="headerlink" title="php"></a>php</h1><ul>
-<li><p>var_dump() 会返回变量的数据类型和值：</p>
-</li>
-<li><p>在 PHP 中，所有用户定义的函数、类和关键词（例如 if、else、echo 等等）都对大小写不敏感。<u>所有变量都对大小写敏感</u>  </p>
-</li>
-<li><p>var_dump() 会返回变量的数据类型和值    </p>
-<h3 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h3></li>
-<li><p>str_word_count() 函数对字符串中的单词进行计数  </p>
-</li>
-<li><p>strrev() 函数反转字符串</p>
-</li>
-<li><p>strpos() 函数用于检索字符串内指定的字符或文本<br>如果找到匹配，则会返回首个匹配的<u>字符位置</u>。如果未找到匹配，则将返回 FALSE。下例检索字符串 “Hello world!” 中的文本 “world”：<br><img src="images/php1.0.png" alt="php1.0"></p>
-</li>
-<li><p>str_replace() 函数用一些字符串替换字符串中的另一些字符<br><img src="images/php1.2.png" alt="php1.2">   </p>
-<blockquote>
-<p>+strstr()、strchr()、strrchr()和stristr()：在字符串中查找字符串函数      </p>
-<blockquote>
-<p>函数strstr()有两个变体。第一个变体是stristr()，它几乎和strstr()一样，其区别在于不区分字符大小写<br>第二个变体是strrchr()， 函数查找==字符==（注意：这里是字符不是字符串）在指定字符串中从后面开始的第一次出现的位置，如果成功，则返回从该位置到字符串结尾的所有字符，如果失败，则返回 false。<br><img src="images/php1.3.png" alt="php1.3">   </p>
-</blockquote>
-</blockquote>
-</li>
-<li><p>substr()截取字符串前N个字符或者从第几个字符开始取几个字符  </p>
-</li>
-</ul>
-<hr>
-<pre><code>&lt;?php    
-$str = &quot;123456789&quot;;   
-echo substr($str , 0 , 3);//从左边第一位字符起截取3位字符：结果：123
-echo substr($str , 3 , 3);//从左边第3位字符起截取3位字符：结果：456
-?&gt;   </code></pre>
-<hr>
-<pre><code>&lt;?php
-$rest = substr(&quot;abcdef&quot;, -1);    // 返回 &quot;f&quot;
-$rest = substr(&quot;abcdef&quot;, -2);    // 返回 &quot;ef&quot;
-$rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
-?&gt;        </code></pre>
-<h2 id="2021-1-31"><a href="#2021-1-31" class="headerlink" title="2021.1.31"></a>2021.1.31</h2><h3 id="buu-warmup"><a href="#buu-warmup" class="headerlink" title="buu - warmup"></a>buu - warmup</h3><ul>
-<li>isset()： 判断变量是否声明；       </li>
-<li>is_string()： 判断变量是否是字符串；     </li>
-<li>in_array(search,array)： 判断array中是否存在search；     </li>
-<li>mb_substr()： 函数返回字符串的一部分    </li>
-<li>mb_strpos（haystack，needle）： 在 haystack 中查找needle第一次出现的位置 ；</li>
-</ul>
+        <p>二队实力有限，所以康师傅出题还算友好。</p>
+<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><p>题目链接：106.54.90.137:2333<br><img src="/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/1.0.png"><br>题目给了一个输入框，源码查看到有hint.txt提示，发现给了路径</p>
+<pre><code>give you hint : /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games: </code></pre>
+<p>在CTFshow做了二十多个命令执行，没遇到过这种，知识盲区了</p>
+<p>后来干脆在题库里面找，发现月饼杯web3<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/108827377%E5%92%8C%E8%BF%99%E4%B8%AA%E5%BE%88%E5%83%8F%EF%BC%8C%E6%96%B9%E6%B3%95%E4%B8%80%E8%87%B4%E3%80%82">https://blog.csdn.net/qq_46091464/article/details/108827377和这个很像，方法一致。</a></p>
+<p>而且这个题更直接：利用路径中涉及到的字母（使用$PATH环境变量来截取字母）构造payload</p>
+<p>想用的是: nl flag.php即nl ????.???（要包含一个字母，否则会混乱）</p>
+<p>最终payload：</p>
+<pre><code>$&#123;PATH:14:1&#125;$&#123;PATH:5:1&#125; ?$&#123;PATH:5:1&#125;??.???</code></pre>
+<p>构造的方法不赘述了，解出来信心倍增</p>
+<h2 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h2><p>题目链接：106.54.90.137:2334<br>sql注入一直是我的短板（其实我啥也不行）</p>
+<p>学习sql注入的过程，看了wustais康师傅做的视频，看乌鸦的PPT，同时在sqllab有练习。对各种类型的SQL注入题目都有些了解</p>
+<p>这题很明显就是sqllab第8题改编的，界面都差不多：</p>
+<p>id=1 回显You are in………..典型的布尔盲注：</p>
+<p>三种回显：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">You are in...........输入语句正确</span><br><span class="line">Welcome    Hacker   （相比之下就是无回显）说明语句错误</span><br><span class="line">you are too young!      含有被过滤的关键词</span><br></pre></td></tr></table></figure>
+<p>先Fuzz测试看过滤<br><img src="/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/1.1.png"><br>然后被这个测试结果误导了，我以为select也被过滤了，懵逼了好长时间，绕也绕不过</p>
+<p>知道康师傅在群里给提示才发现select可能没被ban，试用了一下也确实可以</p>
+<p>具体的每一步payload不写了，附个链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/a1309525802/article/details/105421515%E4%BB%8B%E7%BB%8D%E4%BA%86%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E5%AD%97%E8%A2%AB%E8%BF%87%E6%BB%A4%E7%9A%84%E7%BB%95%E8%BF%87%E6%96%B9%E4%BD%93">https://blog.csdn.net/a1309525802/article/details/105421515介绍了几个关键字被过滤的绕过方体</a></p>
+<p>没啥大问题，大问题就是脚本不会用，全手敲，主要是时间留的足，也确实够恶心，BP都给我敲冒烟了</p>
+<p>涉及到的知识在之后的sql注入总结中再详细补充</p>
+<h2 id="有感"><a href="#有感" class="headerlink" title="有感"></a>有感</h2><p>做题之前很忐忑，毕竟自己前段时间没怎么学，有自知之明。</p>
+<p>解sql注入的时候走了很多弯路，第一次解布尔盲注的题目，很多细节问题没注意，爆破的时候漏洞百出</p>
+<p>之后好好学，希望在大赛上有输出</p>
 
     </div>
 
@@ -265,7 +225,7 @@ $rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/w3school/" rel="tag"># w3school</a>
+              <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/" rel="tag"># 命令执行&布尔盲注</a>
           </div>
 
         
@@ -274,13 +234,10 @@ $rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/12/bugku-wp/" rel="prev" title="bugku-wp">
-      <i class="fa fa-chevron-left"></i> bugku-wp
+    <a href="/2021/04/22/nodejs/" rel="prev" title="nodejs">
+      <i class="fa fa-chevron-left"></i> nodejs
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/01/13/web%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="next" title="web攻防世界">
-      web攻防世界 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -339,7 +296,7 @@ $rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E5%8D%88%E6%90%9E%E4%B8%80%E6%90%9EPHP"><span class="nav-number">1.</span> <span class="nav-text">下午搞一搞PHP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#php"><span class="nav-number"></span> <span class="nav-text">php</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="nav-number">0.1.</span> <span class="nav-text">字符串函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2021-1-31"><span class="nav-number">1.</span> <span class="nav-text">2021.1.31</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#buu-warmup"><span class="nav-number">1.1.</span> <span class="nav-text">buu - warmup</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">命令执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">SQL注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E6%84%9F"><span class="nav-number">3.</span> <span class="nav-text">有感</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -358,11 +315,11 @@ $rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

