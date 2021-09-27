@@ -28,7 +28,7 @@
 <meta property="og:description" content="变量覆盖$$导致的变量覆盖$$这种写法称为可变变量 一个可变变量获取了一个普通变量的值作为这个可变变量的变量名。 123456789&lt;?php$a &#x3D; &quot;hello&quot;;echo &quot;$a&quot;;              &#x2F;&#x2F;输出hello$a&#x3D;&quot;world&quot;;         &#x2F;&amp;#x2">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-24T10:48:09.000Z">
-<meta property="article:modified_time" content="2021-04-18T15:17:07.622Z">
+<meta property="article:modified_time" content="2021-09-18T15:14:03.008Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="变量覆盖 二刷Buu">
 <meta name="twitter:card" content="summary">
@@ -181,7 +181,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-18 23:17:07" itemprop="dateModified" datetime="2021-04-18T23:17:07+08:00">2021-04-18</time>
+                <time title="Modified: 2021-09-18 23:14:03" itemprop="dateModified" datetime="2021-09-18T23:14:03+08:00">2021-09-18</time>
               </span>
 
           
@@ -211,12 +211,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$flag &#x3D; file_get_contents(&#39;&#x2F;flag&#39;);</span><br></pre></td></tr></table></figure>
 
 <p>index.php有效代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include &#39;flag.php&#39;;</span><br><span class="line"></span><br><span class="line">$yds &#x3D; &quot;dog&quot;;</span><br><span class="line">$is &#x3D; &quot;cat&quot;;</span><br><span class="line">$handsome &#x3D; &#39;yds&#39;;</span><br><span class="line"></span><br><span class="line">foreach($_POST as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    $$x &#x3D; $y;       &#x2F;&#x2F;变量覆盖</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    $$x &#x3D; $$y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    if($_GET[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; $x &amp;&amp; $x !&#x3D;&#x3D; &#39;flag&#39;)&#123;    &#x2F;&#x2F;参数中的flag等于某个键名，且键名不含有字符flag</span><br><span class="line">        exit($handsome);    &#x2F;&#x2F;退出脚本同时输出变量</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#39;flag&#39;]) &amp;&amp; !isset($_POST[&#39;flag&#39;]))&#123;  &#x2F;&#x2F;get和post传参键名不含flag</span><br><span class="line">    exit($yds);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; &#39;flag&#39;  || $_GET[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; &#39;flag&#39;)&#123;   &#x2F;&#x2F;get或post参数值绝对等于flag</span><br><span class="line">    exit($is);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;the flag is: &quot;.$flag;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include &#39;flag.php&#39;;</span><br><span class="line"></span><br><span class="line">$yds &#x3D; &quot;dog&quot;;</span><br><span class="line">$is &#x3D; &quot;cat&quot;;</span><br><span class="line">$handsome &#x3D; &#39;yds&#39;;</span><br><span class="line"></span><br><span class="line">foreach($_POST as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    $$x &#x3D; $y;       &#x2F;&#x2F;变量覆盖</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    $$x &#x3D; $$y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x &#x3D;&gt; $y)&#123;</span><br><span class="line">    if($_GET[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; $x &amp;&amp; $x !&#x3D;&#x3D; &#39;flag&#39;)&#123;    &#x2F;&#x2F;参数中的flag等于某个键名，且键名不含有字符flag</span><br><span class="line">        exit($handsome);    &#x2F;&#x2F;退出脚本同时输出变量</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#39;flag&#39;]) &amp;&amp; !isset($_POST[&#39;flag&#39;]))&#123;  &#x2F;&#x2F;get和post传参键名不含flag</span><br><span class="line">    exit($yds);  &#x2F;&#x2F; ?yds&#x3D;flag  $x&#x3D;yas $y&#x3D;flag  $$x&#x3D;$$y   $(yds)&#x3D;$(flag) exit($yds)即exit（$flag）输出flag字符串</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; &#39;flag&#39;  || $_GET[&#39;flag&#39;] &#x3D;&#x3D;&#x3D; &#39;flag&#39;)&#123;   &#x2F;&#x2F;get或post参数值绝对等于flag</span><br><span class="line">    exit($is);</span><br><span class="line">&#125;  &#x2F;&#x2F;  ?flag&#x3D;flag&amp;is&#x3D;flag</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;the flag is: &quot;.$flag;</span><br></pre></td></tr></table></figure>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>if语句中的exit()函数虽然会退出执行，但也会输出其参数，可以利用变量覆盖将exit()函数内的参数用$flag覆盖掉就能输出flag了；</p>
-<p>三个if语句，其中有两个能利用变量覆盖输出flag(第一个无法绕过)</p>
-<p>第二个if语句中可以看到输出的$yds变量，可以通过变量覆盖达到$yds=$flag的效果，GET传参yds=flag，在第二个foreach语句中，首先是$x=yds，$y=flag，经过$$x = $$y也就变成了$yds=$flag，这是其一；</p>
-<p>第三个if语句中输出变量$is，可以通过满足后面这个条件进行变量覆盖：GET传参is=flag&amp;flag=flag；在第二个foreach语句中，首先是$x=is,$y=flag,带进去就变成了$is=$flag，这就达到了覆盖的目的，而参数中flag=flag只是为了满足if语句</p>
+<p>目的就是利用exit输出的变量根据foreach()函数条件替换成$flag输出$flag字符串</p>
 
     </div>
 
@@ -314,7 +311,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -323,7 +320,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
