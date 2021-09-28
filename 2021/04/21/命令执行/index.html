@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.0.png">
 <meta property="og:image" content="https://jingdaqiang.github.io/2021/04/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/1.1.png">
 <meta property="article:published_time" content="2021-04-21T01:34:39.000Z">
-<meta property="article:modified_time" content="2021-09-18T16:15:17.978Z">
+<meta property="article:modified_time" content="2021-09-28T12:38:36.903Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="CTF-Web">
 <meta name="twitter:card" content="summary">
@@ -184,7 +184,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-19 00:15:17" itemprop="dateModified" datetime="2021-09-19T00:15:17+08:00">2021-09-19</time>
+                <time title="Modified: 2021-09-28 20:38:36" itemprop="dateModified" datetime="2021-09-28T20:38:36+08:00">2021-09-28</time>
               </span>
 
           
@@ -220,7 +220,7 @@
 <pre><code>%09   $IFS$9  $&#123;IFS&#125;   $IFS%09   &lt;   &lt;&gt;   等替换</code></pre>
 <p>cat被过滤</p>
 <pre><code>tac、more、less、head、tail、nl、sed、sort、uniq、rev 进行替换</code></pre>
-<p>过滤了要获取的关键词，比如flag.php 可以用 ?（一位）、*<em>、’’来代替。eg:fla?.???,fla</em>,fla’’g.php 来绕过</p>
+<p>过滤了要获取的关键词，比如flag.php 可以用 ?（一位）、*<em>、’’来代替。eg:fla?.???,fla</em>,fla’’g.php   fla%8ag来绕过</p>
 <p><strong>linux 语法过滤了分号，可以用 %0a 来绕过（相当于回车</strong>）</p>
 <p><strong>PHP语法过滤了分号 可用 ?&gt;来绕过</strong></p>
 <p><strong>利用反斜杠 比如对cat进行限制 我们可以用 ca\t 绕过 ，过滤了 flag , php 我们用 fl\ag.p\hp 绕过</strong></p>
@@ -397,7 +397,7 @@ c=include$_GET[1]?&gt;&amp;1=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZm
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -406,7 +406,7 @@ c=include$_GET[1]?&gt;&amp;1=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZm
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
